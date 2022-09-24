@@ -214,7 +214,7 @@
     <div class="bottom"></div>
     <div class="center" id="login_form">
     	<center>
-    		<img src="<?php echo base_url() ?>/assets/img/logo/logo.png" class="logo-image" alt="logo" style="
+    		<img src="<?php echo base_url() ?>assets/img/logo/clogo.jpg" class="logo-image" alt="logo" style="
     height: 85px;
     width: 185px;
 " /></center>

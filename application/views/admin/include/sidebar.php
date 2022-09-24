@@ -9,7 +9,7 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover" style="background:#fff;">
 						<center>
-						<img src="<?php echo base_url() ?>/assets/img/logo/logo.png" class="logo-image" alt="logo" style="
+						<img src="<?php echo base_url() ?>assets/img/logo/clogo.jpg" class="logo-image" alt="logo" style="
     height: 85px;
     width: 185px;
 " />						</center>
@@ -48,10 +48,11 @@
 				<a href="javascript:;"><b class="caret"></b><i class="fa fa-users"></i>
 					<span>Employee Management </span></a>
 				<ul class="sub-menu">
+				    <li <?= (@$sub_page == 'manage_department') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/department/department_view">Manage Department</a></li>
+					<li <?=(@$sub_page == 'manage_designation') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/designation/designation_view">Manage Designations</a></li>
 					<li <?= (@$sub_page == "Add Employee" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/employee/add_employee_view">Add Employee</a></li>
 					<li <?= (@$sub_page == "Manage Employee" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/employee/employee_view">Manage Employees</a></li>
-					<li <?= (@$sub_page == 'manage_department') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/department/department_view">Manage Department</a></li>
-					<li <?=(@$sub_page == 'manage_designation') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/designation/designation_view">Manage Designations</a></li>
+					
 				</ul>
 			</li>
 
