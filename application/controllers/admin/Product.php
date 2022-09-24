@@ -21,7 +21,7 @@ class Product extends CI_Controller
     $this->load->model('Product_specification_model', 'psm');
 
     $this->load->library('session');
-    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+    $this->data['view_path']  = $_SERVER['DOCUMENT_ROOT'] .'/crm/application/views/';
     date_default_timezone_set('asia/kolkata');
   }
 

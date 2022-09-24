@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>IREMS | CRM | Login </title>
+	<title>Amichand | CRM | Login </title>
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
