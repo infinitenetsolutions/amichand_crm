@@ -131,11 +131,23 @@ body #gritter-notice-wrapper {
                                         <input class="form-control" type="text" value="<?= $settingData['phone_no'] ?>" name="phone_no" id="" required="true">
                                     </div>
                                 </div>
+
+
+                                <div class="col-md-4">
+                                <div id="response" class="form-group">
+                                <label for=""><strong>Existing Image:</strong></label>
+                                <?php if(!empty($settingData['logo'])){ ?>
+                                <img  class="form-control img-fluid" src="../../upload/setting/<?=$settingData['logo'];?>" alt="" style="width:100px;height: auto;">
+                                <?php }else{
+                                echo "No Image Preset";
+                                }?>
+                                </div>
+                                </div>
                             
                             <div class="col-md-4">
                                         <div id="response" class="form-group">
                                             <label for="image"><strong>Logo:</strong></label>
-                                            <input class="form-control" name="file" id="" type="file">
+                                            <input class="form-control" name="logo" id="" type="file">
                                         </div>
                                     </div>
 

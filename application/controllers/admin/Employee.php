@@ -10,7 +10,7 @@ class Employee extends CI_Controller {
 	    $this->load->model('Employee_model');
 		$this->load->model('Department_model','dm');
 		$this->load->model('Designation_model','designation');
-		$this->load->model('Setting_model', 'Setting');
+		$this->load->model('Settings_model', 'Setting');
 		$this->data['settingData'] = $this->Setting->getsettingdata(1);
 
         $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] .'/crm/application/views/';
@@ -59,11 +59,12 @@ class Employee extends CI_Controller {
 		
 	function add_employee()
 	{		
-
+		print_r($_FILES);
 		if($this->Employee_model->is_employee_id_exist($this->input->post('employee_id'))==false){
 
-			      echo   $config['upload_path'] = '<?php echo base_url(); ?>/upload/employee';
-				  exit;
+			        //$config['upload_path'] = base_url().'upload/employee';
+					$config['upload_path'] = base_url(). 'assets/upload/employee';
+
 					$config['overwrite']=TRUE;
 					$config['allowed_types'] = 'jpg|jpeg|gif|png|PNG';
 					$config['max_size']    = '20000';
@@ -76,7 +77,9 @@ class Employee extends CI_Controller {
 					
 					$new_name = $_FILES['image']['name'];
 					$config['image'] = $new_name;
-		    					
+		    		
+					echo "<pre>";
+					print_r($config);
 					$data = array(
 					'first_name' => $this->input->post('first_name'),
 					'last_name' => $this->input->post('last_name'),
@@ -127,6 +130,9 @@ class Employee extends CI_Controller {
 					'pf_ac' => $this->input->post('pf_ac'),	
 					'esic_ac' => $this->input->post('esic_ac')
 					);
+
+					echo "<pre>";
+					print_r($data);
                  $add=$this->Employee_model->save_data($data);
 				if($add)
 				{
@@ -588,22 +594,21 @@ class Employee extends CI_Controller {
 			public function fetchAllEmployeeData()
 	{
 			$employee=$this->Employee_model->getEmployeeDataByStoreName($_POST['status']);
-			// print_r($employee);exit();
-
-		?>
+			
+		    ?>
 			<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 			<thead>
 			<tr>
-			<th class="text-nowrap">S NO</th>
+			 <th class="text-nowrap">S NO</th>
 			 <th class="text-nowrap">Full Name</th>
-			<th class="text-nowrap">Employee ID</th>
-			<th class="text-nowrap">Department</th>
-			<th class="text-nowrap">Designation</th>
-			<th class="text-nowrap">Date Of Hire</th>
-			<th class="text-nowrap">City</th>
-			<th class="text-nowrap">Status</th>
-			<th class="text-nowrap">Image</th>
-			<th class="text-nowrap">Action</th>
+			 <th class="text-nowrap">Employee ID</th>
+			 <th class="text-nowrap">Department</th>
+			 <th class="text-nowrap">Designation</th>
+			 <th class="text-nowrap">Date Of Hire</th>
+			 <th class="text-nowrap">City</th>
+			 <th class="text-nowrap">Status</th>
+			 <th class="text-nowrap">Image</th>
+			 <th class="text-nowrap">Action</th>
 			</tr>
 			</thead>
 			<tbody>	

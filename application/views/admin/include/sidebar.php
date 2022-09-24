@@ -8,7 +8,11 @@
 			<li class="nav-profile">
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover" style="background:#fff;">
-						<center><img src="<?php echo base_url() ?>/assets/img/logo/logo.png" style="width:auto" alt="" /></center>
+						<center>
+						<img src="<?php echo base_url() ?>/assets/img/logo/logo.png" class="logo-image" alt="logo" style="
+    height: 85px;
+    width: 185px;
+" />						</center>
 					</div>
 					<div class="image">
 
@@ -55,8 +59,11 @@
 				<a href="javascript:;"><b class="caret"></b><i class="fa fa-shopping-cart"></i>
 					<span>Product & Service Management</span></a>
 				<ul class="sub-menu">
+					<li <?= (@$sub_page == "Manage Product Category" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/product/manage_productcat">Manage Product Category</a></li>
+					<li <?= (@$sub_page == "Manage Product Subcategory" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/product/manage_productsubcat">Manage Product Subcategory</a></li>
 					<li <?= (@$sub_page == "Manage Product" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/product/manage_product">Manage Product</a></li>
 				</ul>
+				
 			</li>
 		</ul>
 

@@ -14,7 +14,7 @@
               <div class="form-group">
                 <label for=""><strong>Employee Status:</strong></label>
                 <select class="form-control" name="emp_status" id="emp_status" style="" required="">
-                   <option value="" >Select</option>
+                   <!-- <option value="" >Select</option> -->
                   <option value="Active" >Active</option>
                   <option value="Inactive" >Inactive</option>
                 </select>
@@ -75,6 +75,7 @@ $('.spinner_load').show();
     data: {"status":stsid},
     success: function(response){
     $('.spinner_load').hide();
+    load_data_table();
     $('#dataresultId').html(response);
     $('#dataresultId table').DataTable({
                               dom: '<"row"<"col-sm-5"B><"col-sm-7"fr>>t<"row"<"col-sm-5"i><"col-sm-7"p>>',

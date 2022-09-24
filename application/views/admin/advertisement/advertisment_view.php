@@ -104,6 +104,8 @@
                      <input class="form-control" name="adv_img" id="adv_img" type="file" readonly>
                   </div>
                </div>
+
+               
                 <div class="col-md-4">
                   <div id="response" class="form-group">
                      <label for=""><strong>Existing Image:</strong></label>

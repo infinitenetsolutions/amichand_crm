@@ -12,7 +12,7 @@ class Designation extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->library('session');
 	    $this->load->model('Designation_model','designation');
-	    $this->load->model('Setting_model', 'Setting');
+	    $this->load->model('Settings_model', 'Setting');
 		$this->data['settingData'] = $this->Setting->getsettingdata(1);
    }
 

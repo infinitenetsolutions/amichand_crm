@@ -214,7 +214,10 @@
     <div class="bottom"></div>
     <div class="center" id="login_form">
     	<center>
-    		<img src="<?php echo base_url() ?>/assets/img/logo/logo.png" class="logo-image" alt="logo" /></center>
+    		<img src="<?php echo base_url() ?>/assets/img/logo/logo.png" class="logo-image" alt="logo" style="
+    height: 85px;
+    width: 185px;
+" /></center>
 
    <?php if($this->session->flashdata('success')): ?>
    <p class="alert alert-success"><?php echo $this->session->flashdata('success'); ?></p>
@@ -225,7 +228,7 @@
 
 
     	<form  method="POST" autocomplete="off" action="<?=base_url()?>admin/login/login_user">
-        <center><h2 class="text-center login-title">Log in</h2>
+        <!-- <center><h2 class="text-center login-title">Log in</h2> -->
         <input type="text" class="form-input" name="username" placeholder="Enter Username"  value="<?php if(isset($_COOKIE["username"])) { echo $_COOKIE["username"]; } ?>" required/>
         <input type="password" class="form-input" name="password" placeholder="Enter Password" value="<?php if(isset($_COOKIE["password"])) { echo $_COOKIE["password"]; } ?>" required/> </center>
        <input type="checkbox" value="rememberMe" name="rememberMe" id="rememberMe">

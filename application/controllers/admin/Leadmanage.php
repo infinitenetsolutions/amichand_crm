@@ -25,7 +25,7 @@ class Leadmanage extends CI_Controller
         $this->load->library('upload');
         $this->load->library('form_validation');
         $this->load->library('session');
-        $this->load->model('Setting_model', 'Setting');
+        $this->load->model('Settings_model', 'Setting');
         $this->data['settingData'] = $this->Setting->getsettingdata(1);
 
         $this->load->model('Advertisement_model', 'Advertisement');
@@ -229,7 +229,7 @@ class Leadmanage extends CI_Controller
                          <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
                           <th class="text-nowrap">S No</th>
-	                      <th class="text-nowrap">Advertisement<br>Title</th>
+	                        <th class="text-nowrap">Advertisement<br>Title</th>
                           <th class="text-nowrap">Name</th>
                           <th class="text-nowrap">Mobile No</th>
                           <th class="text-nowrap">Email</th>

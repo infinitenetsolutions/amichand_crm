@@ -8,7 +8,7 @@ class Setting extends CI_Controller
         $this->load->helper(array('form', 'url'));
 
         $this->load->library('upload');
-        $this->load->model('Setting_model', 'Setting');
+        $this->load->model('Settings_model', 'Setting');
         $this->load->library('form_validation');
         $this->load->library('session');
         $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] .'/crm/application/views/';
@@ -18,15 +18,21 @@ class Setting extends CI_Controller
     {	
       
       $postData = $this->input->post();
-      // echo "<pre>";
-      // print_r($postData); 
+      // echo"<pre>";
+      // print_r($_POST);
+      // print_r($_FILES);
+      // exit();
       $setting_id=1;
       unset($postData['setting_id']);
-        
+      if (isset($_FILES['logo']) && $_FILES['logo']['name'] != ''){
+         $postData['logo'] = $this->upload_file('logo');
+    }  
+
+
         if (!empty($_FILES['logo']))
         {	
             $config['file_name'] = $_FILES['logo']['name'];
-            $config['upload_path'] = './upload/setting/';
+            $config['upload_path'] = 'upload/setting/';
             $config['overwrite'] = true;
             $config['allowed_types'] = '*';
             $config['max_size'] = '20000';

@@ -14,11 +14,11 @@ class Advertisement extends CI_Controller
         $this->load->library('upload');
 //        $this->load->model('Payroll_model');
         $this->load->model('Advertisement_model', 'Advertisement');
-        $this->load->model('Setting_model', 'Setting');
+        $this->load->model('Settings_model', 'Setting');
 
         $this->load->library('form_validation');
         $this->load->library('session');
-        $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] .'/irems/crm/application/views/';
+        $this->data['view_path']  = $_SERVER['DOCUMENT_ROOT'] .'/irems/crm/application/views/';
         $this->data['settingData'] = $this->Setting->getsettingdata(1);
 //        $this->load->model('Department_model','dm');
         $this->load->model('Leadmanage_model','Leadmanage');
