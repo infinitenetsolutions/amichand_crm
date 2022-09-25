@@ -234,6 +234,8 @@
         <label for="rememberMe"><small><b>Remember Me</b></small></label>
 		<center><button class="button" type="submit" name="submit" id='login_btn'><span>Login </span></button>
 		<p><small><b><span id='forgot_password' class="footer-link">Forgot Password ?</span></b></small></p>
+		<p><small><b><span id='forgot_password' class="footer-link"  style="
+    color: red;">Powered By <a class="text-success" style="color:#24d63b" target="_blank" href="http://infinitenetsolutions.com/">INFINITE NET SOLUTIONS </a></span></b></small></p>
         </center>
 		</form>
     </div>
