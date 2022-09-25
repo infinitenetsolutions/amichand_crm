@@ -133,7 +133,7 @@ body #gritter-notice-wrapper {
                                 </div>
 
 
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                 <div id="response" class="form-group">
                                 <label for=""><strong>Existing Image:</strong></label>
                                 <?php if(!empty($settingData['logo'])){ ?>
@@ -144,7 +144,7 @@ body #gritter-notice-wrapper {
                                 </div>
                                 </div>
                             
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                         <div id="response" class="form-group">
                                             <label for="image"><strong>Logo:</strong></label>
                                             <input class="form-control" name="logo" id="" type="file">
@@ -152,7 +152,7 @@ body #gritter-notice-wrapper {
                                     </div>
 
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div id="response" class="form-group">
                                             <label for="image"><strong>Background Image:</strong></label>
                                             <input class="form-control" name="background_image" id="" type="file" >

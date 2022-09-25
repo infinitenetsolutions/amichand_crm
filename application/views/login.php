@@ -107,8 +107,7 @@
 .text-center{
 	text-align: center;
 }
-
-.logo-image{	
+ .logo-image{	
 	margin-top:-40%;margin-left: 0%;
 }
 .login-title{font-family: 'Audiowide';font-size: 22px;letter-spacing: 2px;color: #c90808;}
@@ -214,8 +213,8 @@
     <div class="bottom"></div>
     <div class="center" id="login_form">
     	<center>
-    		<img src="<?php echo base_url() ?>assets/img/logo/clogo.jpg" class="logo-image" alt="logo" style="
-    height: 85px;
+			<img src="<?php echo base_url() ?>assets/img/logo/clogo.jpg" class="logo-image" alt="logo" style="
+    height: 50px;
     width: 185px;
 " /></center>
 
