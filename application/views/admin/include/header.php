@@ -40,6 +40,8 @@
 			background-color:<?= $settingData['background_color'] ?> !important;
 		} 
 
+		
+
 
 
 </style>

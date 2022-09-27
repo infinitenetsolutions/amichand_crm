@@ -29,9 +29,7 @@ class Leadmanage extends CI_Controller
         $this->data['settingData'] = $this->Setting->getsettingdata(1);
 
         $this->load->model('Advertisement_model', 'Advertisement');
-        $this->load->model('Accommodation_model', 'Accommodation');
-        $this->load->model('Project_model', 'Project');
-        $this->load->model('Properties_model', 'Properties');
+        $this->load->model('Product_model', 'pm');
         $this->load->model('Leadmanage_model','Leadmanage');
         $this->load->model('Employee_model','emp');
         $this->load->model('Payroll_model');
@@ -45,13 +43,12 @@ class Leadmanage extends CI_Controller
         $this->data['page'] = 'advertisement';
         $this->data['sub_page'] = 'manage_advrtisment';
         $this->data['advertisement'] = $this->Advertisement->get_all_adv_tbl_data();
-        $this->data['Accommodation'] = $this->Accommodation->getAllData();
-        $this->data['Project'] = $this->Project->getAllData();
-        $this->data['Properties'] = $this->Properties->getAllData();
+        $this->data['Product'] = $this->pm->getAllProductsData();
+
+     
         $this->load->view('admin/include/header', $this->data);
         $this->load->view('admin/include/sidebar', $this->data);
         $this->load->view('admin/leadmanage/add_lead', $this->data);
-        // $this->load->view('admin/include/footer',$this->data);
     }
 
 

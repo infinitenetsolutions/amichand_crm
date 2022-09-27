@@ -1,6 +1,7 @@
 <?php 
    $page_no = 10;
     //$page_no_inside = "10_1";
+
 ?>
 
 <link href="<?=base_url()?>assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
@@ -50,21 +51,21 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
               </div>
             </div>
            
-           <?php //if($this->session->userdata('user_id') != '1' && $this->session->userdata('user_id') != '') {?>
+           <?php if($this->session->userdata('user_id') != '1' && $this->session->userdata('user_id') != '') {?>
             <div class="col-md-2">
               <div class="mt-4">
               <a href='<?=base_url()?>admin/leadmanage/manage_lead' type="button" class="btn btn-inverse btn-sm">Manage All Leads</a>
               </div>
             </div>
-             <?php //} ?>
+             <?php } ?>
            
-            <?php  //if($this->session->userdata('user_id') == '') {?>
-            <!-- <div class="col-md-2">
+            <?php  if($this->session->userdata('user_id') == '') {?>
+            <div class="col-md-2">
               <div class="mt-4">
               <a href='<?=base_url()?>admin/leadmanage/manage_all_lead/1' type="button" class="btn btn-inverse btn-sm">Manage All Leads</a>
               </div>
-            </div> -->
-             <?php // } ?>
+            </div>
+             <?php } ?>
            
          </div>
       </div>

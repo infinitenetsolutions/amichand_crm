@@ -213,8 +213,15 @@
     <div class="bottom"></div>
     <div class="center" id="login_form">
     	<center>
-			<img src="<?php echo base_url() ?>assets/img/logo/clogo.jpg" class="logo-image" alt="logo" style="
-    height: 50px;
+		<?php  
+		$this->load->model('Settings_model', 'Setting');
+
+		$settingData = $this->Setting->getsettingdata(1); 
+		
+		?>
+
+			<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
+    height: 80px;
     width: 185px;
 " /></center>
 

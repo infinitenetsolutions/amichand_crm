@@ -18,6 +18,7 @@ class Login_model extends CI_Model {
     
 
     function validate($username,$password){
+     // echo "working";
     	return $this->db->select('*')
 				    	->from($this->table)
 				    	->where('username',$username)

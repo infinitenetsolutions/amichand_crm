@@ -6,17 +6,20 @@ class Main extends CI_Controller {
    {
         parent::__construct();
        $this->load->model('Login_model');
+	   $this->load->model('Settings_model', 'Setting');
 
 		$this->load->model('Main_model');
    }
 	
 	public function index()
 	{
-
-		if($this->session->userdata('admin_session') != ''){
-			redirect('dashboard/');
-		}
 		
+
+		// if($this->session->userdata('admin_session') != ''){
+		// 	redirect('dashboard/');
+		// }
+		
+
 		$this->load->view('login');
 	}
 	

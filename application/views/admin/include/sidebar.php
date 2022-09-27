@@ -9,8 +9,8 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover" style="background:#fff;">
 						<center>
-						<img src="<?php echo base_url() ?>assets/img/logo/clogo.jpg" class="logo-image" alt="logo" style="
-    height: 85px;
+						<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
+    height: 80px;
     width: 185px;
 " />						</center>
 					</div>

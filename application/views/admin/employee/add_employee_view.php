@@ -28,18 +28,18 @@
                                     </select>
                                 </div>
                             </div>
-                             <!--<div class="col-md-4">
+                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for=""><strong>Store Name:</strong></label>
-                                    <select class="form-control" name="emp_store_name" id="emp_store_name" style="" required="">
-                                        <option value="" selected="" disabled="">Select Store Name</option>
+                                    <label for=""><strong>Product Name:</strong></label>
+                                    <select class="form-control" name="product_name" id="" style="" required="">
+                                        <option value="" selected="" disabled="">Select Product Name</option>
                                         <?php
-                                            foreach ($store as $sRow) { 
-                                             echo "<option value=".$sRow['str_id'].">".$sRow['str_name']."</option>";   
+                                            foreach ($Product as $sRow) { 
+                                             echo "<option value=".$sRow['pro_id'].">".$sRow['p_type']."</option>";   
                                             }  ?>
                                     </select>
                                 </div>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                 </div>

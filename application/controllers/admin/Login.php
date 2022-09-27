@@ -16,6 +16,11 @@ class Login extends CI_Controller
 		if ($this->session->userdata('admin_session') != '') {
 			redirect('admin/');
 		}
+		                    $settingData = $this->Setting->getsettingdata(1);
+							echo "<pre>";
+							print_r($settingData);
+							
+
 		$this->load->view('login');
 	}
 

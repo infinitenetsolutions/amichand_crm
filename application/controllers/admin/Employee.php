@@ -11,6 +11,8 @@ class Employee extends CI_Controller {
 		$this->load->model('Department_model','dm');
 		$this->load->model('Designation_model','designation');
 		$this->load->model('Settings_model', 'Setting');
+		$this->load->model('Product_model', 'pm');
+
 		$this->data['settingData'] = $this->Setting->getsettingdata(1);
 
         $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] .'/crm/application/views/';
@@ -27,6 +29,8 @@ class Employee extends CI_Controller {
 		$this->data['page'] = 'Employee';
 		$this->data['sub_page']='Add Employee';
 		 $this->data['department']=$this->Employee_model->get_data_array('tbl_department');
+		 $this->data['Product'] = $this->pm->getAllProductsData();
+
 		$this->load->view('admin/include/header',$this->data);
 		$this->load->view('admin/include/sidebar',$this->data);
 		$this->load->view('admin/employee/add_employee_view',$this->data);
