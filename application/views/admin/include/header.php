@@ -23,7 +23,11 @@
 //$autoload['libraries'] = array('database','session','table');
 
 //$this->data['settingData'] = $this->Setting->get_data_array(); //get setting Data
-
+ 
+		$this->load->model('Settings_model', 'Setting');
+		$settingData = $this->Setting->getsettingdata(1); 
+		
+		
  ?>
 <style>
 	*.btn{
@@ -40,7 +44,7 @@
 			background-color:<?= $settingData['background_color'] ?> !important;
 		} 
 
-		
+
 
 
 

@@ -9,6 +9,12 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover" style="background:#fff;">
 						<center>
+						<?php  
+		$this->load->model('Settings_model', 'Setting');
+
+		$settingData = $this->Setting->getsettingdata(1); 
+		
+		?>
 						<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
     height: 80px;
     width: 185px;
