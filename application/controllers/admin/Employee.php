@@ -1,233 +1,130 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Employee extends CI_Controller {
-    public function __construct()
-   {
-         parent::__construct();
-		
+class Employee extends CI_Controller
+{
+	public function __construct()
+	{
+		parent::__construct();
+
 		$this->load->library('form_validation');
-		$this->load->library('session');		
-	    $this->load->model('Employee_model');
-		$this->load->model('Department_model','dm');
-		$this->load->model('Designation_model','designation');
+		$this->load->library('session');
+		$this->load->model('Employee_model');
+		$this->load->model('Department_model', 'dm');
+		$this->load->model('Designation_model', 'designation');
 		$this->load->model('Settings_model', 'Setting');
 		$this->load->model('Product_model', 'pm');
 
 		$this->data['settingData'] = $this->Setting->getsettingdata(1);
 
-        $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] .'/application/views/';
+		$this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+	}
 
-   }
 
 
-   
 
-	
+
 
 	public function add_employee_view()
-	{ 
+	{
 		$this->data['page'] = 'Employee';
-		$this->data['sub_page']='Add Employee';
-		 $this->data['department']=$this->Employee_model->get_data_array('tbl_department');
-		 $this->data['Product'] = $this->pm->getAllProductsData();
+		$this->data['sub_page'] = 'Add Employee';
+		$this->data['department'] = $this->Employee_model->get_data_array('tbl_department');
+		$this->data['Product'] = $this->pm->getAllProductsData();
 
-		$this->load->view('admin/include/header',$this->data);
-		$this->load->view('admin/include/sidebar',$this->data);
-		$this->load->view('admin/employee/add_employee_view',$this->data);
+		$this->load->view('admin/include/header', $this->data);
+		$this->load->view('admin/include/sidebar', $this->data);
+		$this->load->view('admin/employee/add_employee_view', $this->data);
 	}
 
 	public function edit_employee()
 	{
 		$this->data['page'] = 'Employee';
-		$this->data['sub_page']='employee_view';
-		$id=$this->uri->segment(4);
-		$this->data['employee_item']=$this->Employee_model->get_employee_by_id_edit($id);
-		$this->data['department']=$this->Employee_model->get_data_array('tbl_department');
-		$this->data['designation']=$this->Employee_model->get_data_array('tbl_designation');
+		$this->data['sub_page'] = 'employee_view';
+		$id = $this->uri->segment(4);
+		$this->data['employee_item'] = $this->Employee_model->get_employee_by_id_edit($id);
+		$this->data['department'] = $this->Employee_model->get_data_array('tbl_department');
+		$this->data['designation'] = $this->Employee_model->get_data_array('tbl_designation');
 		$this->data['Product'] = $this->pm->getAllProductsData();
 
-		$this->load->view('admin/include/header',$this->data);
-		$this->load->view('admin/include/sidebar',$this->data);
-		$this->load->view('admin/employee/edit_employee',$this->data);
+		$this->load->view('admin/include/header', $this->data);
+		$this->load->view('admin/include/sidebar', $this->data);
+		$this->load->view('admin/employee/edit_employee', $this->data);
 	}
 
 
-	public function employee_view()	
-	{	
-		$this->data['page'] = 'employee'; 
-		$this->data['sub_page']='employee_view';
-		$this->data['employee']=$this->Employee_model->get_employee_data();
-		$this->load->view('admin/include/header',$this->data);
-		$this->load->view('admin/include/sidebar',$this->data);		
-		$this->load->view('admin/employee/manage_employee',$this->data);
-		
+	public function employee_view()
+	{
+		$this->data['page'] = 'employee';
+		$this->data['sub_page'] = 'employee_view';
+		$this->data['employee'] = $this->Employee_model->get_employee_data();
+		$this->load->view('admin/include/header', $this->data);
+		$this->load->view('admin/include/sidebar', $this->data);
+		$this->load->view('admin/employee/manage_employee', $this->data);
 	}
-		
+
 	function add_employee()
-	{	
-		
-		// echo "<pre>";	
-		//   print_r($_FILES);
-        //   exit();
-	// 	  if (isset($_FILES['image']) && $_FILES['image']['name'] != ''){
-	// 		$postData['image'] = $this->upload_file('image');
-	//    }  
-   
-		if($this->Employee_model->is_employee_id_exist($this->input->post('employee_id'))==false){
+	{
 
-			        //$config['upload_path'] = base_url().'upload/employee';
-					$config['upload_path'] = 'upload/employee/';
-					$config['overwrite'] = true;
-					$config['allowed_types'] = '*';
-					$config['max_size'] = '20000';
-					$config['remove_spaces'] = true;
-					$config['encrypt_name'] = true;
-					$this->upload->initialize($config);
-					if($this->upload->do_upload('image'))
-					{
-						$filedata = $this->upload->data();
-						$data['image'] = $filedata['file_name'];
-					}
-		    		
-					
-					$data = array(
-					'first_name' => $this->input->post('first_name'),
-					'last_name' => $this->input->post('last_name'),
-					'product_id' => $this->input->post('pro_id'),
-					'employee_id' => $this->input->post('employee_id'),
-					'mobile' => $this->input->post('mobile'),
-					'date_of_birth' => $this->input->post('date_of_birth'),
-					'gender' => $this->input->post('gender'),								
-					'department' => $this->input->post('department'),
-					'designation' => $this->input->post('designation'),
-					'reporting_to' => $this->input->post('reporting_to'),
-					'date_of_hire' => $this->input->post('date_of_hire'),
-					'source_of_hire' => $this->input->post('source_of_hire'),
-					'emp_status' => $this->input->post('emp_status'),
-					'work_phone_no' => $this->input->post('work_phone_no'),
-					'emp_type' => $this->input->post('emp_type'),					
-					'address1' => $this->input->post('address1'),
-					'address2' => $this->input->post('address2'),
-					'country' => $this->input->post('country'),
-					'state' => $this->input->post('state'),
-					'city' => $this->input->post('city'),
-					'basic_salary' => $this->input->post('basic_salary'),
-					'pf_emp' => $this->input->post('pf_emp'),
-					'pf_cmp' => $this->input->post('pf_cmp'),
-					'esic_emp' => $this->input->post('esic_emp'),
-					'esic_cmp' => $this->input->post('esic_cmp'),
-					'cut_from' => $this->input->post('cut_from'),										
-					'postal_code' => $this->input->post('postal_code'),
-					'other_mobile' => $this->input->post('other_mobile'),
-					'other_email' => $this->input->post('other_email'),					
-					'nationality' => $this->input->post('nationality'),
-					'marital_status' => $this->input->post('marital_status'),
-					'driving_license' => $this->input->post('driving_license'),
-					'hobbies' => $this->input->post('hobbies'),				
-					'account_holder_name' => $this->input->post('account_holder_name'),
-					'hra' => $this->input->post('hra'),
-					'mobile_allowance' => $this->input->post('mobile_allowance'),
-					'account_no' => $this->input->post('account_no'),
-					'medical_allownce' => $this->input->post('medical_allownce'),
-					'bank_name' => $this->input->post('bank_name'),
-					'fooding_allowance' => $this->input->post('fooding_allowance'),
-					'transbortation_allowance' => $this->input->post('transbortation_allowance'),
-					'accomodation' => $this->input->post('accomodation'),
-					'branch' => $this->input->post('branch'),	
-					'total_salary' => $this->input->post('total_salary'),						
-					// 'image' => $new_name,
-					'employee_type' => $this->input->post('employee_type'),
-					//'emp_store_name' => $this->input->post('emp_store_name'),
-					'pf_ac' => $this->input->post('pf_ac'),	
-					'esic_ac' => $this->input->post('esic_ac')
-					);
 
-					echo "<pre>";
-					print_r($data);
-                 $add=$this->Employee_model->save_data($data);
-				if($add)
-				{
-					 $this->session->set_flashdata('success',"Employee added successfully!");
-	 			}	   
+		if ($this->Employee_model->is_employee_id_exist($this->input->post('employee_id')) == false) {
 
-			}
-		else
-		{
-			 $this->session->set_flashdata('danger',"Employee ID is Present");
-		}
-        redirect(base_url().'admin/Employee/employee_view');           
-                   
 
-	}
-	
-	
-	
-	public function edit_employee_page()
-	{	
-		
-		// echo "<pre>";
-		// print_r($_POST); exit;
-		 $id=$this->uri->segment(4);
-	     $con=array('id'=>$id);	
-		if($_POST)
-		{           
-        $data['first_name']=$this->input->post('first_name');
-        $data['last_name']=$this->input->post('last_name');
-		$data['product_id'] = $this->input->post('pro_id');
-		$data['employee_id']=$this->input->post('employee_id');
-		$data['mobile']=$this->input->post('mobile');
-		$data['date_of_birth']=$this->input->post('date_of_birth');
-		$data['gender']=$this->input->post('gender');
-		//$data['email']=$this->input->post('email');
-		//$data['password']=$this->input->post('password');
-		$data['department']=$this->input->post('department');		
-		$data['designation']=$this->input->post('designation');		
-        $data['reporting_to']=$this->input->post('reporting_to');	
-        $data['date_of_hire']=$this->input->post('date_of_hire');
-        $data['source_of_hire']=$this->input->post('source_of_hire');
-        $data['emp_status']=$this->input->post('emp_status');
-		$data['work_phone_no']=$this->input->post('work_phone_no');
-		$data['emp_type']=$this->input->post('emp_type');
-		$data['address1']=$this->input->post('address1');
-		$data['address2']=$this->input->post('address2');
-		$data['country']=$this->input->post('country');
-		$data['state']=$this->input->post('state');
-		$data['city']=$this->input->post('city');
-		$data['postal_code']=$this->input->post('postal_code');
-		$data['other_mobile']=$this->input->post('other_mobile');
-		$data['other_email']=$this->input->post('other_email');		
-		$data['nationality']=$this->input->post('nationality');
-		$data['marital_status']=$this->input->post('marital_status');
-		$data['driving_license']=$this->input->post('driving_license');
-		$data['hobbies']=$this->input->post('hobbies');
-		$data['basic_salary']=$this->input->post('basic_salary');
-		$data['pf_emp']=$this->input->post('pf_emp');
-		$data['pf_cmp']=$this->input->post('pf_cmp');
-		$data['esic_emp']=$this->input->post('esic_emp');
-		$data['esic_cmp']=$this->input->post('esic_cmp');
-		$data['cut_from']=$this->input->post('cut_from');
-		$data['account_holder_name']=$this->input->post('account_holder_name');
-		$data['hra']=$this->input->post('hra');
-		$data['account_no']=$this->input->post('account_no');
-		$data['medical_allownce']=$this->input->post('medical_allownce');
-		$data['bank_name']=$this->input->post('bank_name');
-		$data['fooding_allowance']=$this->input->post('fooding_allowance');
-		$data['transbortation_allowance']=$this->input->post('transbortation_allowance');
-		$data['accomodation']=$this->input->post('accomodation');
-		$data['branch']=$this->input->post('branch');
-		$data['total_salary']=$this->input->post('total_salary');
-		$data['employee_type']=$this->input->post('employee_type');
-		$data['emp_store_name']=$this->input->post('emp_store_name');
-		$data['pf_ac']=$this->input->post('pf_ac');
-		$data['esic_ac']=$this->input->post('esic_ac');
-         if (!empty($_FILES['image']['name'])) {
-          if($_FILES["image"]["name"]==""){
-                 $this->data['status']  ="false";
-                 $this->data['message'] ="Please Enter Your File Name";
-                 }else{
-            //Check whether user upload picture
-            if(!empty($_FILES['image']['name'])){
 
+
+
+			$data = array(
+				'first_name' => $this->input->post('first_name'),
+				'last_name' => $this->input->post('last_name'),
+				'product_id' => $this->input->post('pro_id'),
+				'employee_id' => $this->input->post('employee_id'),
+				'mobile' => $this->input->post('mobile'),
+				'date_of_birth' => $this->input->post('date_of_birth'),
+				'gender' => $this->input->post('gender'),
+				'department' => $this->input->post('department'),
+				'designation' => $this->input->post('designation'),
+				'reporting_to' => $this->input->post('reporting_to'),
+				'date_of_hire' => $this->input->post('date_of_hire'),
+				'source_of_hire' => $this->input->post('source_of_hire'),
+				'emp_status' => $this->input->post('emp_status'),
+				'work_phone_no' => $this->input->post('work_phone_no'),
+				'emp_type' => $this->input->post('emp_type'),
+				'address1' => $this->input->post('address1'),
+				'address2' => $this->input->post('address2'),
+				'country' => $this->input->post('country'),
+				'state' => $this->input->post('state'),
+				'city' => $this->input->post('city'),
+				'basic_salary' => $this->input->post('basic_salary'),
+				'pf_emp' => $this->input->post('pf_emp'),
+				'pf_cmp' => $this->input->post('pf_cmp'),
+				'esic_emp' => $this->input->post('esic_emp'),
+				'esic_cmp' => $this->input->post('esic_cmp'),
+				'cut_from' => $this->input->post('cut_from'),
+				'postal_code' => $this->input->post('postal_code'),
+				'other_mobile' => $this->input->post('other_mobile'),
+				'other_email' => $this->input->post('other_email'),
+				'nationality' => $this->input->post('nationality'),
+				'marital_status' => $this->input->post('marital_status'),
+				'driving_license' => $this->input->post('driving_license'),
+				'hobbies' => $this->input->post('hobbies'),
+				'account_holder_name' => $this->input->post('account_holder_name'),
+				'hra' => $this->input->post('hra'),
+				'mobile_allowance' => $this->input->post('mobile_allowance'),
+				'account_no' => $this->input->post('account_no'),
+				'medical_allownce' => $this->input->post('medical_allownce'),
+				'bank_name' => $this->input->post('bank_name'),
+				'fooding_allowance' => $this->input->post('fooding_allowance'),
+				'transbortation_allowance' => $this->input->post('transbortation_allowance'),
+				'accomodation' => $this->input->post('accomodation'),
+				'branch' => $this->input->post('branch'),
+				'total_salary' => $this->input->post('total_salary'),
+				'employee_type' => $this->input->post('employee_type'),
+				'pf_ac' => $this->input->post('pf_ac'),
+				'esic_ac' => $this->input->post('esic_ac')
+			);
+
+
+			if (!empty($_FILES['image']['name'])) {
+				$config['file_name'] = $_FILES['image']['name'];
 				$config['upload_path'] = 'upload/employee/';
 				$config['overwrite'] = true;
 				$config['allowed_types'] = '*';
@@ -235,217 +132,284 @@ class Employee extends CI_Controller {
 				$config['remove_spaces'] = true;
 				$config['encrypt_name'] = true;
 				$this->upload->initialize($config);
-				if($this->upload->do_upload('image'))
-				{
+				if ($this->upload->do_upload('image')) {
 					$filedata = $this->upload->data();
 					$data['image'] = $filedata['file_name'];
 				}
-
-                // $config['upload_path'] = './upload/employee';
-				// $config['allowed_types'] = 'jpg|jpeg|gif|png|PNG';
-				// $config['max_size']    = '100000';
-                // $config['remove_spaces'] = FALSE;
-                // $config['file_name'] =$_FILES['image']['name'];
-                
-                // //Load upload library and initialize configuration
-                // $this->load->library('upload',$config);
-                // $this->upload->initialize($config);
-                
-                if($this->upload->do_upload('image')){
-                    $uploadData = $this->upload->data();
-                        //$filename = './assets/uploads/gallery/';
-                    $image =$uploadData['file_name'];
-
-                }else{
-                    $image = '';
-                }
-            }else{
-                $image = '';
-            } } 
-        }
-        if(!empty($image)){
-            $data['image']=$filedata['file_name'];
-        }
-	
-		 	 $update=$this->Employee_model->update_data('table_employee',$con,$data);
-
-				if($update)
-	 			{
-	 				$this->session->set_flashdata('msg',"<div style='color:green;'>Employee Data Updated Successfully!!!</div>");
-					$this->session->set_flashdata('class','green_msg');
-					redirect(base_url().'admin/Employee/employee_view');
-	 			}
-				
-            }
-            
-          redirect(base_url().'admin/Employee/employee_view');
-    }
-
-     	function fetch_designation()
-		 {
-		  if($this->input->post('dept_id')=='')
-			  {
-			   $output = '<option value="" disabled selected>Select Designation</option>';
-			  }
-		   else
-			  {
-			  	$q=$this->Employee_model->fetch_designation_name($this->input->post('dept_id'));
-			  	if($q->num_rows()>0)
-		  	  	{
-				  	$output = '<option value="" disabled selected>Select Designation</option><option value="all">All</option>';
-				  	foreach($q->result() as $row)
-					  {
-					   $output .= '<option value="'.$row->id.'">'.$row->designation.'</option>';
-					  }		  	  		
-		  	  	}
-		  	  	else{
-				  	$output = '<option value="" disabled selected>No Designation</option>';
-		  	  	}
-			   }
-		  echo  $output;
-		 }
-
-		 	function fetch_depart_employee()
-			 {
-			  if($this->input->post('dept_id')=='')
-				  {
-				   $output = '<option value="" disabled selected>Select Employee</option>';
-				  }
-			   else
-				  {
-				  	$q=$this->Employee_model->fetch_empname_by_depart($this->input->post('dept_id'));
-				  	
-				  	if($q->num_rows()>0)
-			  	  	{
-					  	$output = '<option value="" disabled selected>Select Employee</option><option value="all">All</option><optgroup label="">';
-					  	foreach($q->result_array() as $row)
-						  {
-						  	$departName=$this->Employee_model->get_departname_data($row['department']);
-						  	$desigName=$this->Employee_model->get_design_data($row['designation']);
-						   $output .= '<option value="'.$row['id'].'">'.$row['first_name'].' '.$row['last_name'].'-'.$departName['department_name'].'-'.$desigName['designation'].'</option>';
-						  }		  	  		
-			  	  	}
-			  	  	else{
-					  	$output = '<option value="" disabled selected>No Designation</option></optgroup>';
-			  	  	}
-				   }
-			  echo  $output;
-			 }
+			}
 
 
-			 function fetch_depart_report_employee()
-			 {
-			 	$output='';
-			 	if($this->input->post('emp_id')==''){
-				 	if($this->input->post('dept_id')=='') {
-					   $output = '<option value="" disabled selected>Select Employee</option>';
-					  }else{
-					  	$q=$this->Employee_model->fetch_empname_by_depart($this->input->post('dept_id'));
-					  	if($q->num_rows()>0)
-				  	  	{
-						  	$output = '<option value="" disabled selected>Select Employee</option><optgroup label="Employee Name-Department-Designation">';
-						  	foreach($q->result_array() as $row)
-							  {
-							  	$departName=$this->Employee_model->get_departname_data($row['department']);
-							  	$desigName=$this->Employee_model->get_design_data($row['designation']);
-							   $output .= '<option value="'.$row['id'].'">'.$row['first_name'].' '.$row['last_name'].' - '.$departName['department_name'].' - '.$desigName['designation'].'</option>';
-							  }		  	  		
-				  	  	}else{
-						  	$output = '<option value="" disabled selected>No Designation</option></optgroup>';
-				  	  	}
-					 }
-			 	}else{
-				 	if($this->input->post('dept_id')=='' or $this->input->post('emp_id')=='') {
-					   $output = '<option value="" disabled selected>Select Employee</option>';
-					  }else{
-					  	$q=$this->Employee_model->fetch_empname_by_depart($this->input->post('dept_id'));
-					  	if($q->num_rows()>0)
-				  	  	{
-						  	$output = '<option value="" disabled selected>Select Employee</option><optgroup label="Employee Name-Department-Designation">';
-						  	foreach($q->result_array() as $row)
-							  {
-							  	$empData=$this->Employee_model->get_employee_data_by_id($this->input->post('emp_id'));
-							  	$departName=$this->Employee_model->get_departname_data($row['department']);
-							  	$desigName=$this->Employee_model->get_design_data($row['designation']);
-							   $output .= '<option value="'.$row['id'].'" '.($row['id']==$empData['reporting_to']?'selected':'').'>'.$row['first_name'].' '.$row['last_name'].' - '.$departName['department_name'].' - '.$desigName['designation'].'</option>';
-							  }		  	  		
-				  	  	}else{
-						  	$output = '<option value="" disabled selected>No Designation</option></optgroup>';
-				  	  	}
-					 }
-			 	}
-			 	
-			  echo  $output;
-			 }
-
-		 function fetch_employee_name()
-		 {
-		  if($this->input->post('design_id')=='')
-		  {
-		  	$output ='<option value="" disabled selected>Select Employee</option>';
-		  }
-		  else{
-		  	 $q=$this->Employee_model->fetch_employee_name($this->input->post('design_id'));
-		  	  if($q->num_rows()>0)
-		  	  {
-		  	  	  $output = '<option value="" disabled selected>Select Employee</option><option value="all">All</option>';
-		 		 foreach($q->result() as $row)
-				  {
-			  		 $output .= '<option value="'.$row->id.'">'.$row->first_name.' '.$row->last_name.'</option>';
-			 	 }
-			 	}else{
-			 		$output = '<option value="" disabled selected>No Employee</option>';
-			 	}
-		 
-		  }	
-		  echo  $output;
-		 }
+			$add = $this->Employee_model->save_data($data);
+			if ($add) {
+				$this->session->set_flashdata('success', "Employee added successfully!");
+			}
+		} else {
+			$this->session->set_flashdata('danger', "Employee ID is Present");
+		}
+		redirect(base_url() . 'admin/Employee/employee_view');
+	}
 
 
-	
+
+	public function edit_employee_page()
+	{
+
+		// echo "<pre>";
+		// print_r($_POST); exit;
+		$id = $this->uri->segment(4);
+		$con = array('id' => $id);
+		if ($_POST) {
+			$data['first_name'] = $this->input->post('first_name');
+			$data['last_name'] = $this->input->post('last_name');
+			$data['product_id'] = $this->input->post('pro_id');
+			$data['employee_id'] = $this->input->post('employee_id');
+			$data['mobile'] = $this->input->post('mobile');
+			$data['date_of_birth'] = $this->input->post('date_of_birth');
+			$data['gender'] = $this->input->post('gender');
+			//$data['email']=$this->input->post('email');
+			//$data['password']=$this->input->post('password');
+			$data['department'] = $this->input->post('department');
+			$data['designation'] = $this->input->post('designation');
+			$data['reporting_to'] = $this->input->post('reporting_to');
+			$data['date_of_hire'] = $this->input->post('date_of_hire');
+			$data['source_of_hire'] = $this->input->post('source_of_hire');
+			$data['emp_status'] = $this->input->post('emp_status');
+			$data['work_phone_no'] = $this->input->post('work_phone_no');
+			$data['emp_type'] = $this->input->post('emp_type');
+			$data['address1'] = $this->input->post('address1');
+			$data['address2'] = $this->input->post('address2');
+			$data['country'] = $this->input->post('country');
+			$data['state'] = $this->input->post('state');
+			$data['city'] = $this->input->post('city');
+			$data['postal_code'] = $this->input->post('postal_code');
+			$data['other_mobile'] = $this->input->post('other_mobile');
+			$data['other_email'] = $this->input->post('other_email');
+			$data['nationality'] = $this->input->post('nationality');
+			$data['marital_status'] = $this->input->post('marital_status');
+			$data['driving_license'] = $this->input->post('driving_license');
+			$data['hobbies'] = $this->input->post('hobbies');
+			$data['basic_salary'] = $this->input->post('basic_salary');
+			$data['pf_emp'] = $this->input->post('pf_emp');
+			$data['pf_cmp'] = $this->input->post('pf_cmp');
+			$data['esic_emp'] = $this->input->post('esic_emp');
+			$data['esic_cmp'] = $this->input->post('esic_cmp');
+			$data['cut_from'] = $this->input->post('cut_from');
+			$data['account_holder_name'] = $this->input->post('account_holder_name');
+			$data['hra'] = $this->input->post('hra');
+			$data['account_no'] = $this->input->post('account_no');
+			$data['medical_allownce'] = $this->input->post('medical_allownce');
+			$data['bank_name'] = $this->input->post('bank_name');
+			$data['fooding_allowance'] = $this->input->post('fooding_allowance');
+			$data['transbortation_allowance'] = $this->input->post('transbortation_allowance');
+			$data['accomodation'] = $this->input->post('accomodation');
+			$data['branch'] = $this->input->post('branch');
+			$data['total_salary'] = $this->input->post('total_salary');
+			$data['employee_type'] = $this->input->post('employee_type');
+			$data['emp_store_name'] = $this->input->post('emp_store_name');
+			$data['pf_ac'] = $this->input->post('pf_ac');
+			$data['esic_ac'] = $this->input->post('esic_ac');
+			if (!empty($_FILES['image']['name'])) {
+				if ($_FILES["image"]["name"] == "") {
+					$this->data['status']  = "false";
+					$this->data['message'] = "Please Enter Your File Name";
+				} else {
+					//Check whether user upload picture
+					if (!empty($_FILES['image']['name'])) {
+
+						$config['upload_path'] = 'upload/employee/';
+						$config['overwrite'] = true;
+						$config['allowed_types'] = '*';
+						$config['max_size'] = '20000';
+						$config['remove_spaces'] = true;
+						$config['encrypt_name'] = true;
+						$this->upload->initialize($config);
+						if ($this->upload->do_upload('image')) {
+							$filedata = $this->upload->data();
+							$data['image'] = $filedata['file_name'];
+						}
+
+						// $config['upload_path'] = './upload/employee';
+						// $config['allowed_types'] = 'jpg|jpeg|gif|png|PNG';
+						// $config['max_size']    = '100000';
+						// $config['remove_spaces'] = FALSE;
+						// $config['file_name'] =$_FILES['image']['name'];
+
+						// //Load upload library and initialize configuration
+						// $this->load->library('upload',$config);
+						// $this->upload->initialize($config);
+
+						if ($this->upload->do_upload('image')) {
+							$uploadData = $this->upload->data();
+							//$filename = './assets/uploads/gallery/';
+							$image = $uploadData['file_name'];
+						} else {
+							$image = '';
+						}
+					} else {
+						$image = '';
+					}
+				}
+			}
+			if (!empty($image)) {
+				$data['image'] = $filedata['file_name'];
+			}
+
+			$update = $this->Employee_model->update_data('table_employee', $con, $data);
+
+			if ($update) {
+				$this->session->set_flashdata('msg', "<div style='color:green;'>Employee Data Updated Successfully!!!</div>");
+				$this->session->set_flashdata('class', 'green_msg');
+				redirect(base_url() . 'admin/Employee/employee_view');
+			}
+		}
+
+		redirect(base_url() . 'admin/Employee/employee_view');
+	}
+
+	function fetch_designation()
+	{
+		if ($this->input->post('dept_id') == '') {
+			$output = '<option value="" disabled selected>Select Designation</option>';
+		} else {
+			$q = $this->Employee_model->fetch_designation_name($this->input->post('dept_id'));
+			if ($q->num_rows() > 0) {
+				$output = '<option value="" disabled selected>Select Designation</option><option value="all">All</option>';
+				foreach ($q->result() as $row) {
+					$output .= '<option value="' . $row->id . '">' . $row->designation . '</option>';
+				}
+			} else {
+				$output = '<option value="" disabled selected>No Designation</option>';
+			}
+		}
+		echo  $output;
+	}
+
+	function fetch_depart_employee()
+	{
+		if ($this->input->post('dept_id') == '') {
+			$output = '<option value="" disabled selected>Select Employee</option>';
+		} else {
+			$q = $this->Employee_model->fetch_empname_by_depart($this->input->post('dept_id'));
+
+			if ($q->num_rows() > 0) {
+				$output = '<option value="" disabled selected>Select Employee</option><option value="all">All</option><optgroup label="">';
+				foreach ($q->result_array() as $row) {
+					$departName = $this->Employee_model->get_departname_data($row['department']);
+					$desigName = $this->Employee_model->get_design_data($row['designation']);
+					$output .= '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . '-' . $departName['department_name'] . '-' . $desigName['designation'] . '</option>';
+				}
+			} else {
+				$output = '<option value="" disabled selected>No Designation</option></optgroup>';
+			}
+		}
+		echo  $output;
+	}
+
+
+	function fetch_depart_report_employee()
+	{
+		$output = '';
+		if ($this->input->post('emp_id') == '') {
+			if ($this->input->post('dept_id') == '') {
+				$output = '<option value="" disabled selected>Select Employee</option>';
+			} else {
+				$q = $this->Employee_model->fetch_empname_by_depart($this->input->post('dept_id'));
+				if ($q->num_rows() > 0) {
+					$output = '<option value="" disabled selected>Select Employee</option><optgroup label="Employee Name-Department-Designation">';
+					foreach ($q->result_array() as $row) {
+						$departName = $this->Employee_model->get_departname_data($row['department']);
+						$desigName = $this->Employee_model->get_design_data($row['designation']);
+						$output .= '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . ' - ' . $departName['department_name'] . ' - ' . $desigName['designation'] . '</option>';
+					}
+				} else {
+					$output = '<option value="" disabled selected>No Designation</option></optgroup>';
+				}
+			}
+		} else {
+			if ($this->input->post('dept_id') == '' or $this->input->post('emp_id') == '') {
+				$output = '<option value="" disabled selected>Select Employee</option>';
+			} else {
+				$q = $this->Employee_model->fetch_empname_by_depart($this->input->post('dept_id'));
+				if ($q->num_rows() > 0) {
+					$output = '<option value="" disabled selected>Select Employee</option><optgroup label="Employee Name-Department-Designation">';
+					foreach ($q->result_array() as $row) {
+						$empData = $this->Employee_model->get_employee_data_by_id($this->input->post('emp_id'));
+						$departName = $this->Employee_model->get_departname_data($row['department']);
+						$desigName = $this->Employee_model->get_design_data($row['designation']);
+						$output .= '<option value="' . $row['id'] . '" ' . ($row['id'] == $empData['reporting_to'] ? 'selected' : '') . '>' . $row['first_name'] . ' ' . $row['last_name'] . ' - ' . $departName['department_name'] . ' - ' . $desigName['designation'] . '</option>';
+					}
+				} else {
+					$output = '<option value="" disabled selected>No Designation</option></optgroup>';
+				}
+			}
+		}
+
+		echo  $output;
+	}
+
+	function fetch_employee_name()
+	{
+		if ($this->input->post('design_id') == '') {
+			$output = '<option value="" disabled selected>Select Employee</option>';
+		} else {
+			$q = $this->Employee_model->fetch_employee_name($this->input->post('design_id'));
+			if ($q->num_rows() > 0) {
+				$output = '<option value="" disabled selected>Select Employee</option><option value="all">All</option>';
+				foreach ($q->result() as $row) {
+					$output .= '<option value="' . $row->id . '">' . $row->first_name . ' ' . $row->last_name . '</option>';
+				}
+			} else {
+				$output = '<option value="" disabled selected>No Employee</option>';
+			}
+		}
+		echo  $output;
+	}
+
+
+
 	function delete_employee($cid)
 	{
-		$data=array();
+		$data = array();
 		$this->Employee_model->delete_data($cid);
-		$this->session->set_userdata('msg',"<div style='color:green;'>Employee deleted successfully</div>");
-		$this->session->set_userdata('class','green_msg');
-		redirect(base_url().'admin/Employee/employee_view');
+		$this->session->set_userdata('msg', "<div style='color:green;'>Employee deleted successfully</div>");
+		$this->session->set_userdata('class', 'green_msg');
+		redirect(base_url() . 'admin/Employee/employee_view');
 	}
-	 function employee_id_exist(){
-	 	if($this->Employee_model->is_employee_id_exist($_POST['employee_id'])==false){
-	 		echo"<i class='fa fa-check-square text-success' style='font-size:18px;'></i>";
-	 	}
-	 	else{
-	 		echo"<i class='fa fa-close text-danger' style='font-size:18px'></i>";
-	 	}
-	 }
+	function employee_id_exist()
+	{
+		if ($this->Employee_model->is_employee_id_exist($_POST['employee_id']) == false) {
+			echo "<i class='fa fa-check-square text-success' style='font-size:18px;'></i>";
+		} else {
+			echo "<i class='fa fa-close text-danger' style='font-size:18px'></i>";
+		}
+	}
 
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect(base_url().'admin/main');
+		redirect(base_url() . 'admin/main');
 	}
-		// payslip 
-		public function pay_slips()	
-		{	
-			$this->data['page'] = 'Employee'; 
-			$this->data['sub_page']='pay_slips';
-			$this->data['employee']=$this->Employee_model->get_employee_data();
-			$this->data['department']=$this->Employee_model->get_data_array('tbl_department');
-			$this->data['designation']=$this->Employee_model->get_data_array('tbl_designation');
-			$this->data['store']=$this->Store->getAllStores();
-			$this->load->view('admin/include/header',$this->data);
-			$this->load->view('admin/include/sidebar',$this->data);		
-			$this->load->view('admin/Employee/pay_slips',$this->data);
-			//$this->load->view('admin/include/footer',$this->data); 
-			
-		}
+	// payslip 
+	public function pay_slips()
+	{
+		$this->data['page'] = 'Employee';
+		$this->data['sub_page'] = 'pay_slips';
+		$this->data['employee'] = $this->Employee_model->get_employee_data();
+		$this->data['department'] = $this->Employee_model->get_data_array('tbl_department');
+		$this->data['designation'] = $this->Employee_model->get_data_array('tbl_designation');
+		$this->data['store'] = $this->Store->getAllStores();
+		$this->load->view('admin/include/header', $this->data);
+		$this->load->view('admin/include/sidebar', $this->data);
+		$this->load->view('admin/Employee/pay_slips', $this->data);
+		//$this->load->view('admin/include/footer',$this->data); 
 
-      public function show_payslip()
-            {   
-               $output='';
-                 $data=$this->attendance->get_leave_report_data($_POST['employee_id'],$_POST['year'],$_POST['month']);
-                 $output .= '<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+	}
+
+	public function show_payslip()
+	{
+		$output = '';
+		$data = $this->attendance->get_leave_report_data($_POST['employee_id'], $_POST['year'], $_POST['month']);
+		$output .= '<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                   <thead>
                   <tr>
                   <th class="text-nowrap">S No</th>
@@ -455,33 +419,32 @@ class Employee extends CI_Controller {
                   </tr>
                   </thead>
                   <tbody>';
-                  $cnt = 1;
-                        foreach($data as $row)
-                         {
-                          $employee = $this->Employee_model->get_employee_by_id($row['emp_id']);
-                          $output .= '
+		$cnt = 1;
+		foreach ($data as $row) {
+			$employee = $this->Employee_model->get_employee_by_id($row['emp_id']);
+			$output .= '
                         <tr>
-                        <td>'.$cnt++.'</td>
-                        <td>'.$row['attendance_date'].'</td>
-                        <td>'.$employee['first_name'].' '.$employee['first_name'].'</td>
-                        <td><p>'.$row['comment'].'</p></td>
+                        <td>' . $cnt++ . '</td>
+                        <td>' . $row['attendance_date'] . '</td>
+                        <td>' . $employee['first_name'] . ' ' . $employee['first_name'] . '</td>
+                        <td><p>' . $row['comment'] . '</p></td>
                         </tr>';
-                         }
-                  $output .= '</tbody></table>';
-                        echo $output;
-        }
+		}
+		$output .= '</tbody></table>';
+		echo $output;
+	}
 
-        public function show_payslip_view()
-            {   
-            	$date=$_POST['year']."-".$_POST['month']."-01";
-				$startDate=date("Y-m-01", strtotime($date));
-				$endDate=date("Y-m-t", strtotime($date));
-               	$output='';
-              
-                 $emp_data=$this->Employee_model->get_employee_by_id($_POST['store_id'],$_POST['employee_id'],$_POST['department_id'],$_POST['designation_id']); 
-                 $workdays=$this->Employee_model->get_working_days($startDate,$endDate); //count working days
-                  $calender_data=$this->Employee_model->get_calender_data($_POST['month'],$_POST['year']);
-                 $output .= '
+	public function show_payslip_view()
+	{
+		$date = $_POST['year'] . "-" . $_POST['month'] . "-01";
+		$startDate = date("Y-m-01", strtotime($date));
+		$endDate = date("Y-m-t", strtotime($date));
+		$output = '';
+
+		$emp_data = $this->Employee_model->get_employee_by_id($_POST['store_id'], $_POST['employee_id'], $_POST['department_id'], $_POST['designation_id']);
+		$workdays = $this->Employee_model->get_working_days($startDate, $endDate); //count working days
+		$calender_data = $this->Employee_model->get_calender_data($_POST['month'], $_POST['year']);
+		$output .= '
 							<table id="data-table-buttons" class="table table-striped table-bordered  table-td-valign-middle">
 								<thead>
 									<tr>
@@ -515,56 +478,55 @@ class Employee extends CI_Controller {
 									</tr>
 								</thead>
 								<tbody>';
-                  $cnt = 1;
-                  $sum_pf_cmp=$sum_esic_cmp=$sum_gross_salary=0;
-                        foreach($emp_data as $row)
-                         {
-                       		$presentdays=$this->Employee_model->get_present_days($row['id'],$startDate,$endDate); //count present days 
-                       		$absentdays=$this->Employee_model->get_absent_days($row['id'],$startDate,$endDate); //count absent days 
-                       		$leavedays=$this->Employee_model->get_leave_days($row['id'],$startDate,$endDate); 
-                       		$department=$this->Employee_model->get_departname_data($row['department']); 
-                       		$designation=$this->Employee_model->get_design_data($row['designation']);
-	                         $cut_from = $row['cut_from']; 
-	                         $pf_emp = (intval($row[$cut_from])*intval($row['pf_emp'])*(0.01));
-	                         $pf_cmp = (intval($row[$cut_from])*intval($row['pf_cmp'])*(0.01));
-	                         $esic_emp = (intval($row[$cut_from])*intval($row['esic_emp'])*(0.01));
-	                         $esic_cmp = (intval($row[$cut_from])*intval($row['esic_cmp'])*(0.01));
-	                         $net_salary=intval($row['total_salary'])-($pf_emp+$esic_emp);
-	                          $pf_esic_cut_from=($row['cut_from']=='basic_salary')?'Basic Salary':'Gross Salary';
-	                          $sum_pf_cmp=$sum_pf_cmp+$pf_cmp;
-	                          $sum_esic_cmp=$sum_esic_cmp+$esic_cmp;
-	                          $sum_gross_salary=$sum_gross_salary+intval($row['total_salary']);
-	                         $output .= '<tr>
-											<td>'.$cnt++.'</td>
-											<td>'.$row['first_name'].' '.$row['last_name'].'</td>
-											<td>'.$row['employee_id'].'</td>
-											<td>'.$department['department_name'].'</td>
-											<td>'.$designation['designation'].'</td>
-											<td>'.$calender_data['total_work_days'].'</td>
-											<td>'.$calender_data['paid_leavs'].'</td>
-											<td>'.$presentdays['present_day'].'</td>
-											<td>'.$absentdays['absent_day'].'</td>
-											<td>'.$leavedays['leave_day'].'</td>
-											<td>₹&nbsp;'.$row['basic_salary'].'</td>
-											<td>₹&nbsp;'.$row['hra'].'</td>
-											<td>₹&nbsp;'.$row['fooding_allowance'].'</td>
-											<td>₹&nbsp;'.$row['transbortation_allowance'].'</td>
-											<td>₹&nbsp;'.$row['medical_allownce'].'</td>
-											<td>₹&nbsp;'.$row['mobile_allowance'].'</td>
-											<td>₹&nbsp;'.$row['accomodation'].'</td>
-											<td>'.$row['pf_ac'].'</td>
-											<td>'.$row['esic_ac'].'</td>
-											<td>₹&nbsp;'.$pf_emp.'</td>
-											<td>₹&nbsp;'.$pf_cmp.'</td>
-											<td>₹&nbsp;'.$esic_emp.'</td>
-											<td>₹&nbsp;'.$esic_cmp.'</td>
-											<td>'.$pf_esic_cut_from.'</td>
-											<td>₹&nbsp;'.intval($row['total_salary']).'</td>
-											<td>₹&nbsp;'.$net_salary.'</td>
-											<td><a href="'.base_url().'admin/Employee/single_payslip?eid='.$row['id'].'&month='.$_POST['month'].'&year='.$_POST['year'].'" class="btn btn-sm btn-warning" target="_blank">Show</a></td>
+		$cnt = 1;
+		$sum_pf_cmp = $sum_esic_cmp = $sum_gross_salary = 0;
+		foreach ($emp_data as $row) {
+			$presentdays = $this->Employee_model->get_present_days($row['id'], $startDate, $endDate); //count present days 
+			$absentdays = $this->Employee_model->get_absent_days($row['id'], $startDate, $endDate); //count absent days 
+			$leavedays = $this->Employee_model->get_leave_days($row['id'], $startDate, $endDate);
+			$department = $this->Employee_model->get_departname_data($row['department']);
+			$designation = $this->Employee_model->get_design_data($row['designation']);
+			$cut_from = $row['cut_from'];
+			$pf_emp = (intval($row[$cut_from]) * intval($row['pf_emp']) * (0.01));
+			$pf_cmp = (intval($row[$cut_from]) * intval($row['pf_cmp']) * (0.01));
+			$esic_emp = (intval($row[$cut_from]) * intval($row['esic_emp']) * (0.01));
+			$esic_cmp = (intval($row[$cut_from]) * intval($row['esic_cmp']) * (0.01));
+			$net_salary = intval($row['total_salary']) - ($pf_emp + $esic_emp);
+			$pf_esic_cut_from = ($row['cut_from'] == 'basic_salary') ? 'Basic Salary' : 'Gross Salary';
+			$sum_pf_cmp = $sum_pf_cmp + $pf_cmp;
+			$sum_esic_cmp = $sum_esic_cmp + $esic_cmp;
+			$sum_gross_salary = $sum_gross_salary + intval($row['total_salary']);
+			$output .= '<tr>
+											<td>' . $cnt++ . '</td>
+											<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>
+											<td>' . $row['employee_id'] . '</td>
+											<td>' . $department['department_name'] . '</td>
+											<td>' . $designation['designation'] . '</td>
+											<td>' . $calender_data['total_work_days'] . '</td>
+											<td>' . $calender_data['paid_leavs'] . '</td>
+											<td>' . $presentdays['present_day'] . '</td>
+											<td>' . $absentdays['absent_day'] . '</td>
+											<td>' . $leavedays['leave_day'] . '</td>
+											<td>₹&nbsp;' . $row['basic_salary'] . '</td>
+											<td>₹&nbsp;' . $row['hra'] . '</td>
+											<td>₹&nbsp;' . $row['fooding_allowance'] . '</td>
+											<td>₹&nbsp;' . $row['transbortation_allowance'] . '</td>
+											<td>₹&nbsp;' . $row['medical_allownce'] . '</td>
+											<td>₹&nbsp;' . $row['mobile_allowance'] . '</td>
+											<td>₹&nbsp;' . $row['accomodation'] . '</td>
+											<td>' . $row['pf_ac'] . '</td>
+											<td>' . $row['esic_ac'] . '</td>
+											<td>₹&nbsp;' . $pf_emp . '</td>
+											<td>₹&nbsp;' . $pf_cmp . '</td>
+											<td>₹&nbsp;' . $esic_emp . '</td>
+											<td>₹&nbsp;' . $esic_cmp . '</td>
+											<td>' . $pf_esic_cut_from . '</td>
+											<td>₹&nbsp;' . intval($row['total_salary']) . '</td>
+											<td>₹&nbsp;' . $net_salary . '</td>
+											<td><a href="' . base_url() . 'admin/Employee/single_payslip?eid=' . $row['id'] . '&month=' . $_POST['month'] . '&year=' . $_POST['year'] . '" class="btn btn-sm btn-warning" target="_blank">Show</a></td>
 	                        			</tr>';
-                         }
-                  $output .= '	</tbody>
+		}
+		$output .= '	</tbody>
 								<tfoot>
 								<tr>
 									<th></th>
@@ -587,114 +549,109 @@ class Employee extends CI_Controller {
 									<th></th>
 									<th></th>
 									<th>Total :- </th>
-									<th>₹&nbsp;'.$sum_pf_cmp.'</th>
+									<th>₹&nbsp;' . $sum_pf_cmp . '</th>
 									<th></th>
-									<th>₹&nbsp;'.$sum_esic_cmp.'</th>
+									<th>₹&nbsp;' . $sum_esic_cmp . '</th>
 									<th></th>
-									<th>₹&nbsp;'.$sum_gross_salary.'</th>
+									<th>₹&nbsp;' . $sum_gross_salary . '</th>
 									<th></th>
 								</tr>
 								</tfoot>
 								</table>
                   ';
-                  echo $output;
-        }
-	
-        // get academic calender input table
+		echo $output;
+	}
+
+	// get academic calender input table
 
 
-     public function single_payslip()
-			{
-
-				$eid=$_GET['eid'];
-				$date=$_GET['year']."-".$_GET['month']."-01";
-				$startDate=date("Y-m-01", strtotime($date));
-				$endDate=date("Y-m-t", strtotime($date));
-				$this->data['employee']=$this->Employee_model->get_employee_by_id($_GET['eid'],'all','all');
-				$this->load->view('admin/Employee/single_payslip',$this->data);
-
-			}
-   
-
-
-
-
-			public function fetchAllEmployeeData()
+	public function single_payslip()
 	{
-			$employee=$this->Employee_model->getEmployeeDataByStoreName($_POST['status']);
-			
-		    ?>
-			<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+
+		$eid = $_GET['eid'];
+		$date = $_GET['year'] . "-" . $_GET['month'] . "-01";
+		$startDate = date("Y-m-01", strtotime($date));
+		$endDate = date("Y-m-t", strtotime($date));
+		$this->data['employee'] = $this->Employee_model->get_employee_by_id($_GET['eid'], 'all', 'all');
+		$this->load->view('admin/Employee/single_payslip', $this->data);
+	}
+
+
+
+
+
+	public function fetchAllEmployeeData()
+	{
+		$employee = $this->Employee_model->getEmployeeDataByStoreName($_POST['status']);
+
+?>
+		<table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
 			<thead>
-			<tr>
-			 <th class="text-nowrap">S NO</th>
-			 <th class="text-nowrap">Full Name</th>
-			 <th class="text-nowrap">Employee ID</th>
-			 <th class="text-nowrap">Department</th>
-			 <th class="text-nowrap">Designation</th>
-			 <th class="text-nowrap">Product Name</th>
-			 <!-- <th class="text-nowrap">Date Of Hire</th> -->
-			 <th class="text-nowrap">City</th>
-			 <th class="text-nowrap">Status</th>
-			 <th class="text-nowrap">Image</th>
-			 <th class="text-nowrap">Action</th>
-			</tr>
+				<tr>
+					<th class="text-nowrap">S NO</th>
+					<th class="text-nowrap">Full Name</th>
+					<th class="text-nowrap">Employee ID</th>
+					<th class="text-nowrap">Department</th>
+					<th class="text-nowrap">Designation</th>
+					<th class="text-nowrap">Product Name</th>
+					<!-- <th class="text-nowrap">Date Of Hire</th> -->
+					<th class="text-nowrap">City</th>
+					<th class="text-nowrap">Status</th>
+					<th class="text-nowrap">Image</th>
+					<th class="text-nowrap">Action</th>
+				</tr>
 			</thead>
-			<tbody>	
-		<?php
-    $sno = 1;
-    if(!empty($employee))
-    {
-	    foreach($employee as $row)
-	    {
-	          $department = $this->dm->get_department_by_id($row['department']);
-	          $designation = $this->designation->get_designation_by_id($row['designation']);
-			   $p_id = $this->pm->getProById($row['product_id']);
-			   
+			<tbody>
+				<?php
+				$sno = 1;
+				if (!empty($employee)) {
+					foreach ($employee as $row) {
+						$department = $this->dm->get_department_by_id($row['department']);
+						$designation = $this->designation->get_designation_by_id($row['designation']);
+						$p_id = $this->pm->getProById($row['product_id']);
 
-    ?>  
 
-        <tr>
-                      <td><?php echo $sno++; ?></td>
-                      <td><?php echo $row['first_name'] .' '. $row['last_name']; ?></td>
-                      <td><?php echo $row['employee_id']; ?></td>
-                      <td><?php echo $department['department_name']; ?></td>
-                      <td><?php echo $designation['designation']; ?></td>
-					  <td><?php echo $p_id->p_type; ?></td>
-                      <!-- <td><?php //echo $row['date_of_hire']; ?></td> -->
-                      <td><?php echo $row['city']; ?></td>
-                      <td><?php echo $row['emp_status']; ?></td>
-                     <td><img src="../../upload/employee/<?=$row['image'];?>" height="50px" width="50px"/></td>
-                      <td>
-                      <a rel="tooltip" title="Edit" class="btn btn-link btn-sm btn-warning table-action edit" href="edit_employee/<?php echo $row['id'];?>">
-                      <i class="fa fa-edit"></i>
-                      </a> <br>
-                      <?php if($row['emp_status']=='Active'){?>
-                      <a rel="tooltip" title="Remove" class="btn btn-link btn-sm btn-danger table-action remove" onClick="return confirm('Are you sure you want to delete?')" href="delete_employee/<?php echo $row['id'];?>">
-                                             <i class="fa fa-trash"></i>            
-                       </a>
-                   <?php } ?>
-                      </td>
-                  
-                      </tr>
+				?>
 
-                      <?php
-                        } 
-                    }
-                    else
-                    {
-                    ?>
-                    <tr><td colspan="10"><center><strong>NO RECORD FOUND</strong></center></td></tr>
-                    <?php
-                    }
-                    ?>
+						<tr>
+							<td><?php echo $sno++; ?></td>
+							<td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
+							<td><?php echo $row['employee_id']; ?></td>
+							<td><?php echo $department['department_name']; ?></td>
+							<td><?php echo $designation['designation']; ?></td>
+							<td><?php echo $p_id->p_type; ?></td>
+							<!-- <td><?php //echo $row['date_of_hire']; 
+										?></td> -->
+							<td><?php echo $row['city']; ?></td>
+							<td><?php echo $row['emp_status']; ?></td>
+							<td><img src="../../upload/employee/<?= $row['image']; ?>" height="50px" width="50px" /></td>
+							<td>
+								<a rel="tooltip" title="Edit" class="btn btn-link btn-sm btn-warning table-action edit" href="edit_employee/<?php echo $row['id']; ?>">
+									<i class="fa fa-edit"></i>
+								</a> <br>
+								<?php if ($row['emp_status'] == 'Active') { ?>
+									<a rel="tooltip" title="Remove" class="btn btn-link btn-sm btn-danger table-action remove" onClick="return confirm('Are you sure you want to delete?')" href="delete_employee/<?php echo $row['id']; ?>">
+										<i class="fa fa-trash"></i>
+									</a>
+								<?php } ?>
+							</td>
 
-          </tbody>
-          </table>
-	<?php }
+						</tr>
 
+					<?php
+					}
+				} else {
+					?>
+					<tr>
+						<td colspan="10">
+							<center><strong>NO RECORD FOUND</strong></center>
+						</td>
+					</tr>
+				<?php
+				}
+				?>
+
+			</tbody>
+		</table>
+<?php }
 }
-
-
-	
-
