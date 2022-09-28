@@ -22,6 +22,36 @@
                                 </select>
                                 </div>
                             </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for=""><strong>Product Name:</strong></label>
+                                    <select class="form-control" name="pro_id">
+                                        <option value="" selected="" disabled="">Select Product Name</option>
+                                        <?php
+                                               
+                                               if(!empty($Product))
+                                               { 
+                                                   foreach($Product as $value)
+                                                   {
+                                               ?>
+                                               <option value="<?php echo $value['pro_id']; ?>" <?php echo ($value['pro_id']==$employee_item['product_id'])?'selected':'';?>><?php echo $value['p_type']; ?></option>
+                                               <?php
+                                                       }
+                                                   }
+                                                   else{
+                                                       ?>
+                                                   <option value="">No Data</option>
+                                                <?php 
+                                                   }
+                                               ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
                               
                         </div>
                     </div>
@@ -489,8 +519,7 @@
                                     <div class="col-md-4">
                                         <div id="response" class="form-group">
                                             <label for="image"><strong>Profile Image:</strong></label>
-                                            <!--<span class="input-group-addon"><i class="fa fa-edit" aria-hidden="true"></i></span>-->
-											<img src="<?php echo base_url();?>upload/employee/<?php echo $employee_item['image']; ?>"  style="width:80px;height:80px;" />
+											<img src="<?php echo base_url() ?>upload/employee/<?=$employee_item['image'];?>"  style="width:80px;height:80px;" />
                                              <input class="form-control" name="image" value="<?php echo $employee_item['image'] ?>" id="image" type="file" selected>
                                         </div>
                                     </div>

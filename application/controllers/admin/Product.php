@@ -19,7 +19,6 @@ class Product extends CI_Controller
     $this->load->model('Pro_process_model', 'ppm');
     $this->load->model('Prod_order_model', 'pom');
     $this->load->model('Settings_model', 'Setting');
-
     $this->load->model('Product_specification_model', 'psm');
 
     $this->load->library('session');

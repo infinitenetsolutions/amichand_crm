@@ -31,7 +31,7 @@
                              <div class="col-md-4">
                                 <div class="form-group">
                                     <label for=""><strong>Product Name:</strong></label>
-                                    <select class="form-control" name="product_name" id="" style="" required="">
+                                    <select class="form-control" name="pro_id" id="" style="" required="">
                                         <option value="" selected="" disabled="">Select Product Name</option>
                                         <?php
                                             foreach ($Product as $sRow) { 

@@ -44,6 +44,8 @@ class Employee extends CI_Controller {
 		$this->data['employee_item']=$this->Employee_model->get_employee_by_id_edit($id);
 		$this->data['department']=$this->Employee_model->get_data_array('tbl_department');
 		$this->data['designation']=$this->Employee_model->get_data_array('tbl_designation');
+		$this->data['Product'] = $this->pm->getAllProductsData();
+
 		$this->load->view('admin/include/header',$this->data);
 		$this->load->view('admin/include/sidebar',$this->data);
 		$this->load->view('admin/employee/edit_employee',$this->data);
@@ -62,31 +64,36 @@ class Employee extends CI_Controller {
 	}
 		
 	function add_employee()
-	{		
-		print_r($_FILES);
+	{	
+		
+		// echo "<pre>";	
+		//   print_r($_FILES);
+        //   exit();
+	// 	  if (isset($_FILES['image']) && $_FILES['image']['name'] != ''){
+	// 		$postData['image'] = $this->upload_file('image');
+	//    }  
+   
 		if($this->Employee_model->is_employee_id_exist($this->input->post('employee_id'))==false){
 
 			        //$config['upload_path'] = base_url().'upload/employee';
-					$config['upload_path'] = base_url(). 'assets/upload/employee';
-
-					$config['overwrite']=TRUE;
-					$config['allowed_types'] = 'jpg|jpeg|gif|png|PNG';
-					$config['max_size']    = '20000';
-					$config['remove_spaces'] = FALSE;
-
-                    $this->load->library('upload');
-                    $this->upload->initialize($config);
-					$this->upload->do_upload('image');
-					$file_name = $this->upload->data();
-					
-					$new_name = $_FILES['image']['name'];
-					$config['image'] = $new_name;
+					$config['upload_path'] = 'upload/employee/';
+					$config['overwrite'] = true;
+					$config['allowed_types'] = '*';
+					$config['max_size'] = '20000';
+					$config['remove_spaces'] = true;
+					$config['encrypt_name'] = true;
+					$this->upload->initialize($config);
+					if($this->upload->do_upload('image'))
+					{
+						$filedata = $this->upload->data();
+						$data['image'] = $filedata['file_name'];
+					}
 		    		
-					echo "<pre>";
-					print_r($config);
+					
 					$data = array(
 					'first_name' => $this->input->post('first_name'),
 					'last_name' => $this->input->post('last_name'),
+					'product_id' => $this->input->post('pro_id'),
 					'employee_id' => $this->input->post('employee_id'),
 					'mobile' => $this->input->post('mobile'),
 					'date_of_birth' => $this->input->post('date_of_birth'),
@@ -128,7 +135,7 @@ class Employee extends CI_Controller {
 					'accomodation' => $this->input->post('accomodation'),
 					'branch' => $this->input->post('branch'),	
 					'total_salary' => $this->input->post('total_salary'),						
-					'image' => $new_name,
+					// 'image' => $new_name,
 					'employee_type' => $this->input->post('employee_type'),
 					//'emp_store_name' => $this->input->post('emp_store_name'),
 					'pf_ac' => $this->input->post('pf_ac'),	
@@ -156,13 +163,17 @@ class Employee extends CI_Controller {
 	
 	
 	public function edit_employee_page()
-	{		
+	{	
+		
+		// echo "<pre>";
+		// print_r($_POST); exit;
 		 $id=$this->uri->segment(4);
 	     $con=array('id'=>$id);	
 		if($_POST)
 		{           
         $data['first_name']=$this->input->post('first_name');
         $data['last_name']=$this->input->post('last_name');
+		$data['product_id'] = $this->input->post('pro_id');
 		$data['employee_id']=$this->input->post('employee_id');
 		$data['mobile']=$this->input->post('mobile');
 		$data['date_of_birth']=$this->input->post('date_of_birth');
@@ -211,21 +222,34 @@ class Employee extends CI_Controller {
 		$data['esic_ac']=$this->input->post('esic_ac');
          if (!empty($_FILES['image']['name'])) {
           if($_FILES["image"]["name"]==""){
-                //print_r("hello blanck");exit;
                  $this->data['status']  ="false";
                  $this->data['message'] ="Please Enter Your File Name";
                  }else{
             //Check whether user upload picture
             if(!empty($_FILES['image']['name'])){
-                $config['upload_path'] = './upload/employee';
-				$config['allowed_types'] = 'jpg|jpeg|gif|png|PNG';
-				$config['max_size']    = '100000';
-                $config['remove_spaces'] = FALSE;
-                $config['file_name'] =$_FILES['image']['name'];
+
+				$config['upload_path'] = 'upload/employee/';
+				$config['overwrite'] = true;
+				$config['allowed_types'] = '*';
+				$config['max_size'] = '20000';
+				$config['remove_spaces'] = true;
+				$config['encrypt_name'] = true;
+				$this->upload->initialize($config);
+				if($this->upload->do_upload('image'))
+				{
+					$filedata = $this->upload->data();
+					$data['image'] = $filedata['file_name'];
+				}
+
+                // $config['upload_path'] = './upload/employee';
+				// $config['allowed_types'] = 'jpg|jpeg|gif|png|PNG';
+				// $config['max_size']    = '100000';
+                // $config['remove_spaces'] = FALSE;
+                // $config['file_name'] =$_FILES['image']['name'];
                 
-                //Load upload library and initialize configuration
-                $this->load->library('upload',$config);
-                $this->upload->initialize($config);
+                // //Load upload library and initialize configuration
+                // $this->load->library('upload',$config);
+                // $this->upload->initialize($config);
                 
                 if($this->upload->do_upload('image')){
                     $uploadData = $this->upload->data();
@@ -240,7 +264,7 @@ class Employee extends CI_Controller {
             } } 
         }
         if(!empty($image)){
-            $data['image']=$image;
+            $data['image']=$filedata['file_name'];
         }
 	
 		 	 $update=$this->Employee_model->update_data('table_employee',$con,$data);
@@ -608,7 +632,8 @@ class Employee extends CI_Controller {
 			 <th class="text-nowrap">Employee ID</th>
 			 <th class="text-nowrap">Department</th>
 			 <th class="text-nowrap">Designation</th>
-			 <th class="text-nowrap">Date Of Hire</th>
+			 <th class="text-nowrap">Product Name</th>
+			 <!-- <th class="text-nowrap">Date Of Hire</th> -->
 			 <th class="text-nowrap">City</th>
 			 <th class="text-nowrap">Status</th>
 			 <th class="text-nowrap">Image</th>
@@ -624,6 +649,9 @@ class Employee extends CI_Controller {
 	    {
 	          $department = $this->dm->get_department_by_id($row['department']);
 	          $designation = $this->designation->get_designation_by_id($row['designation']);
+			   $p_id = $this->pm->getProById($row['product_id']);
+			   
+
     ?>  
 
         <tr>
@@ -632,14 +660,15 @@ class Employee extends CI_Controller {
                       <td><?php echo $row['employee_id']; ?></td>
                       <td><?php echo $department['department_name']; ?></td>
                       <td><?php echo $designation['designation']; ?></td>
-                      <td><?php echo $row['date_of_hire']; ?></td>
+					  <td><?php echo $p_id->p_type; ?></td>
+                      <!-- <td><?php //echo $row['date_of_hire']; ?></td> -->
                       <td><?php echo $row['city']; ?></td>
                       <td><?php echo $row['emp_status']; ?></td>
-                     <td><img src="<?php echo base_url(); ?>upload/employee/<?php echo $row['image']; ?>" height="50px" width="50px"/></td>
+                     <td><img src="../../upload/employee/<?=$row['image'];?>" height="50px" width="50px"/></td>
                       <td>
                       <a rel="tooltip" title="Edit" class="btn btn-link btn-sm btn-warning table-action edit" href="edit_employee/<?php echo $row['id'];?>">
                       <i class="fa fa-edit"></i>
-                      </a>
+                      </a> <br>
                       <?php if($row['emp_status']=='Active'){?>
                       <a rel="tooltip" title="Remove" class="btn btn-link btn-sm btn-danger table-action remove" onClick="return confirm('Are you sure you want to delete?')" href="delete_employee/<?php echo $row['id'];?>">
                                              <i class="fa fa-trash"></i>            
