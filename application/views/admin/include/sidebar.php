@@ -9,16 +9,17 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover" style="background:#fff;">
 						<center>
-						<?php  
-		$this->load->model('Settings_model', 'Setting');
+							<?php
+							$this->load->model('Settings_model', 'Setting');
 
-		$settingData = $this->Setting->getsettingdata(1); 
-		
-		?>
-						<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
+							$settingData = $this->Setting->getsettingdata(1);
+
+							?>
+							<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
     height: 80px;
     width: 185px;
-" />						</center>
+" />
+						</center>
 					</div>
 					<div class="image">
 
@@ -54,11 +55,11 @@
 				<a href="javascript:;"><b class="caret"></b><i class="fa fa-users"></i>
 					<span>Employee Management </span></a>
 				<ul class="sub-menu">
-				    <li <?= (@$sub_page == 'manage_department') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/department/department_view">Manage Department</a></li>
-					<li <?=(@$sub_page == 'manage_designation') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/designation/designation_view">Manage Designations</a></li>
+					<li <?= (@$sub_page == 'manage_department') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/department/department_view">Manage Department</a></li>
+					<li <?= (@$sub_page == 'manage_designation') ? 'active' : ''; ?>><a href="<?php echo base_url(); ?>admin/designation/designation_view">Manage Designations</a></li>
 					<li <?= (@$sub_page == "Add Employee" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/employee/add_employee_view">Add Employee</a></li>
 					<li <?= (@$sub_page == "Manage Employee" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/employee/employee_view">Manage Employees</a></li>
-					
+
 				</ul>
 			</li>
 
@@ -70,8 +71,20 @@
 					<li <?= (@$sub_page == "Manage Product Subcategory" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/product/manage_productsubcat">Manage Product Subcategory</a></li>
 					<li <?= (@$sub_page == "Manage Product" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/product/manage_product">Manage Product</a></li>
 				</ul>
-				
+
 			</li>
+
+
+			<li class="has-sub <?= (@$page == "Status" ? 'active' : '') ?>">
+			<a href="javascript:;"><b class="caret"></b><i class="fa fa-file"></i>
+					<span>Lead Status Management</span></a>
+				<ul class="sub-menu">
+					<li <?= (@$sub_page == "Manage Status" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/status/manage_status">Manage Status</a></li>
+				</ul>
+
+			</li>
+
+			
 		</ul>
 
 
