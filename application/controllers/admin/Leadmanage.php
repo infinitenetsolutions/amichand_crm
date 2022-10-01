@@ -35,7 +35,7 @@ class Leadmanage extends CI_Controller
         $this->load->model('Status_model','status');
         //$this->load->model('Payroll_model');
 
-        $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+        $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
     }
    
 
@@ -168,12 +168,14 @@ class Leadmanage extends CI_Controller
 
     function update_lead()
     {
+        //  echo "<pre>";
+        //  print_r($_POST); exit;
             $l_id=$this->input->post('l_id');
             $data=$this->input->post();
             unset($data['l_id']);
-            if($_POST['l_followup'] == ''){
-              $data['l_followup'] = NULL;
-            }
+            // if($_POST['l_followup'] == ''){
+            //   $data['l_followup'] = NULL;
+            // }
               $update = $this->Leadmanage->update_data($data,$l_id);
               if ($update) {
                   $data['status']=true;
@@ -218,11 +220,8 @@ class Leadmanage extends CI_Controller
          $output = "";
          $l_status = $this->input->post('l_status');
          $adv_id = $this->input->post('adv_id');
-         //$emp_id = $this->input->post('employee_id');
-        //  echo $l_status;
-        //  echo $adv_id;
-        // echo $emp_id;
-      
+        // echo "<pre>";
+        // print_r($l_status);
         $leadmanage_data = $this->Leadmanage->get_all_leads_by_status($l_status,$adv_id);
         // echo "<pre>";
         // print_r($leadmanage_data); exit;
@@ -386,9 +385,9 @@ class Leadmanage extends CI_Controller
                         <option value='SUCCESS' ".($leadmanage['l_status']=='SUCCESS'?'selected':'').">Success</option>
                         <option value='FAILED' ".($leadmanage['l_status']=='FAILED'?'selected':'').">Failed</option>";
                         
-                        //foreach ($Status as $sRow) {
-                         // echo "<option value=" . $sRow['sid'] . ">" . $sRow['status_name'] . "</option>";
-                        //} 
+                        foreach ($Status as $sRow) {
+                          $output .="<option value=" . $sRow['sid'] . ">" . $sRow['status_name'] . "</option>";
+                        } 
                         $output .=" </select>
                   </div>
                   <div class='form-group'>
@@ -406,15 +405,56 @@ class Leadmanage extends CI_Controller
                         </div>
                   </div>
 
+                  
                   <div id='response' class='form-group'>
-                     <label class='control-label'><strong>Next Follow up Date:</strong></label>
+                  <label class='control-label'><strong>Estimated Order Value:</strong></label>
+                   <div class='input-group'>
+                        <input type='text' class='form-control' name='est_ord_val' >
+                     </div>
+               </div>
+
+
+               
+               <div id='response' class='form-group'>
+               <label class='control-label'><strong>Real Order Value:</strong></label>
+                <div class='input-group'>
+                     <input type='text' class='form-control' name='real_ord_val' >
+                  </div>
+            </div>
+
+                  <div id='response' class='form-group'>
+                     <label class='control-label'><strong>PO No:</strong></label>
                       <div class='input-group'>
-                           <input type='text' class='form-control l_followup' name='l_followup' >
-                           <div class='input-group-addon'>
-                              <i class='fa fa-calendar'></i>
-                           </div>
+                           <input type='text' class='form-control' name='po_no' >
                         </div>
                   </div>
+
+
+                  <div id='response' class='form-group'>
+                     <label class='control-label'><strong>Amitech PO Ref.No:</strong></label>
+                      <div class='input-group'>
+                           <input type='text' class='form-control' name='ami_po' >
+                        </div>
+                  </div>
+
+                  <div id='response' class='form-group'>
+                  <label class='control-label'><strong>Quoted Price:</strong></label>
+                   <div class='input-group'>
+                        <input type='text' class='form-control' name='quoted_price' >
+                     </div>
+               </div>
+
+               <div id='response' class='form-group'>
+               <label class='control-label'><strong>Order Value:</strong></label>
+                <div class='input-group'>
+                     <input type='text' class='form-control' name='order_val' >
+                  </div>
+            </div>
+
+
+
+
+
                </div>
                 <button type='submit' class='btn btn-primary'>Save changes</button>
               </div>";

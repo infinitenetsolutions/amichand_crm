@@ -98,11 +98,11 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
 
 <script>
 $(document).ready(function () {
-  console.log('working');
+ // console.log('working');
   var tab_btn = $('#default_click').data('status');
-  console.log(tab_btn);
+ // console.log(tab_btn);
   var adv_id = <?php echo (!empty($_GET['i'])?$_GET['i']:'0');?>;
-  console.log(adv_id);
+  //console.log(adv_id);
   //var user_id = <?//=$this->session->userdata('user_id'); ?>;
  // var admin_id = <?//=$this->uri->segment(4); ?>
   // alert(tab_btn); alert(adv_id); alert(user_id);  
@@ -138,15 +138,14 @@ $(document).ready(function () {
 });
 
   $('.l_sts_btn').click(function(){
-    var tab_btn = $(this).data('status');
-   var adv_id = <?php echo (!empty($_GET['i'])?$_GET['i']:'0');?>;
-    var user_id = <?=$this->session->userdata('user_id'); ?>
+     var tab_btn = $(this).data('status');
+     var adv_id = <?php echo (!empty($_GET['i'])?$_GET['i']:'0');?>;
 
     $('.spinner_load').show();
       $.ajax({
         url:'<?php echo base_url();?>admin/leadmanage/fetch_all_lead_by_status',
         method: 'POST',
-        data: {"l_status": tab_btn,"adv_id": adv_id,"employee_id":user_id},
+        data: {"l_status": tab_btn,"adv_id": adv_id},
          success: function(response){
         $('.spinner_load').hide();
         $('#dataresultId').html(response);
