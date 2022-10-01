@@ -87,6 +87,13 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
 <div class="row">
    <div class="col-xl-12 mt-3">
       <ul class="nav nav-tabs">
+
+      <li class="nav-item">
+            <a id="default_click" href="#dataresultId" data-status = "PENDING"  data-toggle="tab" class="nav-link adv_sts_btn">
+            <span class="d-sm-none">Pending Advertisement</span>
+            <span class="d-sm-block d-none">Pending Advertisement</span>
+            </a>
+         </li>
        
          <li class="nav-item">
             <a href="#dataresultId"  data-status = "RUNNING" data-toggle="tab" class="nav-link adv_sts_btn active">
@@ -94,12 +101,7 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
             <span class="d-sm-block d-none">Running Advertisement</span>
             </a>
          </li>
-          <li class="nav-item">
-            <a id="default_click" href="#dataresultId" data-status = "PENDING"  data-toggle="tab" class="nav-link adv_sts_btn">
-            <span class="d-sm-none">Pending Advertisement</span>
-            <span class="d-sm-block d-none">Pending Advertisement</span>
-            </a>
-         </li>
+          
          <li class="nav-item">
             <a href="#dataresultId"  data-status = "COMPLETED" data-toggle="tab" class="nav-link adv_sts_btn">
             <span class="d-sm-none">Completed Advertisement</span>

@@ -19,17 +19,22 @@ class Status_model extends CI_Model {
 		  return true;
 				
 	  } 
+
+
+	  public function getAllStatusData(){
+		return $this->db->select('*')->from($this->table)->get()->result_array();
+	}
+
 	
-	
-	public function get_department_by_id($id = 0)
+	public function get_singledata_byId($id = 0)
     {
 		if ($id === 0)
 		{
-		$query = $this->db->get('tbl_department');
+		$query = $this->db->get($this->table);
 		return $query->result_array();
 		}
 
-		$query = $this->db->get_where('tbl_department', array('id' => $id));
+		$query = $this->db->get_where($this->table, array('sid' => $id));
 		return $query->row_array();
     }
 		

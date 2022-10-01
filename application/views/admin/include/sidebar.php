@@ -77,7 +77,7 @@
 
 			<li class="has-sub <?= (@$page == "Status" ? 'active' : '') ?>">
 			<a href="javascript:;"><b class="caret"></b><i class="fa fa-file"></i>
-					<span>Lead Status Management</span></a>
+					<span>Status Management</span></a>
 				<ul class="sub-menu">
 					<li <?= (@$sub_page == "Manage Status" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/status/manage_status">Manage Status</a></li>
 				</ul>

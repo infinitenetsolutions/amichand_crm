@@ -32,7 +32,8 @@ class Leadmanage extends CI_Controller
         $this->load->model('Product_model', 'pm');
         $this->load->model('Leadmanage_model','Leadmanage');
         $this->load->model('Employee_model','emp');
-        $this->load->model('Payroll_model');
+        $this->load->model('Status_model','status');
+        //$this->load->model('Payroll_model');
 
         $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
     }
@@ -44,6 +45,9 @@ class Leadmanage extends CI_Controller
         $this->data['sub_page'] = 'manage_advrtisment';
         $this->data['advertisement'] = $this->Advertisement->get_all_adv_tbl_data();
         $this->data['Product'] = $this->pm->getAllProductsData();
+        $this->data['Status'] = $this->status->getAllStatusData();
+        $this->data['employee'] = $this->emp->get_all_employee('table_employee');
+   
 
      
         $this->load->view('admin/include/header', $this->data);
@@ -101,23 +105,20 @@ class Leadmanage extends CI_Controller
         
     }
 
-  function fetch_employee_name($project_id)
+  function fetch_employee_name($pro_id)
      {
                   $output = '';
-                  $employee = $this->Payroll_model->get_data_array('tbl_manage_employee');
+                  $employee = $this->emp->get_data_array('table_employee');
                    $output .= '<option value="">Select Employee</option>';
 
-                foreach ($employee as $emp) {  
-                             
-                $manage_employee_info = json_decode($emp["manage_employee_info"]);
-
-               // $project_id = $manage_employee_info->project;
-                  if($manage_employee_info->project == $project_id && $manage_employee_info->department == 29 && $emp["status"] == md5("visible")){
-                    
-                    $output .= '<option value="'.$emp['manage_employee_id'].'">'.$manage_employee_info->firstName.' '.$manage_employee_info->lastName.'</option>';
-  
-                  }
+                foreach ($employee as $emp) { 
                   
+                $output = '<option value="" disabled selected>Select Employee</option>';
+                foreach ($emp as $row) {
+                $output .= '<option value="' . $row['id'] . '">' . $row['first_name'] . '</option>';
+                }
+                             
+                 
                 }
            echo  $output;
      }
@@ -131,16 +132,17 @@ class Leadmanage extends CI_Controller
         $dataIns['l_advid'] = $_POST['l_advid'];
       foreach ($_POST['packets'] as $packet) {
           
-                  $dataIns['employee_id'] = $packet['employee_id'];
-                  $dataIns['l_name'] = $packet['l_name'];
+                  $dataIns['cp_name'] = $packet['cp_name'];
+                  $dataIns['company_name'] = $packet['company_name'];
                   $dataIns['l_mno'] = $packet['l_mno'];
                   $dataIns['l_email'] = $packet['l_email'];
-                  $dataIns['l_shopname'] = $packet['l_shopname'];
-                  $dataIns['l_usertype'] = $packet['l_usertype'];
+                  $dataIns['ref_no'] = $packet['ref_no'];
+                  $dataIns['type'] = $packet['type'];
                   $dataIns['l_status'] = $packet['l_status'];
                   $dataIns['l_followup'] = $packet['l_followup'];
                   $dataIns['l_cmt'] = $packet['l_cmt'];
-                  $dataIns['l_accomod'] = $packet['l_accomod'];
+                  $dataIns['allot_sales_person'] = $packet['allot_sales_person'];
+                  $dataIns['allot_technical_person'] = $packet['allot_technical_person'];
 
                    if(($this->Leadmanage->is_data_exist('l_mno',$dataIns['l_mno'])==0))
                   {
@@ -216,27 +218,30 @@ class Leadmanage extends CI_Controller
          $output = "";
          $l_status = $this->input->post('l_status');
          $adv_id = $this->input->post('adv_id');
-         $emp_id = $this->input->post('employee_id');
-      
+         //$emp_id = $this->input->post('employee_id');
+        //  echo $l_status;
+        //  echo $adv_id;
         // echo $emp_id;
       
-        $leadmanage_data = $this->Leadmanage->get_all_leads_by_status($l_status,$adv_id,$emp_id);
+        $leadmanage_data = $this->Leadmanage->get_all_leads_by_status($l_status,$adv_id);
+        // echo "<pre>";
+        // print_r($leadmanage_data); exit;
 
         $output .= '<div class="panel-body">
                          <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
                           <th class="text-nowrap">S No</th>
 	                        <th class="text-nowrap">Advertisement<br>Title</th>
-                          <th class="text-nowrap">Name</th>
+                          <th class="text-nowrap">Concern <br> Person Name</th>
+                          <th class="text-nowrap">Company <br> Name</th>
                           <th class="text-nowrap">Mobile No</th>
                           <th class="text-nowrap">Email</th>
-                          <th class="text-nowrap">Project Name</th>
-                          <th class="text-nowrap">Employee Name</th>
-                          <th class="text-nowrap">Property Type</th>
-                          <th class="text-nowrap">Accommodation</th>
-                          <th class="text-nowrap">Create Date</th>
-                          <th class="text-nowrap">Follow Up Date</th>
-                          <th class="text-nowrap">Comment</th>';
+                          <th class="text-nowrap">Ref No.</th>
+                          <th class="text-nowrap">Type</th>
+                          <th class="text-nowrap">Status</th>
+                          <th class="text-nowrap">Comment</th>
+                          <th class="text-nowrap">Create <br>Date</th>
+                          <th class="text-nowrap">Follow Up<br> Date</th>';
                           if($l_status=='TODAY' || $l_status=='FAILED'){
                $output .= '<th class="text-nowrap">Action</th>';
                           }
@@ -245,43 +250,43 @@ class Leadmanage extends CI_Controller
         foreach ($leadmanage_data as $row)
         {
              $adv_data = $this->Advertisement->get_single_adv_data($row['l_advid']);
+             $status_data = $this->status->get_singledata_byId($row['l_status']);
+           
 
-            $project_id =  $row['l_shopname'];
-            $get_Project_name = $this->Project->get_projectData_byprojectId($project_id);
-            $manage_project_info = json_decode($get_Project_name['projects_info']);
-
-            $emp_id =  $row['employee_id'];
-            $get_emp_name = $this->Payroll_model->get_employee_data_by_id($emp_id);
-            $manage_employee_info = json_decode($get_emp_name['manage_employee_info']);
-
-
-           		$output .= '<tr><td>'.$cnt.'</td>
+                     		$output .= '<tr><td>'.$cnt.'</td>
 	                        <td> '.$adv_data['adv_name'].'</td>
-                             <td>'.$row['l_name'].'</td>
+                             <td>'.$row['cp_name'].'</td>
+                             <td>'.$row['company_name'].'</td>
                             <td>'.$row['l_mno'].'</td>
                             <td>'.$row['l_email'].'</td>
-                            <td>'.$manage_project_info->projectName.'</td>';
-             $emp_id =  $row['employee_id'];
-            if($emp_id > 0)
-          {
-            $get_emp_name = $this->Payroll_model->get_employee_data_by_id($emp_id);
-            $manage_employee_info = json_decode($get_emp_name['manage_employee_info']);
+                            <td>'.$row['ref_no'].'</td>
+                            <td>'.$row['type'].'</td>
+                            <td>'.$status_data['status_name'].'</td>
+                            <td>'.$row['l_cmt'].'</td>
+                            <td>'.$row['l_DOC'].'</td>'
+                            ;
+             $semp_id =  $row['allot_sales_person'];
+             $temp_id =  $row['allot_technical_person'];
+            //if($emp_id > 0)
+         // {
+           // $get_emp_name = $this->Payroll_model->get_employee_data_by_id($emp_id);
+           // $manage_employee_info = json_decode($get_emp_name['manage_employee_info']);
           
-                           $output .= '<td>'.$manage_employee_info->firstName.' '.$manage_employee_info->lastName.'</td>';
+                          // $output .= '<td>'.$manage_employee_info->firstName.' '.$manage_employee_info->lastName.'</td>';
                           }
-                              else  {  $output .= '<td></td>';  }
+                              //else  
+                              //{ 
+                                 $output .= '<td></td>';  
+                                
+                                //}
          
-                             $output .= '<td>'.$row['l_usertype'].'</td>
-                            <td>'.$row['l_accomod'].'</td>
-                            <td>'.$row['l_DOC'].'</td>
-                            <td>'.$row['l_followup'].'</td>
-                          <td>'.$row['l_cmt'].'</td>';
+                            
           
                            if($l_status=='TODAY' || $l_status=='FAILED'){
             $output .= '<td><button type="button" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData('.$row["l_id"].') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </button>
                   
-                  <td><button type="button" class="btn btn-sm btn-success" onclick=editLeadTransfer('.$row["l_id"].') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
+                 <button type="button" class="btn btn-sm btn-success" onclick=editLeadTransfer('.$row["l_id"].') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
                   </button>
                   </td>';
                          
@@ -289,7 +294,7 @@ class Leadmanage extends CI_Controller
                           }            
               $output .= '</tr>';
              $cnt++;
-        }
+        //}
       
         $output .= '</tbody></table></div>';
         echo $output;
@@ -319,9 +324,9 @@ class Leadmanage extends CI_Controller
       
         $lead_id = $this->input->post('lead_id');
         $leadmanage = $this->Leadmanage->get_single_lead_data($lead_id);
-       //echo $leadmanage['l_shopname'];
-          //echo "<pre>";
-        // print_r($leadmanage);  exit;\
+        echo "<pre>";
+        print_r($_POST);
+      
          $output = "";
         $output = "<label for=''><strong>Project Name:</strong></label>
                              <input class='form-control form-control-sm' type='hidden' id='l_id' name='l_id' value='".$leadmanage['l_id']."'>
@@ -369,6 +374,8 @@ class Leadmanage extends CI_Controller
     {
         $lead_id = $this->input->post('lead_id');
         $leadmanage = $this->Leadmanage->get_single_lead_data($lead_id);
+        $Status = $this->status->getAllStatusData();
+
         $output="<div class='panel-body'>
                   <div class='form-group'>
                     <label for=''><strong>Status:</strong></label>
@@ -377,17 +384,31 @@ class Leadmanage extends CI_Controller
                         <option value='' disabled=''>Select Lead Status</option>                        
                         <option value='PENDING' ".($leadmanage['l_status']=='PENDING'?'selected':'')." >Pending</option>
                         <option value='SUCCESS' ".($leadmanage['l_status']=='SUCCESS'?'selected':'').">Success</option>
-                        <option value='FAILED' ".($leadmanage['l_status']=='FAILED'?'selected':'').">Failed</option>
-                      </select>
+                        <option value='FAILED' ".($leadmanage['l_status']=='FAILED'?'selected':'').">Failed</option>";
+                        
+                        //foreach ($Status as $sRow) {
+                         // echo "<option value=" . $sRow['sid'] . ">" . $sRow['status_name'] . "</option>";
+                        //} 
+                        $output .=" </select>
                   </div>
                   <div class='form-group'>
                     <label for=''><strong>Comment:</strong></label>
                     <input class='form-control' type='text' name='l_cmt' required='true' placeholder='' value=".$leadmanage['l_cmt'].">
-                  </div>
-                   <div id='date_followup' style='display:".($leadmanage['l_status']=='PENDING'?'block':'none').";'>
-                  <div id='response' class='form-group'>
+                  </div>";
+                  //  <div id='date_followup' style='display:".($leadmanage['l_status']=='PENDING'?'block':'none').";'>
+                  $output .= "<div id='response' class='form-group'>
                      <label class='control-label'><strong>Next Follow up Date:</strong></label>
                       <div class='input-group date startDateTime'>
+                           <input type='text' class='form-control l_followup' name='l_followup' >
+                           <div class='input-group-addon'>
+                              <i class='fa fa-calendar'></i>
+                           </div>
+                        </div>
+                  </div>
+
+                  <div id='response' class='form-group'>
+                     <label class='control-label'><strong>Next Follow up Date:</strong></label>
+                      <div class='input-group'>
                            <input type='text' class='form-control l_followup' name='l_followup' >
                            <div class='input-group-addon'>
                               <i class='fa fa-calendar'></i>

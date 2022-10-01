@@ -24,13 +24,13 @@ require_once("classes-and-objects/authentication.php");
     <li class="breadcrumb-item"><a href="javascript:;">Add Advertisement Leads </a></li>
   </ol>
 
-  <?php if ($this->session->userdata('user_id') == '') { ?>
-    <h1 class="page-header">Add New Leads of <?= $advData['adv_name']; ?> <a href='<?= base_url() ?>admin/leadmanage/manage_all_lead/1' type="button" class="btn btn-inverse btn-sm mr-5">Manage Your Leads</a></h1>
-  <?php } ?>
+  <?php //if ($this->session->userdata('user_id') == '') { ?>
+    <!-- <h1 class="page-header">Add New Leads of <?//= $advData['adv_name']; ?> <a href='<?= base_url() ?>admin/leadmanage/manage_all_lead/1' type="button" class="btn btn-inverse btn-sm mr-5">Manage Your Leads</a></h1> -->
+  <?php //} ?>
 
-  <?php if ($this->session->userdata('user_id') != '1' && $this->session->userdata('user_id') != '') { ?>
+  <?php //if ($this->session->userdata('user_id') != '1' && $this->session->userdata('user_id') != '') { ?>
     <h1 class="page-header">Add New Leads of <?= $advData['adv_name']; ?> <a href='<?= base_url() ?>admin/leadmanage/manage_lead' type="button" class="btn btn-inverse btn-sm mr-5">Manage Your Leads</a></h1>
-  <?php } ?>
+  <?php //} ?>
 
 
   <?php if ($this->session->flashdata('success')) : ?>
@@ -61,8 +61,15 @@ require_once("classes-and-objects/authentication.php");
                   <div class="row">
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for=""><strong>Full Name:</strong></label>
-                        <input class="form-control form-control-sm" type="text" name="l_name" required="true" placeholder="">
+                        <label for=""><strong>Concern Person Name:</strong></label>
+                        <input class="form-control form-control-sm" type="text" name="cp_name" required="true" placeholder="">
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for=""><strong>Company Name:</strong></label>
+                        <input class="form-control form-control-sm" type="text" name="company_name" required="true" placeholder="">
                       </div>
                     </div>
 
@@ -83,21 +90,29 @@ require_once("classes-and-objects/authentication.php");
                       </div>
                     </div>
 
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for=""><strong>Reference No:</strong></label>
+                        <input class="form-control form-control-sm" type="text" name="ref_no" placeholder="">
+                      </div>
+                    </div>
 
-
-
-
-
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for=""><strong>Type:</strong></label>
+                        <input class="form-control form-control-sm" type="text" name="type" placeholder="">
+                      </div>
+                    </div>
 
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Lead Status:</strong></label>
                         <select class="form-control form-control-sm l_status" name="l_status" required="">
                           <option value="" selected="" disabled="">Select Lead Status</option>
-                          <option value="On Process">On Process</option>
-                          <option value="Not Interested">Not Interested</option>
-                          <option value="Casual">Casual</option>
-                          <option value="Booked">Booked</option>
+                          <?php
+                          foreach ($Status as $sRow) {
+                            echo "<option value=" . $sRow['sid'] . ">" . $sRow['status_name'] . "</option>";
+                          }  ?>
                         </select>
                       </div>
                     </div>
@@ -116,37 +131,68 @@ require_once("classes-and-objects/authentication.php");
 
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for=""><strong>Comment:</strong></label>
+                        <label for=""><strong>Description:</strong></label>
                         <textarea class="form-control form-control-sm" type="text" name="l_cmt" placeholder=""></textarea>
                       </div>
                     </div>
 
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for=""><strong>Allot Sales Person:</strong></label>
+                        <select class="form-control form-control-sm l_status" name="allot_sales_person" required="">
+                          <option value="" selected="" disabled="">Select</option>
+                          <?php
+                          foreach ($employee as $row) {
+                            echo "<option value=" . $row['id'] . ">" . $row['first_name'] . "</option>";
+                          }  ?>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for=""><strong>Allot Technical Person:</strong></label>
+                        <select class="form-control form-control-sm l_status" name="allot_technical_person" required="">
+                          <option value="" selected="" disabled="">Select</option>
+                          <?php
+                          foreach ($employee as $row) {
+                            echo "<option value=" . $row['id'] . ">" . $row['first_name'] . "</option>";
+                          }  ?>
+                        </select>
+                      </div>
+                    </div>
+
+
+
+
+
                   </div>
 
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="form-group mb-1 col-11 d-flex">
                       <label for=""><strong>Product:</strong></label>
 
-                      <select class="form-control mr-3" name="l_shopname" required="" onchange="getEmployeebyProject(this)">
+                      <select class="form-control mr-3" name="product_id" required="" onchange="getEmployeebyProduct(this)">
                         <option value="" selected="" disabled="">Select Product Name</option>
-                          <?php foreach ($Product as $value) { ?>
-                            <option value="<?php echo $value['pro_id']; ?>"><?php echo $value['p_type']; ?></option>
-                          <?php
-                          }  ?>
-                        </select>
+                        <?php foreach ($Product as $value) { ?>
+                          <option value="<?php echo $value['pro_id']; ?>"><?php echo $value['p_type']; ?></option>
+                        <?php
+                        }  ?>
+                      </select>
 
 
-                        <label for=""><strong>Employee:</strong></label>
-                        <select class="form-control" name="employee_id" id="employee_id">
-                          <option selected>Select Employee</option>
-                        </select>
+                      <label for=""><strong>Employee:</strong></label>
+                      <select class="form-control" name="employee_id" id="employee_id">
+                        <option selected>Select Employee</option>
+                      </select>
 
                     </div>
 
                     <div class="col-1">
                       <button type="button" data-repeater-delete class="btn btn-icon btn-md btn-danger pull-right"><i class="fa fa-trash"></i></button>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <legend class="m-b-15 px-2"><button type="button" data-repeater-create class="btn btn-md btn-icon  btn-primary pull-right">
@@ -247,7 +293,7 @@ require_once("classes-and-objects/authentication.php");
   }
 
 
-  function getEmployeebyProject(input) {
+  function getEmployeebyProduct(input) {
     $.ajax({
       url: '<?= site_url('admin/Leadmanage/fetch_employee_name') ?>' + '/' + $(input).val(),
       type: 'POST',
