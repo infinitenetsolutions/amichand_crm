@@ -110,9 +110,10 @@ require_once("classes-and-objects/authentication.php");
                         <select class="form-control form-control-sm l_status" name="l_status" required="">
                           <option value="" selected="" disabled="">Select Lead Status</option>
                           <?php
-                          foreach ($Status as $sRow) {
-                            echo "<option value=" . $sRow['sid'] . ">" . $sRow['status_name'] . "</option>";
-                          }  ?>
+                          foreach ($Status as $sRow) { ?>
+                            <option value="<?= $sRow["status_name"] ?>"><?= $sRow["status_name"] ?></option>
+
+                         <?php  }  ?>
                         </select>
                       </div>
                     </div>

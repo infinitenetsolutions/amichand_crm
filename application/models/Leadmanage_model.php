@@ -31,9 +31,11 @@ class Leadmanage_model extends CI_Model {
 		{
 				$today=date("Y-m-d",strtotime(' + 1 day')).' 00:00:00';
 				$this->db->select('*');
-			 $this->db->from($this->table);
+			    $this->db->from($this->table);
 				if($l_status=='TODAY'){
 				 $this->db->where('l_followup <=',date('Y-m-d H:i:s',strtotime($today)));
+				// $this->db->where('l_status',$l_status);
+
 				}
 				if($l_status=='FUTURE'){
 				 $this->db->where('l_followup >=',date('Y-m-d H:i:s',strtotime($today)));

@@ -190,6 +190,28 @@ class Employee_model extends CI_Model {
 		  return $this->db->get()->result_array();
 		 }
 
+		 
+
+
+		 public function get_semployee_data_by_id($empid)
+		 {
+		  $this->db->select("*");
+		  $this->db->from('table_employee');
+		  $this->db->where('id',$empid);
+		  return $this->db->get()->row_array();
+		 }
+
+
+		 public function get_temployee_data_by_id($empid)
+		 {
+		  $this->db->select("*");
+		  $this->db->from('table_employee');
+		  $this->db->where('id',$empid);
+		  return $this->db->get()->row_array();
+		 }
+
+		 
+
 
 		 public function get_employee_data_by_id($empid)
 		 {
