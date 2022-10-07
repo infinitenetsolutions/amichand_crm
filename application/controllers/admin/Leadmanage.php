@@ -35,7 +35,7 @@ class Leadmanage extends CI_Controller
     $this->load->model('Status_model', 'status');
     //$this->load->model('Payroll_model');
 
-    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
   }
 
 
@@ -185,8 +185,13 @@ class Leadmanage extends CI_Controller
   {
     //echo "working";
     $l_id = $this->input->post('l_id');
-    //echo $l_id;
+    echo $l_id;
+    echo "<pre>";
+    print_r($l_id);
     $data = $this->input->post();
+    echo "<pre>";
+    print_r($data);
+    exit;
     // unset($data['l_id']);
     //if($_POST['l_followup'] == ''){
     // $data['l_followup'] = NULL;
@@ -197,7 +202,7 @@ class Leadmanage extends CI_Controller
       $data['msg'] = 'leads transfer to another user successfully!';
     } else {
       $data['status'] = false;
-      $data['msg'] = 'Unable to added advertisement information!';
+      $data['msg'] = 'Unable to transfer to another user!';
     }
     echo json_encode($data);
   }
@@ -260,8 +265,12 @@ class Leadmanage extends CI_Controller
 
         $semp_id =  $row['allot_sales_person'];
         $techemp_id =  $row['allot_technical_person'];
-        $semp_data = $this->emp->get_semployee_data_by_id($semp_id);
-        $temp_data = $this->emp->get_temployee_data_by_id($techemp_id);
+    
+       
+        // echo "<pre>";
+        // print_r($semp_data);
+        // echo "<pre>";
+        // print_r($temp_data);
 
         $output .= '<tr><td>' . $cnt . '</td>
 	                          <td> ' . $adv_data['adv_name'] . '</td>
@@ -271,10 +280,29 @@ class Leadmanage extends CI_Controller
                             <td>' . $row['l_email'] . '</td>
                             <td>' . $row['ref_no'] . '</td>
                             <td>' . $row['type'] . '</td>
-                            <td>' . $row['l_status'] . '</td>
-                            <td>' . $semp_data['first_name'] . ' ' . $semp_data['last_name'] . '</td>  
-                            <td>' . $temp_data['first_name'] . ' ' . $temp_data['last_name'] . '</td>   
-                            <td>' . $row['l_cmt'] . '</td>
+                            <td>' . $row['l_status'] . '</td>';
+                            if ($semp_id != '') {
+                              $semp_data = $this->emp->get_semployee_data_by_id($semp_id);
+                              $output .= '<td>' . $semp_data['first_name'] . ' ' . $semp_data['last_name'] . '</td>';
+
+                            } else{
+                              $output .= '<td></td>';
+
+                            }
+                            
+
+             if($techemp_id!='') {
+
+              $temp_data = $this->emp->get_temployee_data_by_id($techemp_id);
+              $output .= '<td>' . $temp_data['first_name'] . ' ' . $temp_data['last_name'] . '</td>';
+
+            }else{
+              $output .= '<td></td>';
+
+            }
+
+        
+        $output .= '<td>' . $row['l_cmt'] . '</td>
                             <td>' . $row['l_DOC'] . '</td>
                             <td>' . $row['l_followup'] . '</td>';
         if ($l_status == 'SUCCESS') {
@@ -285,8 +313,6 @@ class Leadmanage extends CI_Controller
                                         <td>' . $row['quoted_price'] . '</td>
                                         <td>' . $row['order_val'] . '</td>';
         }
-
-       
       }
 
 
@@ -332,43 +358,26 @@ class Leadmanage extends CI_Controller
 
     $lead_id = $this->input->post('lead_id');
     $leadmanage = $this->Leadmanage->get_single_lead_data($lead_id);
-    echo "<pre>";
-    print_r($_POST);
+    // echo "<pre>";
+    // print_r($leadmanage);
 
     $output = "";
-    $output = "<label for=''><strong>Project Name:</strong></label>
-                             <input class='form-control form-control-sm' type='hidden' id='l_id' name='l_id' value='" . $leadmanage['l_id'] . "'>
-                              <select class='form-control mr-3' name='l_shopname'  required='' onchange='getEmployeebyProject(this)'>
-                    <option value=''>Select Project Name</option>";
-    $project = $this->Project->getAllData();
-    //Checking If Data Is Available
-    if ($project != 0) :
-      $sno = 1;
-      foreach ($project as $rows) :
-        $projects_info = json_decode($rows["projects_info"]);
-        //echo "<pre>";
-        //print_r($leadmanage['l_shopname']); exit();
-        $output .= "<option " . ($leadmanage['l_shopname'] == $rows['projects_id'] ? 'selected' : '') . " value=" . $rows['projects_id'] . " >" . $projects_info->projectName . "</option>";
-      endforeach;
-    endif;
-    $output .= "</select>";
 
 
-    $output .= "<label for=''><strong>Employee:</strong></label><select class='form-control mr-3' name='employee_id'  required=''>
-                    <option value=''>Select Project Name</option>";
-    $emp = $this->emp->get_all_employee();
+
+    $output .= "<label for=''><strong>Employee:</strong></label><select class='form-control mr-3' name='allot_sales_person'  required=''>
+                    <option value=''>Select Employee</option>";
+    $emp = $this->emp->get_all_employee('table_employee');
 
     //Checking If Data Is Available
     if ($emp != 0) :
       foreach ($emp as $rows) :
-        $emp_info = json_decode($rows["manage_employee_info"]);
-        //echo "<pre>";
-        //print_r($leadmanage['l_shopname']); exit();
-        $output .= "<option " . ($leadmanage['employee_id'] == $rows['manage_employee_id'] ? 'selected' : '') . " value=" . $rows['manage_employee_id'] . " >" . $emp_info->firstName . " " . $emp_info->lastName . "</option>";
+
+        $output .= "<option " . ($leadmanage['allot_sales_person'] == $rows['id'] ? 'selected' : '') . " value=" . $rows['id'] . " >" . $rows['first_name'] . " " . $rows['last_name'] . "</option>";
       endforeach;
     endif;
     $output .= "</select><br>
-                   <button type='submit' class='btn btn-primary'>Save changes</button>";
+                   <button type='submit' id='change_lead' class='btn btn-primary'>Save changes</button>";
 
     echo $output;
   }

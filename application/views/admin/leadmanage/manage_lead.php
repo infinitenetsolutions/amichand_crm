@@ -230,7 +230,7 @@ $(document).ready(function () {
   
   
    function editLeadTransfer(lead_id) {
-    console.log('hello');
+    //console.log('hello');
     $.ajax({
       type: "POST",
       url: "<?php echo base_url();?>admin/leadmanage/editLeadTransfer",      
@@ -279,7 +279,7 @@ $(document).ready(function () {
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Data</h5>
+        <h5 class="modal-title" id="exampleModalCenterTitle">Lead Transfer</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
@@ -355,7 +355,7 @@ function update_lead_data(form) {
     type: "POST",
     data: formData,
     success: function (data) {
-      $('#save_leads').prop( "disabled", false );
+      $('#change_lead').prop( "disabled", false );
       var response = JSON.parse(data);
       if (response.status == true) {
         location.reload();
