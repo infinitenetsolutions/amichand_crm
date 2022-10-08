@@ -23,7 +23,7 @@ class Login_model extends CI_Model {
 				    	->from($this->table)
 				    	->where('username',$username)
 				    	->get()
-				    	->row_array();
+				    	->result_array();
   }
 
   function check_account_exist($username){

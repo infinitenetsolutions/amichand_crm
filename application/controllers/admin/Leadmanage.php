@@ -161,8 +161,7 @@ class Leadmanage extends CI_Controller
 
   function update_lead()
   {
-    //  echo "<pre>";
-    //  print_r($_POST); exit;
+   
     $l_id = $this->input->post('l_id');
     $data = $this->input->post();
     unset($data['l_id']);
@@ -183,15 +182,12 @@ class Leadmanage extends CI_Controller
 
   function update_leadtransfer()
   {
-    //echo "working";
     $l_id = $this->input->post('l_id');
-    echo $l_id;
-    echo "<pre>";
-    print_r($l_id);
+   
     $data = $this->input->post();
-    echo "<pre>";
-    print_r($data);
-    exit;
+    // echo "<pre>";
+    // print_r($data);
+    // exit;
     // unset($data['l_id']);
     //if($_POST['l_followup'] == ''){
     // $data['l_followup'] = NULL;
@@ -355,7 +351,7 @@ class Leadmanage extends CI_Controller
 
   public function editLeadTransfer()
   {
-
+    
     $lead_id = $this->input->post('lead_id');
     $leadmanage = $this->Leadmanage->get_single_lead_data($lead_id);
     // echo "<pre>";
@@ -365,7 +361,9 @@ class Leadmanage extends CI_Controller
 
 
 
-    $output .= "<label for=''><strong>Employee:</strong></label><select class='form-control mr-3' name='allot_sales_person'  required=''>
+    $output .= "<label for=''><strong>Employee:</strong></label>
+                  <input type='hidden' name='l_id' value='". $_POST['lead_id'] ."'>
+                <select class='form-control mr-3' name='allot_sales_person'  required=''>
                     <option value=''>Select Employee</option>";
     $emp = $this->emp->get_all_employee('table_employee');
 

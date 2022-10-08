@@ -232,6 +232,7 @@
    <p class="text-danger"><?php echo $this->session->flashdata('danger'); ?></p>
    <?php endif; ?>
 
+   <?php echo $this->session->flashdata('msg'); ?>
 
     	<form  method="POST" autocomplete="off" action="<?=base_url()?>admin/login/login_user">
         <!-- <center><h2 class="text-center login-title">Log in</h2> -->

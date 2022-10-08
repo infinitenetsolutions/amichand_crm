@@ -39,6 +39,10 @@ class Advertisement_model extends CI_Model {
 				return $response; 		
         }
 
+
+		
+
+		
 	 public function get_single_adv_data($adv_id)
 	   {
 				$this->db->select('*');

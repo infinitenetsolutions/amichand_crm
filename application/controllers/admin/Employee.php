@@ -77,9 +77,13 @@ class Employee extends CI_Controller
 				'last_name' => $this->input->post('last_name'),
 				'product_id' => $this->input->post('pro_id'),
 				'employee_id' => $this->input->post('employee_id'),
+
 				'mobile' => $this->input->post('mobile'),
 				'date_of_birth' => $this->input->post('date_of_birth'),
 				'gender' => $this->input->post('gender'),
+				'username' => $this->input->post('username'),
+				'password' => $this->input->post('password'),
+
 				'department' => $this->input->post('department'),
 				'designation' => $this->input->post('designation'),
 				'reporting_to' => $this->input->post('reporting_to'),
@@ -122,6 +126,14 @@ class Employee extends CI_Controller
 				'esic_ac' => $this->input->post('esic_ac')
 			);
 
+			$logindata = array(
+
+				'username' => $this->input->post('username'),
+				'password' => $this->input->post('password'),
+				'user_level' => 2
+
+			);
+
 
 			if (!empty($_FILES['image']['name'])) {
 				$config['file_name'] = $_FILES['image']['name'];
@@ -140,6 +152,7 @@ class Employee extends CI_Controller
 
 
 			$add = $this->Employee_model->save_data($data);
+			$add = $this->Employee_model->save_logindata($logindata);
 			if ($add) {
 				$this->session->set_flashdata('success', "Employee added successfully!");
 			}
@@ -166,8 +179,8 @@ class Employee extends CI_Controller
 			$data['mobile'] = $this->input->post('mobile');
 			$data['date_of_birth'] = $this->input->post('date_of_birth');
 			$data['gender'] = $this->input->post('gender');
-			//$data['email']=$this->input->post('email');
-			//$data['password']=$this->input->post('password');
+			$data['username'] = $this->input->post('username');
+			$data['password'] = $this->input->post('password');
 			$data['department'] = $this->input->post('department');
 			$data['designation'] = $this->input->post('designation');
 			$data['reporting_to'] = $this->input->post('reporting_to');
@@ -254,7 +267,19 @@ class Employee extends CI_Controller
 				$data['image'] = $filedata['file_name'];
 			}
 
+
+			
+			// $logindata = array(
+
+			// 	'username' => $this->input->post('username'),
+			// 	'password' => $this->input->post('password'),
+			// 	'user_level' => 2
+
+			// );
+
 			$update = $this->Employee_model->update_data('table_employee', $con, $data);
+			//$loginupdate = $this->Employee_model->update_logindata('tbl_admin', $con, $logindata);
+
 
 			if ($update) {
 				$this->session->set_flashdata('msg', "<div style='color:green;'>Employee Data Updated Successfully!!!</div>");
@@ -273,7 +298,7 @@ class Employee extends CI_Controller
 		} else {
 			$q = $this->Employee_model->fetch_designation_name($this->input->post('dept_id'));
 			if ($q->num_rows() > 0) {
-				$output = '<option value="" disabled selected>Select Designation</option><option value="all">All</option>';
+				$output = '<option value="" disabled selected>Select Designation</option>';
 				foreach ($q->result() as $row) {
 					$output .= '<option value="' . $row->id . '">' . $row->designation . '</option>';
 				}
@@ -607,7 +632,8 @@ class Employee extends CI_Controller
 				if (!empty($employee)) {
 					foreach ($employee as $row) {
 						$department = $this->dm->get_department_by_id($row['department']);
-						$designation = $this->designation->get_designation_by_id($row['designation']);
+						$desgid = $row['designation'];
+						
 						$p_id = $this->pm->getProById($row['product_id']);
 
 
@@ -618,7 +644,15 @@ class Employee extends CI_Controller
 							<td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
 							<td><?php echo $row['employee_id']; ?></td>
 							<td><?php echo $department['department_name']; ?></td>
-							<td><?php echo $designation['designation']; ?></td>
+                               <?php 
+							if ($desgid != '') {
+								$designation = $this->designation->get_designation_by_id($row['designation']); ?>
+                            <td><?php echo $designation['designation']; ?></td>
+                            <?php
+                            } else{  ?>
+                             <td></td>
+                            <?php } ?>
+
 							<td><?php echo $p_id->p_type; ?></td>
 							<!-- <td><?php //echo $row['date_of_hire']; 
 										?></td> -->

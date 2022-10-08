@@ -7,6 +7,11 @@
 
 position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;background: #ffffff99;top: 0;left: 0;text-align: center;padding-top: 5%;
 }
+
+body #gritter-notice-wrapper {
+    width: 420px;
+    z-index: 1099;
+}
 </style>
 
 
@@ -18,7 +23,9 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
 </ol>
 
 <h1 class="page-header">Manage Advertisements Leads</h1>
-
+<?php if($this->session->flashdata('msg')): ?>
+    <?php echo $this->session->flashdata('msg'); ?>
+<?php endif; ?>
 <?php
     $admin_id =  $this->uri->segment(4);
     // echo $emp_id; 
@@ -93,6 +100,7 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
 <script src="<?php echo base_url() ?>assets/plugins/datatables.net-fixedcolumns/js/dataTables.fixedcolumns.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/plugins/datatables.net-fixedcolumns-bs4/js/fixedcolumns.bootstrap4.min.js" type="text/javascript"></script>
 <script src="<?=base_url()?>assets/plugins/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="<?=base_url()?>assets/plugins/gritter/js/jquery.gritter.js"></script>
 
 
 
@@ -358,7 +366,12 @@ function update_lead_data(form) {
       $('#change_lead').prop( "disabled", false );
       var response = JSON.parse(data);
       if (response.status == true) {
-        location.reload();
+        $.gritter.add({
+              title: 'Hurray!!',
+              text: response.msg,
+              class_name: 'bg-success'
+              });
+           location.reload();
       } else {
         $.gritter.add({
           title: 'Something went wrong',

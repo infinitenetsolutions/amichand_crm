@@ -16,55 +16,68 @@ class Login extends CI_Controller
 		if ($this->session->userdata('admin_session') != '') {
 			redirect('admin/');
 		}
-		                    $settingData = $this->Setting->getsettingdata(1);
-							echo "<pre>";
-							print_r($settingData);
-							
+		$settingData = $this->Setting->getsettingdata(1);
+		echo "<pre>";
+		print_r($settingData);
+
 
 		$this->load->view('login');
 	}
 
 	public function login_user()
+
 	{
 
-		$this->form_validation->set_rules('username', 'User Name', 'trim|required|xss_clean');
+
+		$this->form_validation->set_rules('username', 'User Name', 'trim|required|xss_clean|valid_email');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
 
-		$rememberMe = $this->input->post('rememberMe', TRUE);
+
 		$username = $this->input->post('username', TRUE);
-		$password = md5($this->input->post('password'), TRUE);
+		$password = $this->input->post('password', TRUE);
 
-		$validate = $this->Login_model->all_user();
 
-		//Checking If Data Is Available
+		$validate = $this->Login_model->validate($username, $password);
+
 		if (count($validate) != 0) {
 			foreach ($validate as $rows) {
-				//Get Admin Log In Information. 
+
+				$userid  = $rows['admin_id'];
+				$name  = $rows['username'];
+				$level = $rows['user_level'];
 				
+				// $admin_type = $data['admin_type'];
+				// $permission = $rows['permission'];
 
-				if ($username == $rows['username']) {
 
-					$sessionLogInfo = array(
-						"username"     =>  $_POST['username'],
-						"password"     =>  $_POST['password']
 
-					);
+				$sesdata = array(
+					'userid'  => $userid,
+					'username'  => $name,
+					'level'     => $level,
+					///'permission' => $permission,
+					'logged_in' => TRUE
+				);
 
-					$session = $this->session->set_userdata($sessionLogInfo);
-					
-					//Add New Log Information In Log In Information
+
+				$this->session->set_userdata($sesdata);
+				// access login for admin
+				if ($level === '1') {
 					redirect("admin/leadmanage/manage_lead");
-				}
 
-				elseif ($username === '' &&  $password === '') {
+
+					// access login for Employee
+				} elseif ($level === '2') {
+					redirect("employee/leadmanage/manage_lead");
+				} elseif ($username === '' &&  $password === '') {
 					$this->session->set_flashdata('msg', "<div style='color:red;'>Username and Password is required");
-					redirect(base_url() . "");
-				} else {
-					$this->session->set_flashdata('msg', "<div style='color:red;'>Incorrect username or password");
 					redirect(base_url() . "");
 				}
 			}
-		} 
+		} else {
+			$this->session->set_flashdata('msg', "<div style='color:red;'>Incorrect username or password");
+			redirect(base_url() . "");
+		}
 	}
 
 

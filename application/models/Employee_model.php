@@ -16,6 +16,15 @@ class Employee_model extends CI_Model {
 		return true;				
 	  } 
 
+	  public function save_logindata($data)	 
+	  {		 
+		$this->db->insert('tbl_admin',$data);
+		return true;				
+	  } 
+
+
+	  
+
 
 	  function emp_validate($username,$password){
     	return $this->db->select('*')->from($this->table)->where('employee_id',$username)->where('password',$password)->get()->row_array();
@@ -106,6 +115,16 @@ class Employee_model extends CI_Model {
 
 		
 	public function update_data($tbl,$con,$data)
+    {
+        $this->db->where($con);
+        $this->db->update($tbl,$data);
+        return $this->db->affected_rows();
+    }
+
+
+	
+
+	public function update_logindata($tbl,$con,$data)
     {
         $this->db->where($con);
         $this->db->update($tbl,$data);
