@@ -117,7 +117,7 @@
 
                                 <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label"><strong>Username: </strong></label>
+                                            <label class="control-label"><strong>Username : </strong></label>
                                             <input class="form-control" type="text" name="username" id="" value="<?php echo $employee_item['username'] ?>">
                                         </div>
                                     </div>

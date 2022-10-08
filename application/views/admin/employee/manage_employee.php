@@ -1,7 +1,7 @@
 <div id="content" class="content">
   <ol class="breadcrumb float-xl-right">
     <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Managed Employees</a></li>
+    <li class="breadcrumb-item"><a href="javascript:;">Managed Employees </a></li>
   </ol>
   <h1 class="page-header">Manage Employees</h1>
   <div class="row">
