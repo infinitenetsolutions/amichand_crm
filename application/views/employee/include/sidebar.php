@@ -43,7 +43,7 @@
 				<ul class="sub-menu">
 					<!-- <li <?//= (@$sub_page == "manage Setting" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/setting/manage_setting">Settings</a></li> -->
 					<!-- <li <?//= (@$sub_page == "manage_advrtisment" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/advertisement/manage_advertisement">Advertisement</a></li> -->
-					<li <?= (@$sub_page == "manage_lead" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/leadmanage/manage_lead">Manage Leads</a></li>
+					<li <?= (@$sub_page == "manage_lead" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>employee/leadmanage/manage_lead">Manage Leads</a></li>
 				</ul>
 
 				<?php //} 

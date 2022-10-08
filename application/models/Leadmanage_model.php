@@ -66,7 +66,9 @@ class Leadmanage_model extends CI_Model {
 				$today=date("Y-m-d",strtotime(' + 1 day')).' 00:00:00';
 				$this->db->select('*');
 			    $this->db->from($this->table);
-				$this->db->where('l_status',$userid);
+				//$this->db->join('table_employee te','te.id = tld.allot_sales_person');
+				$this->db->where('allot_sales_person',$userid);
+			    $this->db->or_where('allot_technical_person',$userid);
 				if($l_status=='TODAY'){
 				 $this->db->where('l_followup <=',date('Y-m-d H:i:s',strtotime($today)));
 				// $this->db->where('l_status',$l_status);
@@ -91,6 +93,18 @@ class Leadmanage_model extends CI_Model {
 			 // print_r($response) ;
 			 // exit();		
 			 return $response;	
+
+			 return $this->db->select('*')
+			 ->from($this->table.' pil')
+			 ->join('ingrediants i','i.in_id = pil.in_id')
+			 ->where('p_id',$p_id)
+			 ->where('pac_id',$pac_id)
+			 ->where('pil_status','ACTIVE')
+			 ->get()->result_array();
+
+
+
+
 		 }
 
   

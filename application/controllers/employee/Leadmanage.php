@@ -39,7 +39,6 @@ class Leadmanage extends CI_Controller
   {
 
     $userId = $this->session->userdata('userid');
-    echo $userId;
 
      $this->data['page'] = 'Leads';
      $this->data['sub_page'] = 'Manage Leads';
@@ -197,7 +196,7 @@ class Leadmanage extends CI_Controller
     $adv_id = $this->input->post('adv_id');
     $userId = $this->session->userdata('userid');
    
-    $leadmanage_data = $this->Leadmanage->get_all_leads_by_status_byuserId($l_status, $adv_id,$userId);
+    $leadmanage_data = $this->Leadmanage->get_all_leads_by_status_byuserId($l_status,$adv_id,$userId);
     // echo "<pre>";
     // print_r($leadmanage_data); exit;
 

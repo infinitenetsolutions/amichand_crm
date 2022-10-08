@@ -147,7 +147,7 @@ $(document).ready(function () {
 
     $('.spinner_load').show();
       $.ajax({
-        url:'<?php echo base_url();?>admin/leadmanage/fetch_all_lead_by_status',
+        url:'<?php echo base_url();?>employee/leadmanage/fetch_all_lead_by_status',
         method: 'POST',
         data: {"l_status": tab_btn,"adv_id": adv_id},
          success: function(response){
