@@ -42,7 +42,7 @@ class Login extends CI_Controller
 		if (count($validate) != 0) {
 			foreach ($validate as $rows) {
 
-				$userid  = $rows['admin_id'];
+				$userid  = $rows['id'];
 				$name  = $rows['username'];
 				$level = $rows['user_level'];
 				

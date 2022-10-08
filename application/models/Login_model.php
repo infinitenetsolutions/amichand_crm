@@ -3,8 +3,8 @@
 class Login_model extends CI_Model {
    public function __construct()
    {
-   		$this->table='tbl_admin';
-   		$this->primery_key='admin_id';
+   		$this->table='table_employee';
+   		$this->primery_key='id';
    }
   
   

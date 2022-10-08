@@ -110,14 +110,13 @@ $(document).ready(function () {
  // console.log('working');
   var tab_btn = $('#default_click').data('status');
   var adv_id = <?php echo (!empty($_GET['i'])?$_GET['i']:'0');?>;
-  var user_id = <?php echo $this->session->userdata('userid'); ?>;
   
 
     $('.spinner_load').show();
       $.ajax({
-        url:'<?php echo base_url();?>admin/leadmanage/fetch_all_lead_by_status/',
+        url:'<?php echo base_url();?>employee/leadmanage/fetch_all_lead_by_status',
         method: 'POST',
-        data: {"l_status": tab_btn,"adv_id": adv_id,"user_id": user_id},
+        data: {"l_status": tab_btn,"adv_id": adv_id},
         success: function(response){
         $('.spinner_load').hide();
         $('#dataresultId').html(response);

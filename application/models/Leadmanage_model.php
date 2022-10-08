@@ -57,6 +57,42 @@ class Leadmanage_model extends CI_Model {
 			 // exit();		
 			 return $response;	
 		 }
+
+
+
+		 
+		 public function get_all_leads_by_status_byuserId($l_status,$adv_id,$userid)
+		{
+				$today=date("Y-m-d",strtotime(' + 1 day')).' 00:00:00';
+				$this->db->select('*');
+			    $this->db->from($this->table);
+				$this->db->where('l_status',$userid);
+				if($l_status=='TODAY'){
+				 $this->db->where('l_followup <=',date('Y-m-d H:i:s',strtotime($today)));
+				// $this->db->where('l_status',$l_status);
+
+				}
+				if($l_status=='FUTURE'){
+				 $this->db->where('l_followup >=',date('Y-m-d H:i:s',strtotime($today)));
+				}
+				if($l_status=='SUCCESS'){
+				 $this->db->where('l_status',$l_status);
+				}
+				if($l_status=='FAILED'){
+				 $this->db->where('l_status',$l_status);
+				}
+				if($adv_id!='0'){
+				 $this->db->where('l_advid',$adv_id);
+				}
+			 $q = $this->db->get();
+			 // echo $this->db->last_query();
+			 // exit();
+			 $response = $q->result_array();
+			 // print_r($response) ;
+			 // exit();		
+			 return $response;	
+		 }
+
   
 		 public function get_lead_count($l_advid)
 		   {

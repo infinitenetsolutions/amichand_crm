@@ -70,20 +70,16 @@ class Employee extends CI_Controller
 
 
 
-
-
 			$data = array(
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
 				'product_id' => $this->input->post('pro_id'),
 				'employee_id' => $this->input->post('employee_id'),
-
 				'mobile' => $this->input->post('mobile'),
 				'date_of_birth' => $this->input->post('date_of_birth'),
 				'gender' => $this->input->post('gender'),
 				'username' => $this->input->post('username'),
-				'password' => $this->input->post('password'),
-
+				'password' => md5($this->input->post('password')),
 				'department' => $this->input->post('department'),
 				'designation' => $this->input->post('designation'),
 				'reporting_to' => $this->input->post('reporting_to'),
@@ -123,16 +119,17 @@ class Employee extends CI_Controller
 				'total_salary' => $this->input->post('total_salary'),
 				'employee_type' => $this->input->post('employee_type'),
 				'pf_ac' => $this->input->post('pf_ac'),
-				'esic_ac' => $this->input->post('esic_ac')
-			);
-
-			$logindata = array(
-
-				'username' => $this->input->post('username'),
-				'password' => $this->input->post('password'),
+				'esic_ac' => $this->input->post('esic_ac'),
 				'user_level' => 2
-
 			);
+
+			// $logindata = array(
+
+			// 	'username' => $this->input->post('username'),
+			// 	'password' => $this->input->post('password'),
+			// 	'user_level' => 2
+
+			// );
 
 
 			if (!empty($_FILES['image']['name'])) {
@@ -152,7 +149,7 @@ class Employee extends CI_Controller
 
 
 			$add = $this->Employee_model->save_data($data);
-			$add = $this->Employee_model->save_logindata($logindata);
+			//$add = $this->Employee_model->save_logindata($logindata);
 			if ($add) {
 				$this->session->set_flashdata('success', "Employee added successfully!");
 			}

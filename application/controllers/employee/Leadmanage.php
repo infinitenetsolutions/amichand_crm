@@ -195,9 +195,9 @@ class Leadmanage extends CI_Controller
     $output = "";
     $l_status = $this->input->post('l_status');
     $adv_id = $this->input->post('adv_id');
-    // echo "<pre>";
-    // print_r($l_status);
-    $leadmanage_data = $this->Leadmanage->get_all_leads_by_status($l_status, $adv_id);
+    $userId = $this->session->userdata('userid');
+   
+    $leadmanage_data = $this->Leadmanage->get_all_leads_by_status_byuserId($l_status, $adv_id,$userId);
     // echo "<pre>";
     // print_r($leadmanage_data); exit;
 

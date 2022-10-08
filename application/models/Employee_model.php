@@ -48,10 +48,15 @@ class Employee_model extends CI_Model {
 	  
 	 function get_all_employee($tbl)
 	    {  
-	        $this->db->from($tbl);
-			$this->db->select('*');
-		    $res=$this->db->get();
-	        return $res->result_array();
+
+	    	return $this->db->select('*')->from($tbl)->where('id!=',1)->get()->result_array();
+		
+	        // $this->db->from($tbl);
+			
+			// $this->db->select('*');
+		    // $res=$this->db->get();
+			// $this->db->where('id!=',1);
+	        // return $res->result_array();
 	    }
 	public function count_total_employee()
 	{
