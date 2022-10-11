@@ -15,7 +15,7 @@
 							$settingData = $this->Setting->getsettingdata(1);
 
 							?>
-							<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
+<img src="<?php echo base_url() ?>upload/setting/<?= $settingData['logo'] ?>" class="logo-image" alt="logo" style="
     height: 80px;
     width: 185px;
 " />

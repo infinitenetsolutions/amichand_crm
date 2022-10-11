@@ -140,7 +140,7 @@ require_once("classes-and-objects/authentication.php");
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Allot Sales Person:</strong></label>
-                        <select class="form-control form-control-sm l_status" name="allot_sales_person" required="">
+                        <select class="form-control form-control-sm l_status" name="allot_sales_person">
                           <option value="" selected="" disabled="">Select</option>
                           <?php
                           foreach ($employee as $row) {
@@ -154,7 +154,7 @@ require_once("classes-and-objects/authentication.php");
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Allot Technical Person:</strong></label>
-                        <select class="form-control form-control-sm l_status" name="allot_technical_person" required="">
+                        <select class="form-control form-control-sm l_status" name="allot_technical_person">
                           <option value="" selected="" disabled="">Select</option>
                           <?php
                           foreach ($employee as $row) {

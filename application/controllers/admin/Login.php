@@ -17,8 +17,8 @@ class Login extends CI_Controller
 			redirect('admin/');
 		}
 		$settingData = $this->Setting->getsettingdata(1);
-		echo "<pre>";
-		print_r($settingData);
+		// echo "<pre>";
+		// print_r($settingData);
 
 
 		$this->load->view('login');

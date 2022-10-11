@@ -51,6 +51,15 @@
 			</li>
 
 
+			<li class="has-sub <?= (@$page == "Company" ? 'active' : '') ?>">
+			<a href="javascript:;"><b class="caret"></b><i class="fa fa-building"></i>
+					<span>Company Management</span></a>
+				<ul class="sub-menu">
+					<li <?= (@$sub_page == "Manage Companies" ? 'class="active"' : '') ?>><a href="<?php echo base_url(); ?>admin/company/manage_company">Manage Companies</a></li>
+				</ul>
+
+			</li>
+
 			<li class="has-sub <?= (@$page == "Employee" ? 'active' : '') ?>">
 				<a href="javascript:;"><b class="caret"></b><i class="fa fa-users"></i>
 					<span>Employee Management </span></a>

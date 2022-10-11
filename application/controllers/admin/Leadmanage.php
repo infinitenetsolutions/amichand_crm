@@ -125,7 +125,7 @@ class Leadmanage extends CI_Controller
 
   function insert_lead()
   {
-
+   
 
     $dataIns['l_advid'] = $_POST['l_advid'];
     foreach ($_POST['packets'] as $packet) {
@@ -139,8 +139,18 @@ class Leadmanage extends CI_Controller
       $dataIns['l_status'] = $packet['l_status'];
       $dataIns['l_followup'] = $packet['l_followup'];
       $dataIns['l_cmt'] = $packet['l_cmt'];
-      $dataIns['allot_sales_person'] = $packet['allot_sales_person'];
-      $dataIns['allot_technical_person'] = $packet['allot_technical_person'];
+
+      if (isset($packet['allot_sales_person'])) {
+        $dataIns['allot_sales_person'] = $packet['allot_sales_person'];
+      } else {
+        $dataIns['allot_sales_person'] = '';
+      }
+
+      if (isset($packet['allot_technical_person'])) {
+        $dataIns['allot_technical_person'] = $packet['allot_technical_person'];
+      } else {
+        $dataIns['allot_technical_person'] = '';
+      }
 
       if (($this->Leadmanage->is_data_exist('l_mno', $dataIns['l_mno']) == 0)) {
         $add = $this->Leadmanage->insert_data($dataIns);
@@ -161,7 +171,7 @@ class Leadmanage extends CI_Controller
 
   function update_lead()
   {
-   
+
     $l_id = $this->input->post('l_id');
     $data = $this->input->post();
     unset($data['l_id']);
@@ -183,7 +193,7 @@ class Leadmanage extends CI_Controller
   function update_leadtransfer()
   {
     $l_id = $this->input->post('l_id');
-   
+
     $data = $this->input->post();
     // echo "<pre>";
     // print_r($data);
@@ -261,8 +271,8 @@ class Leadmanage extends CI_Controller
 
         $semp_id =  $row['allot_sales_person'];
         $techemp_id =  $row['allot_technical_person'];
-    
-       
+
+
         // echo "<pre>";
         // print_r($semp_data);
         // echo "<pre>";
@@ -277,27 +287,23 @@ class Leadmanage extends CI_Controller
                             <td>' . $row['ref_no'] . '</td>
                             <td>' . $row['type'] . '</td>
                             <td>' . $row['l_status'] . '</td>';
-                            if ($semp_id != '') {
-                              $semp_data = $this->emp->get_semployee_data_by_id($semp_id);
-                              $output .= '<td>' . $semp_data['first_name'] . ' ' . $semp_data['last_name'] . '</td>';
+        if ($semp_id != '') {
+          $semp_data = $this->emp->get_semployee_data_by_id($semp_id);
+          $output .= '<td>' . $semp_data['first_name'] . ' ' . $semp_data['last_name'] . '</td>';
+        } else {
+          $output .= '<td></td>';
+        }
 
-                            } else{
-                              $output .= '<td></td>';
 
-                            }
-                            
+        if ($techemp_id != '') {
 
-             if($techemp_id!='') {
+          $temp_data = $this->emp->get_temployee_data_by_id($techemp_id);
+          $output .= '<td>' . $temp_data['first_name'] . ' ' . $temp_data['last_name'] . '</td>';
+        } else {
+          $output .= '<td></td>';
+        }
 
-              $temp_data = $this->emp->get_temployee_data_by_id($techemp_id);
-              $output .= '<td>' . $temp_data['first_name'] . ' ' . $temp_data['last_name'] . '</td>';
 
-            }else{
-              $output .= '<td></td>';
-
-            }
-
-        
         $output .= '<td>' . $row['l_cmt'] . '</td>
                             <td>' . $row['l_DOC'] . '</td>
                             <td>' . $row['l_followup'] . '</td>';
@@ -351,7 +357,7 @@ class Leadmanage extends CI_Controller
 
   public function editLeadTransfer()
   {
-    
+
     $lead_id = $this->input->post('lead_id');
     $leadmanage = $this->Leadmanage->get_single_lead_data($lead_id);
     // echo "<pre>";
@@ -362,7 +368,7 @@ class Leadmanage extends CI_Controller
 
 
     $output .= "<label for=''><strong>Employee:</strong></label>
-                  <input type='hidden' name='l_id' value='". $_POST['lead_id'] ."'>
+                  <input type='hidden' name='l_id' value='" . $_POST['lead_id'] . "'>
                 <select class='form-control mr-3' name='allot_sales_person'  required=''>
                     <option value=''>Select Employee</option>";
     $emp = $this->emp->get_all_employee('table_employee');
