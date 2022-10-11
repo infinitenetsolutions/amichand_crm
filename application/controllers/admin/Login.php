@@ -34,7 +34,7 @@ class Login extends CI_Controller
 
 
 		$username = $this->input->post('username', TRUE);
-		$password = $this->input->post('password', TRUE);
+		$password = md5($this->input->post('password', TRUE));
 
 
 		$validate = $this->Login_model->validate($username, $password);
