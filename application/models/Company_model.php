@@ -34,7 +34,7 @@ class Company_model extends CI_Model {
 		return $query->result_array();
 		}
 
-		$query = $this->db->get_where($this->table, array('sid' => $id));
+		$query = $this->db->get_where($this->table, array('cid' => $id));
 		return $query->row_array();
     }
 		
@@ -51,17 +51,17 @@ class Company_model extends CI_Model {
 		
 		
 	
-	function update_data($sid,$data)
+	function update($cid,$data)
     {
 		
-        return $this->db->where($this->primary_key,$sid)->update($this->table,$data);
+        return $this->db->where($this->primary_key,$cid)->update($this->table,$data);
         
     }
     
 	public function delete_data($id)
 	   {
 	
-		$this->db->where('sid', $id);
+		$this->db->where('cid ', $id);
 		$this->db->delete($this->table);
 		}
 

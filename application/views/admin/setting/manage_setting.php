@@ -85,13 +85,7 @@ body #gritter-notice-wrapper {
             </ol>
 
             <h1 class="page-header">Setting</h1>
-            <!-- <?php if($this->session->flashdata('success')): ?>
-   <p class="alert alert-success"><?php echo $this->session->flashdata('success'); ?></p> 
-<?php endif; ?>
-<?php if($this->session->flashdata('danger')): ?>
-   <p class="alert alert-danger"><?php echo $this->session->flashdata('danger'); ?></p> 
-<?php endif; ?> -->
-
+           
             <!-- <form id="TypeValidation" class="form-horizontal" action="<?php //echo base_url(); ?>admin/Setting/add_data" method="post" enctype="multipart/form-data"> -->
                 
             <form method="post" enctype="multipart/form-data" onsubmit="return insert_data(this)" id="add_data">
@@ -244,6 +238,7 @@ function insert_data(form) {
         success: function(data) {
             var response = JSON.parse(data);
             if (response.status == true) {
+                location.reload();
                 //$('#add_data')[0].reset();
                 $.gritter.add({
                     title: 'Hurray!!',
