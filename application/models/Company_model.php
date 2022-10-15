@@ -65,13 +65,7 @@ class Company_model extends CI_Model {
 		$this->db->delete($this->table);
 		}
 
-	public function is_department_exist($department_name)
-	{
-		$this->db->where('department_name',$department_name);
-		$q= $this->db->get('tbl_department')->row();
-		return $q;
-
-	}
+	
 
 	
 	

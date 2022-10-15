@@ -18,7 +18,28 @@ class Status_model extends CI_Model {
 		  $this->db->insert($this->table,$data);
 		  return true;
 				
-	  } 
+	  }
+	  
+	  
+
+	  public function update_actsalstatus($id,$status){
+
+		 $data['act_salemp'] = $status;
+		 $this->db->where('sid', $id);
+		 $this->db->update('tbl_status',$data);
+
+	  }
+
+
+	  public function update_acttechstatus($id,$status){
+
+		$data['act_techemp'] = $status;
+		$this->db->where('sid', $id);
+		$this->db->update('tbl_status',$data);
+
+	 }
+
+	  
 
 
 	  public function getAllStatusData(){
@@ -54,7 +75,8 @@ class Status_model extends CI_Model {
 	function update_data($sid,$data)
     {
 		
-        return $this->db->where($this->primary_key,$sid)->update($this->table,$data);
+        return $this->db->where($this->primary_key,$sid)
+		->update($this->table,$data);
         
     }
     
@@ -65,14 +87,7 @@ class Status_model extends CI_Model {
 		$this->db->delete($this->table);
 		}
 
-	public function is_department_exist($department_name)
-	{
-		$this->db->where('department_name',$department_name);
-		$q= $this->db->get('tbl_department')->row();
-		return $q;
-
-	}
-
+	
 	
 	
 }

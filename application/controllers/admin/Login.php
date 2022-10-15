@@ -38,14 +38,16 @@ class Login extends CI_Controller
 
 
 		$validate = $this->Login_model->validate($username, $password);
+		// echo "<pre>";
+		// print_r($validate); exit;
     
 		if (!empty($validate)) {
           //$rows=$validate
            // print_r($rows);
-			//foreach ($validate as $rows) {
-				$userid  = $validate['admin_id'];
-				$name  = $validate['username'];
-				$level = $validate['user_level'];
+			foreach ($validate as $rows) {
+				$userid  = $rows['id'];
+				$name  = $rows['username'];
+				$level = $rows['user_level'];
 				
 				// $admin_type = $data['admin_type'];
 				// $permission = $rows['permission'];
@@ -74,7 +76,7 @@ class Login extends CI_Controller
 					$this->session->set_flashdata('msg', "<div style='color:red;'>Username and Password is required");
 					redirect(base_url() . "");
 				}
-			//}
+			}
 		} else {
 			$this->session->set_flashdata('msg', "<div style='color:red;'>Incorrect username or password");
 			redirect(base_url() . "");

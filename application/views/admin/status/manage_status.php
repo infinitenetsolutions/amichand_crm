@@ -82,7 +82,6 @@ body #gritter-notice-wrapper {
 <li class="breadcrumb-item"><a href="javascript:;">Manage Status</a></li>
 </ol>
 
-
 <h5 class="page-header">Manage Status 
 
 <?php if($this->session->flashdata('msgg')): ?>
@@ -150,9 +149,8 @@ body #gritter-notice-wrapper {
                         </div>
                         </td>
                       <td>
-                      <!--<a rel="tooltip" title="View" class="btn btn-link btn-info table-action view" href="single_client_view/<?php echo $row->id;?>">
-                      <i class="fa fa-image"></i>
-                      </a>-->
+                      <button type="button" uid="<?php echo $row->sid; ?>" class=" status_checksbtn <?php echo ($row->act_salemp == 1) ? "btn-primary" : "btn-success"; ?> "><?php echo ($row->act_salemp == 1) ? "Deactivate Sales Person" : "Activate Sales Person"; ?></button>
+                      <button type="button" uid="<?php echo $row->sid; ?>" class=" status_checktbtn <?php echo ($row->act_techemp == 1) ? "btn-primary" : "btn-success"; ?> "><?php echo ($row->act_techemp == 1) ? "Deactivate Technical Person" : "Activate Technical Person"; ?></button>
 
                       <a rel="tooltip" title="Edit" class="btn btn-link btn-sm btn-warning text-light table-action edit" data-id="<?php echo $row->sid; ?>">
                       <i class="fa fa-edit"></i>
@@ -233,10 +231,8 @@ body #gritter-notice-wrapper {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="<?=base_url()?>assets/plugins/gritter/js/jquery.gritter.js"></script>
  <script> 
-         $(document).ready(function(){
-
-                // onclick edit btn 
-                $(".edit").click(function(){
+        // onclick edit btn 
+        $(".edit").click(function(){
                      var elmId = $(this).data("id");
                      //console.log(elmId);
                      $("#edit_status_row_"+elmId+' p').hide();
@@ -283,5 +279,76 @@ body #gritter-notice-wrapper {
 
                    })//end ajax
                  });
-            });           
+                       
+
+                 
+
+   $(document).on('click','.status_checktbtn',function() { 
+
+  var status = ($(this).hasClass("btn-success")) ? '1' : '0'; 
+  var msg = (status=='0')? 'Deactivate Technical Person' : 'Activate Technical Person'; 
+
+   if(confirm("Are you sure to "+ msg))
+  { 
+
+   var id = $(this).attr('uid'); //get attribute value in variable
+   url = "<?php echo base_url('admin/Status/update_acttechstatus'); ?>";
+
+       $.ajax({
+         type:"POST",
+         url: url, 
+         data: {"id":id,"status":status}, 
+         success: function(data) { 
+       // if you want reload the page
+       location.reload();
+        //if you want without reload
+         if(status == '1'){
+           current_element.removeClass('btn-success');
+           current_element.addClass('btn-danger');
+           current_element.html('Deactivate');
+         }else{
+           current_element.removeClass('btn-danger');
+           current_element.addClass('btn-success');
+           current_element.html('Activate');
+         }
+   } });
+}  
+});
+
+
+
+   $(document).on('click','.status_checksbtn',function() { 
+  
+
+   var status = ($(this).hasClass("btn-success")) ? '1' : '0'; 
+   var msg = (status=='0')? 'Deactivate Sales Person' : 'Activate Sales Person'; 
+    if(confirm("Are you sure to "+ msg))
+   { 
+
+    var id = $(this).attr('uid'); //get attribute value in variable
+    url = "<?php echo base_url('admin/Status/update_actsalstatus'); ?>";
+ 
+        $.ajax({
+          type:"POST",
+          url: url, 
+          data: {"id":id,"status":status}, 
+          success: function(data) { 
+         // if you want reload the page
+         location.reload();
+         // if you want without reload
+          if(status == '1'){
+            current_element.removeClass('btn-success');
+            current_element.addClass('btn-danger');
+            current_element.html('Deactivate');
+          }else{
+            current_element.removeClass('btn-danger');
+            current_element.addClass('btn-success');
+            current_element.html('Activate');
+          }
+    } });
+ }  
+ });
+
+
+          
         </script>

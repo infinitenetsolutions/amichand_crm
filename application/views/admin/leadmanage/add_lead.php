@@ -69,7 +69,14 @@ require_once("classes-and-objects/authentication.php");
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Company Name:</strong></label>
-                        <input class="form-control form-control-sm" type="text" name="company_name" required="true" placeholder="">
+                        <select class="form-control form-control-sm" name="company_name" required="">
+                          <option value="" selected="" disabled="">Select Company</option>
+                          <?php
+                          foreach ($company as $row) { ?>
+                            <option value="<?= $row["cid"] ?>"><?= $row["c_name"] ?></option>
+
+                         <?php  }  ?>
+                        </select>
                       </div>
                     </div>
 

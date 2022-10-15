@@ -33,7 +33,7 @@ class Leadmanage extends CI_Controller
     $this->load->model('Leadmanage_model', 'Leadmanage');
     $this->load->model('Employee_model', 'emp');
     $this->load->model('Status_model', 'status');
-    //$this->load->model('Payroll_model');
+    $this->load->model('Company_model','company');
 
     $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
   }
@@ -47,7 +47,7 @@ class Leadmanage extends CI_Controller
     $this->data['Product'] = $this->pm->getAllProductsData();
     $this->data['Status'] = $this->status->getAllStatusData();
     $this->data['employee'] = $this->emp->get_all_employee('table_employee');
-
+    $this->data['company'] = $this->company->getAllData();
 
 
     $this->load->view('admin/include/header', $this->data);
@@ -221,14 +221,13 @@ class Leadmanage extends CI_Controller
 
   public function fetch_all_lead_by_status()
   {
+    
     $output = "";
     $l_status = $this->input->post('l_status');
     $adv_id = $this->input->post('adv_id');
-    // echo "<pre>";
-    // print_r($l_status);
+   
     $leadmanage_data = $this->Leadmanage->get_all_leads_by_status($l_status, $adv_id);
-    // echo "<pre>";
-    // print_r($leadmanage_data); exit;
+   
 
     $output .= '<div class="panel-body">
                          <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
@@ -268,6 +267,7 @@ class Leadmanage extends CI_Controller
         // print_r($leadmanage_data);
         $adv_data = $this->Advertisement->get_single_adv_data($row['l_advid']);
         $status_data = $this->status->get_singledata_byId($row['l_status']);
+        $cmp_data = $this->company->get_singledata_byId($row['company_name']);
 
         $semp_id =  $row['allot_sales_person'];
         $techemp_id =  $row['allot_technical_person'];
@@ -281,7 +281,7 @@ class Leadmanage extends CI_Controller
         $output .= '<tr><td>' . $cnt . '</td>
 	                          <td> ' . $adv_data['adv_name'] . '</td>
                              <td>' . $row['cp_name'] . '</td>
-                             <td>' . $row['company_name'] . '</td>
+                             <td>' . $cmp_data['c_name'] . '</td>
                             <td>' . $row['l_mno'] . '</td>
                             <td>' . $row['l_email'] . '</td>
                             <td>' . $row['ref_no'] . '</td>
@@ -315,17 +315,19 @@ class Leadmanage extends CI_Controller
                                         <td>' . $row['quoted_price'] . '</td>
                                         <td>' . $row['order_val'] . '</td>';
         }
+
+        if ($l_status == 'TODAY' || $l_status == 'FAILED') {
+          $output .= '<td><button type="button" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                    
+                   <button type="button" class="btn btn-sm btn-success" onclick=editLeadTransfer(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
+                    </button>
+                    </td>';
+        }
       }
 
 
-      if ($l_status == 'TODAY' || $l_status == 'FAILED') {
-        $output .= '<td><button type="button" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  </button>
-                  
-                 <button type="button" class="btn btn-sm btn-success" onclick=editLeadTransfer(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
-                  </button>
-                  </td>';
-      }
+      
     }
     $output .= '</tr>';
     $cnt++;

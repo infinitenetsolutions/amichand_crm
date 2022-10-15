@@ -83,6 +83,27 @@ class Status extends CI_Controller {
 	 			// }	
             echo json_encode($data);
         }
+
+		public function update_actsalstatus(){
+          
+			$status = $this->input->post('status');
+			$id = $this->input->post('id');
+		
+			$this->status->update_actsalstatus($id,$status);
+		}
+
+
+		
+		public function update_acttechstatus(){
+          
+			$status = $this->input->post('status');
+			$id = $this->input->post('id');
+		    
+			$this->status->update_acttechstatus($id,$status);
+		}
+
+
+
 	
 	 public  function delete_status($cid)
 	{
