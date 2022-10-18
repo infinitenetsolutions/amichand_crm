@@ -21,6 +21,29 @@ class Status_model extends CI_Model {
 	  }
 	  
 	  
+	  public function getAllsalesempStatusData($sales){
+
+		
+		return $this->db->select('*')
+		->from($this->table)
+		->where('act_salemp',$sales)
+		->get()->result_array();
+
+
+	 }
+
+	 public function getAlltechempStatusData($sales){
+
+		
+		return $this->db->select('*')
+		->from($this->table)
+		->where('act_techemp',$sales)
+		->get()->result_array();
+
+
+	 }
+
+	 
 
 	  public function update_actsalstatus($id,$status){
 

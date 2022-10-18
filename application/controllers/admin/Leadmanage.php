@@ -105,6 +105,41 @@ class Leadmanage extends CI_Controller
 
   }
 
+
+  
+
+  function fetch_statusdata()
+  {
+    $output = '';
+    $employee = $this->status->getAllsalesempStatusData('1');
+   
+				$output = '<option value="" disabled selected>Select Lead Status</option>';
+				foreach ($employee as $row) {
+					$output .= '<option value="' . $row['status_name'] . '">' . $row['status_name'] . '</option>';
+				}
+		
+    echo  $output;
+  }
+
+
+  function fetch_techstatusdata()
+  {
+    $output = '';
+    $employee = $this->status->getAlltechempStatusData('1');
+   
+				$output = '<option value="" disabled selected>Select Lead Status</option>';
+				foreach ($employee as $row) {
+					$output .= '<option value="' . $row['status_name'] . '">' . $row['status_name'] . '</option>';
+				}
+		
+    echo  $output;
+  }
+
+
+
+  
+
+
   function fetch_employee_name($pro_id)
   {
     $output = '';
@@ -118,6 +153,12 @@ class Leadmanage extends CI_Controller
         $output .= '<option value="' . $row['id'] . '">' . $row['first_name'] . '</option>';
       }
     }
+
+
+
+
+
+    
     echo  $output;
   }
 
@@ -126,47 +167,108 @@ class Leadmanage extends CI_Controller
   function insert_lead()
   {
    
+    // echo "<pre>";
+    // print_r($_POST); exit;
+     //$dataIns['l_advid'] = $_POST['l_advid'];
+    // echo "<pre>";
+    // print_r($_POST['packets']); exit;
+    // foreach ($_POST['packets'] as $packet) {
 
-    $dataIns['l_advid'] = $_POST['l_advid'];
-    foreach ($_POST['packets'] as $packet) {
+    //   $dataIns['cp_name'] = $packet['cp_name'];
+    //   $dataIns['company_name'] = $packet['company_name'];
+    //   $dataIns['l_mno'] = $packet['l_mno'];
+    //   $dataIns['l_email'] = $packet['l_email'];
+    //   $dataIns['ref_no'] = $packet['ref_no'];
+    //   $dataIns['type'] = $packet['type'];
+    //   $dataIns['l_status'] = $packet['l_status'];
+    //   $dataIns['l_followup'] = $packet['l_followup'];
+    //   $dataIns['l_cmt'] = $packet['l_cmt']; 
 
-      $dataIns['cp_name'] = $packet['cp_name'];
-      $dataIns['company_name'] = $packet['company_name'];
-      $dataIns['l_mno'] = $packet['l_mno'];
-      $dataIns['l_email'] = $packet['l_email'];
-      $dataIns['ref_no'] = $packet['ref_no'];
-      $dataIns['type'] = $packet['type'];
-      $dataIns['l_status'] = $packet['l_status'];
-      $dataIns['l_followup'] = $packet['l_followup'];
-      $dataIns['l_cmt'] = $packet['l_cmt'];
+    //   if (isset($packet['allot_sales_person'])) {
+    //     $dataIns['allot_sales_person'] = $packet['allot_sales_person'];
+    //   } else {
+    //     $dataIns['allot_sales_person'] = '';
+    //   }
 
-      if (isset($packet['allot_sales_person'])) {
-        $dataIns['allot_sales_person'] = $packet['allot_sales_person'];
-      } else {
-        $dataIns['allot_sales_person'] = '';
-      }
+    //   if (isset($packet['allot_technical_person'])) {
+    //     $dataIns['allot_technical_person'] = $packet['allot_technical_person'];
+    //   } else {
+    //     $dataIns['allot_technical_person'] = '';
+    //   }
 
-      if (isset($packet['allot_technical_person'])) {
-        $dataIns['allot_technical_person'] = $packet['allot_technical_person'];
-      } else {
-        $dataIns['allot_technical_person'] = '';
-      }
+    //   if (($this->Leadmanage->is_data_exist('l_mno', $dataIns['l_mno']) == 0)) {
+    //     $add = $this->Leadmanage->insert_data($dataIns);
+    //   } else {
+    //     echo "working";
+    //   }
+    //   if ($add) {
+    //     $data['status'] = true;
+    //     $data['msg'] = 'Advertisement leads add successfully!';
+    //   } else {
+    //     $data['status'] = false;
+    //     $data['msg'] = 'Unable to added advertisement information!';
+    //   }
+    // }
 
-      if (($this->Leadmanage->is_data_exist('l_mno', $dataIns['l_mno']) == 0)) {
-        $add = $this->Leadmanage->insert_data($dataIns);
-      } else {
-        echo "working";
-      }
+    // echo json_encode($data);
+
+    if (!empty($_POST)) {
+      for ($i = 0; $i < count($_POST['l_email']); $i++)
+      {    
+      $validMobile=preg_match('/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/', $_POST['l_mno'][$i]);
+      if($validMobile=='0'){
+          $data['status']=false;
+          $data['msg']='Please enter a valid mobile number';
+              
+          }
+          else
+          {
+              
+              
+          } 
+         
+          $dataIns['l_advid'] = $_POST['l_advid'];       
+          $dataIns['cp_name'] = $_POST['cp_name'][$i];
+          $dataIns['company_name'] = $_POST['company_name'][$i];
+          $dataIns['l_mno'] = $_POST['l_mno'][$i];
+          $dataIns['l_email'] = $_POST['l_email'][$i];
+          $dataIns['ref_no'] = $_POST['ref_no'][$i];
+          $dataIns['type'] = $_POST['type'][$i];
+          $dataIns['l_status'] = $_POST['l_status'][$i];
+          $dataIns['l_followup'] = $_POST['l_followup'][$i];
+          $dataIns['l_cmt'] = $_POST['l_cmt'][$i];
+
+          if (isset($_POST['allot_sales_person'])) {
+                $dataIns['allot_sales_person'] = $_POST['allot_sales_person'][$i];
+              } else {
+                $dataIns['allot_sales_person'] = '';
+              }
+        
+              if (isset($_POST['allot_technical_person'])) {
+                $dataIns['allot_technical_person'] = $_POST['allot_technical_person'][$i];
+              } else {
+                $dataIns['allot_technical_person'] = '';
+              }
+        
+          if(($this->Leadmanage->is_data_exist('l_mno',$dataIns['l_mno'])==0))
+          {
+           $add = $this->Leadmanage->insert_data($dataIns);
+          }
+        }
       if ($add) {
-        $data['status'] = true;
-        $data['msg'] = 'Advertisement leads add successfully!';
-      } else {
-        $data['status'] = false;
-        $data['msg'] = 'Unable to added advertisement information!';
-      }
+          $data['status']=true;
+          $data['msg']='Advertisement leads add successfully!';
+      }else{
+         $data['status']=false;
+        $data['msg']='Unable to added advertisement information!';
+      } 
     }
+     echo json_encode($data);
 
-    echo json_encode($data);
+
+
+
+
   }
 
   function update_lead()
