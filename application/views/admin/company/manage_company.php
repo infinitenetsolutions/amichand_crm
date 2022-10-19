@@ -122,7 +122,8 @@ body #gritter-notice-wrapper {
                         <thead>
                             <tr>
                                 <th class="text-nowrap">S NO</th>
-                                <th class="text-nowrap">Company Name</th>
+                                <th class="text-nowrap">Company<br> Name</th>
+                                <th class="text-nowrap">Department</th>
                                 <th class="text-nowrap">Email</th>
                                 <th class="text-nowrap">Mobile No</th>
                                 <th class="text-nowrap">GST No</th>
@@ -168,6 +169,13 @@ body #gritter-notice-wrapper {
                                                                                 <input class="form-control" type="hidden" name="cid" value="<?= $row['cid'] ?>" >
                                                                                 <input class="form-control" type="text" name="c_name" value="<?= $row['c_name'] ?>">
 
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="" class="control-label"><strong>Department:</strong></label>
+                                                                                <input class="form-control" type="text" name="c_depart" value="<?= $row['c_depart'] ?>">
                                                                             </div>
                                                                         </div>
 
@@ -303,6 +311,7 @@ body #gritter-notice-wrapper {
                                     <tr>
                                         <td><?php echo $cnt++; ?></td>
                                         <td><?php echo $row['c_name']; ?></td>
+                                        <td><?php echo $row['c_depart']; ?></td>
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['ph_no']; ?></td>
                                         <td><?php echo $row['gst_no']; ?></td>
@@ -392,6 +401,13 @@ body #gritter-notice-wrapper {
 
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <label for="department_name" class="control-label"><strong>Department:</strong></label>
+                                    <input class="form-control" type="text" name="c_depart" id="" required="true">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <label for="department_name" class="control-label"><strong>Email Id:</strong></label>
                                     <input class="form-control" type="text" name="email" id="" required="true">
                                 </div>
@@ -422,7 +438,7 @@ body #gritter-notice-wrapper {
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="" class="control-label"><strong>Upload GST Doc:</strong></label>
-                                    <input class="form-control" type="file" name="gst_doc" id="" onchange="readURL1(this);">
+                                    <input class="form-control" type="file" name="gst_doc" id="" onclick="readURL1(this);">
                                     <img id="gst_doc" src="#" alt="your image" style="width: 200px;height: 150px;" />
                                 </div>
                             </div>

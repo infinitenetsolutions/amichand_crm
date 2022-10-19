@@ -37,6 +37,7 @@ class Company extends CI_Controller
 		$postData = array(
 
 			'c_name' => $this->input->post('c_name'),
+			'c_depart' => $this->input->post('c_depart'),
 			'email' => $this->input->post('email'),
 			'ph_no' => $this->input->post('ph_no'),
 			'address' => $this->input->post('address'),
@@ -152,6 +153,7 @@ class Company extends CI_Controller
 		if ($_POST) {
 
 			$data['c_name'] = $this->input->post('c_name');
+			$data['c_depart'] = $this->input->post('c_depart');
 			$data['email'] = $this->input->post('email');
 			$data['ph_no'] = $this->input->post('ph_no');
 			$data['address'] = $this->input->post('address');

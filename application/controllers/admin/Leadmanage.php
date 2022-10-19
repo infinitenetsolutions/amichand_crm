@@ -40,6 +40,7 @@ class Leadmanage extends CI_Controller
 
 
   public function add_lead()
+  
   {
     $this->data['page'] = 'advertisement';
     $this->data['sub_page'] = 'manage_advrtisment';
@@ -330,6 +331,8 @@ class Leadmanage extends CI_Controller
     $adv_id = $this->input->post('adv_id');
    
     $leadmanage_data = $this->Leadmanage->get_all_leads_by_status($l_status, $adv_id);
+    // echo "<pre>";
+    // print_r($leadmanage_data); exit;
    
 
     $output .= '<div class="panel-body">
