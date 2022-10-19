@@ -122,6 +122,56 @@ class Company extends CI_Controller
 	// 	}
 
 
+	
+ 
+
+	function fetch_companydepart()
+	{
+		//  echo $this->input->post('cid');
+		  
+			$q = $this->company->fetch_company_designation($this->input->post('cid'));
+			// echo "<pre>";
+			// print_r($q); 
+			if (count($q) > 0) {
+				$output = '<option value="" disabled selected>Select Department</option>';
+				foreach ($q as $row) {
+					$output .= '<option value="' . $row['cid'] . '">' . $row['c_depart'] . '</option>';
+				}
+			} else {
+				$output = '<option value="" disabled selected>No Department</option>';
+			}
+		
+		echo  $output;
+	}
+
+
+	
+
+	function fetch_authcompanydetails()
+	{
+		  
+			$q = $this->company->fetch_authcompanydetails($this->input->post('cid'));
+			// echo "<pre>";
+			// print_r($q); 
+			if (count($q) > 0) {
+				// $output = '<option value="" disabled selected>Select Department</option>';
+				foreach ($q as $row) {
+					$output = ' <div class="row"> <div class="col-md-3"><div class="form-group"> <label for=""><strong>Name:</strong></label><input class="form-control form-control-sm" type="text" name="auth_name[]" value="' . $row['auth_name'] . '" readonly></div>
+					</div>
+	';
+					$output .= '<div class="col-md-3"><div class="form-group"> <label for=""><strong>Phone No:</strong></label><input class="form-control form-control-sm" type="text" name="auth_phno[]" value="' . $row['auth_phno'] . '" readonly></div>
+					</div> ';
+					$output .= '<div class="col-md-3"><div class="form-group"> <label for=""><strong>Email:</strong></label><input class="form-control form-control-sm" type="text" name="auth_email[]" value="' . $row['auth_email'] . '" readonly></div></div> </div>';
+
+					
+				}
+			} else {
+				$output = '<option value="" disabled selected>No Data</option>';
+			}
+		
+		echo  $output;
+	}
+
 
 
 

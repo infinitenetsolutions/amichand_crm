@@ -40,7 +40,7 @@
                 <div class="col-md-3">
                   <div class="form-group">
                   <label for=""><strong>Company Name:</strong></label>
-                        <select class="form-control form-control-sm" name="company_name[]" required="">
+                        <select class="form-control form-control-sm" id="company_name" name="company_name[]" required="">
                           <option value="" selected="" disabled="">Select Company</option>
                           <?php
                           foreach ($company as $row) { ?>
@@ -50,6 +50,14 @@
                         </select>
                   </div>
                 </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                  <label for=""><strong>Department Name:</strong></label>
+                  <select class="form-control form-control-sm" id="c_depart" name="c_depart[]"></select>
+                  </div>
+                </div>
+   
                 <div class="col-md-3">
                   <div class="form-group">
                   <label for=""><strong>Mobile No:</strong></label>
@@ -57,6 +65,11 @@
                         <span class="mobileNo_msg text-danger"></span>
                   </div>
                 </div>
+                <div id="authdetail" class="col-md-12" style="display:none">
+                
+                </div>
+
+
                 <div class="col-md-3">
                   <div class="form-group">
                   <label for=""><strong>Email:</strong></label>
@@ -194,6 +207,38 @@ $('#allot_technical_person').change(function(){
      {
          //console.log(data);
         $('#techl_status').html(data);
+     }
+    });
+   
+  });
+
+
+  $('#company_name').change(function(){
+    var cid = $(this).val();
+    $.ajax({
+     url:"<?php echo base_url(); ?>admin/Company/fetch_companydepart",
+     method:"POST",
+     data:{"cid":cid},
+     success:function(data)
+     {
+        $('#c_depart').html(data);
+     }
+    });
+   
+  });
+
+  $('#c_depart').change(function(){
+    var cid = $(this).val();
+    $.ajax({
+     url:"<?php echo base_url(); ?>admin/Company/fetch_authcompanydetails",
+     method:"POST",
+     data:{"cid":cid},
+     success:function(data)
+     {
+      document.getElementById('authdetail').style.display = "block";
+
+        $('#authdetail').html(data);
+
      }
     });
    

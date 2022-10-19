@@ -26,6 +26,33 @@ class Company_model extends CI_Model {
 	}
 
 	
+
+	public function fetch_company_designation($cid){
+
+		
+		return $this->db->select('*')
+		->from($this->table)
+		->where('cid',$cid)
+		->get()->result_array();
+
+
+	 }
+
+	 public function fetch_authcompanydetails($cid){
+
+		
+		return $this->db->select('*')
+		->from($this->table)
+		->where('cid',$cid)
+		->get()->result_array();
+
+
+	 }
+
+	 
+
+
+	
 	public function get_singledata_byId($id = 0)
     {
 		if ($id === 0)

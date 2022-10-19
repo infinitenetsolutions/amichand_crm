@@ -35,11 +35,11 @@ class Leadmanage extends CI_Controller
     $this->load->model('Status_model', 'status');
     $this->load->model('Company_model','company');
 
-    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
   }
 
 
-  public function add_lead()
+  public function add_lead()git 
   
   {
     $this->data['page'] = 'advertisement';
