@@ -108,6 +108,15 @@
                       </div>
                     </div>
 
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for=""><strong>Lead Status:</strong></label>
+                        <select class="form-control form-control-sm l_status" id="l_status" name="l_status[]">
+                         
+                        </select>
+                      </div>
+                    </div>
+
 
                     <div class="col-md-3">
                       <div class="form-group">
@@ -125,11 +134,13 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Lead Status:</strong></label>
-                        <select class="form-control form-control-sm l_status" id="l_status" name="l_status[]">
+                        <select class="form-control form-control-sm l_status" id="techl_status" name="techl_status[]">
                          
                         </select>
                       </div>
                     </div>
+
+                  
 
                
                 <div class="col-md-3">
@@ -182,7 +193,7 @@ $('#allot_technical_person').change(function(){
      success:function(data)
      {
          //console.log(data);
-        $('#l_status').html(data);
+        $('#techl_status').html(data);
      }
     });
    

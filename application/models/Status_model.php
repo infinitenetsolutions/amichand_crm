@@ -45,18 +45,29 @@ class Status_model extends CI_Model {
 
 	 
 
-	  public function update_actsalstatus($id,$status){
+	  public function update_actsalstatus($id,$status,$username){
 
 		 $data['act_salemp'] = $status;
+		 $data['modified_by'] = $username;
+		 if($status ==1){
+		 $data['change_status_to'] = 'Changed status Inactive to Active';
+		 }
+
+		 if($status ==0){
+			$data['change_status_to'] = 'Changed status Active to Inactive';
+			}
+		
 		 $this->db->where('sid', $id);
 		 $this->db->update('tbl_status',$data);
 
 	  }
 
 
-	  public function update_acttechstatus($id,$status){
+	  public function update_acttechstatus($id,$status,$username){
 
 		$data['act_techemp'] = $status;
+		$data['modified_by'] = $username;
+		
 		$this->db->where('sid', $id);
 		$this->db->update('tbl_status',$data);
 

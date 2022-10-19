@@ -35,7 +35,7 @@ class Leadmanage extends CI_Controller
     $this->load->model('Status_model', 'status');
     $this->load->model('Company_model','company');
 
-    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
   }
 
 
@@ -235,6 +235,7 @@ class Leadmanage extends CI_Controller
           $dataIns['ref_no'] = $_POST['ref_no'][$i];
           $dataIns['type'] = $_POST['type'][$i];
           $dataIns['l_status'] = $_POST['l_status'][$i];
+          $dataIns['techl_status'] = $_POST['techl_status'][$i];
           $dataIns['l_followup'] = $_POST['l_followup'][$i];
           $dataIns['l_cmt'] = $_POST['l_cmt'][$i];
 
@@ -342,9 +343,10 @@ class Leadmanage extends CI_Controller
                           <th class="text-nowrap">Email</th>
                           <th class="text-nowrap">Ref No.</th>
                           <th class="text-nowrap">Type</th>
-                          <th class="text-nowrap">Status</th>
                           <th class="text-nowrap">Allot Sales Person</th>
+                          <th class="text-nowrap">Sales<br>Lead Status</th>
                           <th class="text-nowrap">Allot Technical Person</th>
+                          <th class="text-nowrap">Technical<br>Lead Status</th>
                           <th class="text-nowrap">Comment</th>
                           <th class="text-nowrap">Create <br>Date</th>
                           <th class="text-nowrap">Follow Up<br> Date</th>';
@@ -387,8 +389,8 @@ class Leadmanage extends CI_Controller
                             <td>' . $row['l_mno'] . '</td>
                             <td>' . $row['l_email'] . '</td>
                             <td>' . $row['ref_no'] . '</td>
-                            <td>' . $row['type'] . '</td>
-                            <td>' . $row['l_status'] . '</td>';
+                            <td>' . $row['type'] . '</td>';
+                         
         if ($semp_id != '') {
           $semp_data = $this->emp->get_semployee_data_by_id($semp_id);
           $output .= '<td>' . $semp_data['first_name'] . ' ' . $semp_data['last_name'] . '</td>';
@@ -396,7 +398,7 @@ class Leadmanage extends CI_Controller
           $output .= '<td></td>';
         }
 
-
+        $output .= '<td>' . $row['l_status'] . '</td>';
         if ($techemp_id != '') {
 
           $temp_data = $this->emp->get_temployee_data_by_id($techemp_id);
@@ -404,6 +406,7 @@ class Leadmanage extends CI_Controller
         } else {
           $output .= '<td></td>';
         }
+        $output .= '<td>' . $row['techl_status'] . '</td>';
 
 
         $output .= '<td>' . $row['l_cmt'] . '</td>

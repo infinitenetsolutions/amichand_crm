@@ -149,8 +149,8 @@ body #gritter-notice-wrapper {
                         </div>
                         </td>
                       <td>
-                      <button type="button" uid="<?php echo $row->sid; ?>" class=" status_checksbtn <?php echo ($row->act_salemp == 1) ? "btn-primary" : "btn-success"; ?> "><?php echo ($row->act_salemp == 1) ? "Deactivate Sales Person" : "Activate Sales Person"; ?></button>
-                      <button type="button" uid="<?php echo $row->sid; ?>" class=" status_checktbtn <?php echo ($row->act_techemp == 1) ? "btn-primary" : "btn-success"; ?> "><?php echo ($row->act_techemp == 1) ? "Deactivate Technical Person" : "Activate Technical Person"; ?></button>
+                      <button type="button" title="<?php echo ($row->act_salemp == 1) ? "Inactive Sales Person" : "Active Sales Person"; ?>" uid="<?php echo $row->sid; ?>" class=" status_checksbtn <?php echo ($row->act_salemp == 1) ? "btn-primary" : "btn-success"; ?> "><?php echo ($row->act_salemp == 1) ? "Inactive" : "Active"; ?></button>
+                      <button type="button" title="<?php echo ($row->act_techemp == 1) ? "Inactive Sales Person" : "Active Sales Person"; ?>" uid="<?php echo $row->sid; ?>" class=" status_checktbtn <?php echo ($row->act_techemp == 1) ? "btn-primary" : "btn-success"; ?> "><?php echo ($row->act_techemp == 1) ? "Inactive" : "Active"; ?></button>
 
                       <a rel="tooltip" title="Edit" class="btn btn-link btn-sm btn-warning text-light table-action edit" data-id="<?php echo $row->sid; ?>">
                       <i class="fa fa-edit"></i>
@@ -286,7 +286,8 @@ body #gritter-notice-wrapper {
    $(document).on('click','.status_checktbtn',function() { 
 
   var status = ($(this).hasClass("btn-success")) ? '1' : '0'; 
-  var msg = (status=='0')? 'Deactivate Technical Person' : 'Activate Technical Person'; 
+  var msg = (status=='0')? 'Inactive Technical Person' : 'Active Technical Person'; 
+  var userName = "<?php echo $_SESSION['username'] ?>";
 
    if(confirm("Are you sure to "+ msg))
   { 
@@ -321,7 +322,9 @@ body #gritter-notice-wrapper {
   
 
    var status = ($(this).hasClass("btn-success")) ? '1' : '0'; 
-   var msg = (status=='0')? 'Deactivate Sales Person' : 'Activate Sales Person'; 
+   var msg = (status=='0')? 'Inactive Sales Person' : 'Active Sales Person';
+   var userName = "<?php echo $_SESSION['username'] ?>";
+   
     if(confirm("Are you sure to "+ msg))
    { 
 
@@ -331,11 +334,12 @@ body #gritter-notice-wrapper {
         $.ajax({
           type:"POST",
           url: url, 
-          data: {"id":id,"status":status}, 
+          data: {"id":id,"status":status,"userName":userName}, 
           success: function(data) { 
+            //console.log(data); exit;
          // if you want reload the page
          location.reload();
-         // if you want without reload
+         //if you want without reload
           if(status == '1'){
             current_element.removeClass('btn-success');
             current_element.addClass('btn-danger');

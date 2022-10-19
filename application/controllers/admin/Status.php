@@ -88,8 +88,9 @@ class Status extends CI_Controller {
           
 			$status = $this->input->post('status');
 			$id = $this->input->post('id');
+			$username = $this->input->post('userName');
 		
-			$this->status->update_actsalstatus($id,$status);
+			$this->status->update_actsalstatus($id,$status,$username);
 		}
 
 
@@ -98,8 +99,9 @@ class Status extends CI_Controller {
           
 			$status = $this->input->post('status');
 			$id = $this->input->post('id');
+			$username = $this->input->post('userName');
 		    
-			$this->status->update_acttechstatus($id,$status);
+			$this->status->update_acttechstatus($id,$status,$username);
 		}
 
 
