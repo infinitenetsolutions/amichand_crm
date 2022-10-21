@@ -221,11 +221,11 @@ $(document).ready(function () {
       });
   }
 
-  function editLeadData(lead_id) {
+  function editLeadData(lead_id,emp_id,techemp_id) {
     $.ajax({
       type: "POST",
       url: "<?php echo base_url();?>admin/leadmanage/editLeadData",      
-      data:{"lead_id":lead_id},
+      data:{"lead_id":lead_id,"emp_id":emp_id,"techemp_id":techemp_id},
       success: function(data){
         $('#form-data').html(data);
             $(".startDateTime").datetimepicker({

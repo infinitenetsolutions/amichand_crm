@@ -156,12 +156,12 @@ class Company extends CI_Controller
 			if (count($q) > 0) {
 				// $output = '<option value="" disabled selected>Select Department</option>';
 				foreach ($q as $row) {
-					$output = ' <div class="row"> <div class="col-md-3"><div class="form-group"> <label for=""><strong>Name:</strong></label><input class="form-control form-control-sm" type="text" name="auth_name[]" value="' . $row['auth_name'] . '" readonly></div>
+                $output = ' <div class="row"> <div class="col-md-3"><div class="form-group"> <label for=""><strong>Name:</strong></label><input class="form-control form-control-sm" type="text" name="" value="' . $row['auth_name'] . '" readonly></div>
 					</div>
 	';
-					$output .= '<div class="col-md-3"><div class="form-group"> <label for=""><strong>Phone No:</strong></label><input class="form-control form-control-sm" type="text" name="auth_phno[]" value="' . $row['auth_phno'] . '" readonly></div>
+					$output .= '<div class="col-md-3"><div class="form-group"> <label for=""><strong>Phone No:</strong></label><input class="form-control form-control-sm" type="text" name="" value="' . $row['auth_phno'] . '" readonly></div>
 					</div> ';
-					$output .= '<div class="col-md-3"><div class="form-group"> <label for=""><strong>Email:</strong></label><input class="form-control form-control-sm" type="text" name="auth_email[]" value="' . $row['auth_email'] . '" readonly></div></div> </div>';
+					$output .= '<div class="col-md-3"><div class="form-group"> <label for=""><strong>Email:</strong></label><input class="form-control form-control-sm" type="text" name="" value="' . $row['auth_email'] . '" readonly></div></div> </div>';
 
 					
 				}

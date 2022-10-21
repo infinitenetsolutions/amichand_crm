@@ -887,7 +887,9 @@ class Advertisement extends CI_Controller
         $output = "";
         $adv_status = $this->input->post('adv_status');
         $adv_category = $this->input->post('adv_category');
+        
         $data = $this->Advertisement->get_all_adv_by_status($adv_status, $adv_category);
+        
       if(($this->input->post('adv_category')=='AGENTBROKER') || ($this->input->post('adv_category')=='SALESMARKETING')){
 
               $output .= '<div class="panel-body">

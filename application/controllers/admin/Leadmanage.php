@@ -1,5 +1,5 @@
  <?php
-  // require_once("classes-and-objects/config.php");
+  // require_once("classes-anfet-objects/config.php");
   // require_once("classes-and-objects/veriables.php"); 
   //require_once("classes-and-objects/authentication.php");
   //require_once("classes-and-objects/PHPExcel/PHPExcel.php");
@@ -39,7 +39,7 @@ class Leadmanage extends CI_Controller
   }
 
 
-  public function add_lead()git 
+  public function add_lead()
   
   {
     $this->data['page'] = 'advertisement';
@@ -168,8 +168,7 @@ class Leadmanage extends CI_Controller
   function insert_lead()
   {
    
-    // echo "<pre>";
-    // print_r($_POST); exit;
+    
      //$dataIns['l_advid'] = $_POST['l_advid'];
     // echo "<pre>";
     // print_r($_POST['packets']); exit;
@@ -235,8 +234,8 @@ class Leadmanage extends CI_Controller
           $dataIns['l_email'] = $_POST['l_email'][$i];
           $dataIns['ref_no'] = $_POST['ref_no'][$i];
           $dataIns['type'] = $_POST['type'][$i];
-          $dataIns['l_status'] = $_POST['l_status'][$i];
-          $dataIns['techl_status'] = $_POST['techl_status'][$i];
+          // $dataIns['l_status'] = $_POST['l_status'][$i];
+          // $dataIns['techl_status'] = $_POST['techl_status'][$i];
           $dataIns['l_followup'] = $_POST['l_followup'][$i];
           $dataIns['l_cmt'] = $_POST['l_cmt'][$i];
 
@@ -251,6 +250,20 @@ class Leadmanage extends CI_Controller
               } else {
                 $dataIns['allot_technical_person'] = '';
               }
+
+
+
+              if (isset($_POST['l_status'])) {
+                $dataIns['l_status'] = $_POST['l_status'][$i];
+              } else {
+                $dataIns['l_status'] = '';
+              }
+        
+              if (isset($_POST['techl_status'])) {
+                $dataIns['techl_status'] = $_POST['techl_status'][$i];
+              } else {
+                $dataIns['techl_status'] = '';
+              }
         
           if(($this->Leadmanage->is_data_exist('l_mno',$dataIns['l_mno'])==0))
           {
@@ -258,14 +271,14 @@ class Leadmanage extends CI_Controller
           }
         }
       if ($add) {
-          $data['status']=true;
-          $data['msg']='Advertisement leads add successfully!';
+          $dataIns['status']=true;
+          $dataIns['msg']='Advertisement leads add successfully!';
       }else{
-         $data['status']=false;
-        $data['msg']='Unable to added advertisement information!';
+         $dataIns['status']=false;
+        $dataIns['msg']='Unable to added advertisement information!';
       } 
     }
-     echo json_encode($data);
+     echo json_encode($dataIns);
 
 
 
@@ -394,7 +407,7 @@ class Leadmanage extends CI_Controller
                             <td>' . $row['ref_no'] . '</td>
                             <td>' . $row['type'] . '</td>';
                          
-        if ($semp_id != '') {
+        if ($semp_id != '' && $semp_id != '0') {
           $semp_data = $this->emp->get_semployee_data_by_id($semp_id);
           $output .= '<td>' . $semp_data['first_name'] . ' ' . $semp_data['last_name'] . '</td>';
         } else {
@@ -402,7 +415,7 @@ class Leadmanage extends CI_Controller
         }
 
         $output .= '<td>' . $row['l_status'] . '</td>';
-        if ($techemp_id != '') {
+        if ($techemp_id != ''  && $techemp_id != '0') {
 
           $temp_data = $this->emp->get_temployee_data_by_id($techemp_id);
           $output .= '<td>' . $temp_data['first_name'] . ' ' . $temp_data['last_name'] . '</td>';
@@ -425,7 +438,7 @@ class Leadmanage extends CI_Controller
         }
 
         if ($l_status == 'TODAY' || $l_status == 'FAILED') {
-          $output .= '<td><button type="button" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          $output .= '<td><button type="button" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData(' . $row["l_id"] . ',' . $row["allot_sales_person"] . ',' . $row["allot_technical_person"] . ') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     </button>
                     
                    <button type="button" class="btn btn-sm btn-success" onclick=editLeadTransfer(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
@@ -504,8 +517,26 @@ class Leadmanage extends CI_Controller
   public function editLeadData()
   {
     $lead_id = $this->input->post('lead_id');
+    $emp_id = $this->input->post('emp_id');
+    $techemp_id = $this->input->post('techemp_id');
+   
+    
+
     $leadmanage = $this->Leadmanage->get_single_lead_data($lead_id);
-    $Status = $this->status->getAllStatusData();
+    if($emp_id != '' && $emp_id != '0'){  
+    
+    $Status = $this->status->getAllsalesempStatusData('1');  
+    }
+
+    if($techemp_id != '' && $techemp_id != '0'){
+      
+      $Status = $this->status->getAlltechempStatusData('1');
+      
+      }
+  
+
+
+
 
     $output = "<div class='panel-body'>
                   <div class='form-group'>

@@ -9,6 +9,7 @@
   .spinner_load {
 
 position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;background: #ffffff99;top: 0;left: 0;text-align: center;padding-top: 5%;
+
 }
 </style>
 

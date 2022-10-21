@@ -124,7 +124,7 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Lead Status:</strong></label>
-                        <select class="form-control form-control-sm l_status" id="l_status" name="l_status[]">
+                        <select class="form-control form-control-sm " id="l_status" name="l_status[]">
                          
                         </select>
                       </div>
@@ -134,7 +134,7 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Allot Technical Person:</strong></label>
-                        <select class="form-control form-control-sm l_status" id="allot_technical_person" name="allot_technical_person[]">
+                        <select class="form-control form-control-sm" id="allot_technical_person" name="allot_technical_person[]">
                           <option value="" selected="" disabled="">Select</option>
                           <?php
                           foreach ($employee as $row) {
@@ -147,7 +147,7 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <label for=""><strong>Lead Status:</strong></label>
-                        <select class="form-control form-control-sm l_status" id="techl_status" name="techl_status[]">
+                        <select class="form-control form-control-sm" id="techl_status" name="techl_status[]">
                          
                         </select>
                       </div>
