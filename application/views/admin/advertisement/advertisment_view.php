@@ -28,6 +28,37 @@
        <?php
        $ad_type=$_GET['t'];
        $adv_id=$_GET['i'];
+       if ($ad_type == 'GENERALENQUIRY')
+        {   ?>
+      <div class="panel-heading">
+         <h4 class="panel-title">General Enquiry</h4>
+         
+         <a href="<?=base_url();?>admin/advertisement/manage_advertisement" class="btn btn-sm btn-default float-right mr-3"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back</a>
+         <button type="button" class="btn btn-sm btn-warning float-right edit_btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button> 
+      </div>
+      <div class="panel-body panel-form">
+         <div class="card-body" ><form id="online_ad_form" class="form-horizontal" onsubmit="return edit_advertisement(this)" method="POST" enctype="multipart/form-data">
+            <div class="row">
+               <div class="col-md-4">
+                  <div id="response" class="form-group">
+                     <label class="control-label"><strong>General Enquiry : </strong></label>
+                     <input class="form-control" type="hidden" name="adv_id" id="adv_id" value="<?=$adv_id?>">
+                     <input class="form-control" type="text" name="general_enq" id="general_enq" required="true" value="<?= $advertisement['general_enq'];?>" readonly>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div id="response" class="form-group">
+                  <label class="control-label"><strong>Through Email ID:</strong></label>
+                  <input type="email" class="form-control" id="gen_email" name="gen_email" value="<?= $advertisement['general_enq'];?>"  required="true" readonly>
+                  </div>
+               
+              
+               <div class="savebtn_div">
+                  <button type='submit' class='btn btn-warning ml-3 save_btn'>Save</button>
+               </div>
+            </div>
+            </form></div></div>
+        <?php }
         if ($ad_type == 'ONLINE')
         {   ?>
       <div class="panel-heading">

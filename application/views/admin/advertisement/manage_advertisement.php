@@ -42,6 +42,7 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
                      <option value="EXHIBITION" title="Product Exhibition" >Exhibition</option>
                       <option value="AGENTBROKER" title="Agent And Broker">Agent And Broker</option>
                      <option value="SALESMARKETING" title="Sales And Marketing Companies">Sales And Marketing Companies</option>
+                     <option value="GENERALENQUIRY" title="General Enquiry">General Enquiry</option>
                   </select>
                </div>
             </div>
@@ -229,7 +230,7 @@ position: absolute; display: none; width: 100%;min-height: 150px;height: 100%;ba
      });
   });
 
-  $('.adv_sts_btn').click(function(){
+  $('.adv_sts_btn').click(function(){ 
     var elmId = $('#ad_type').val();
     var tab_btn = $(this).data('status');
     $('.spinner_load').show();

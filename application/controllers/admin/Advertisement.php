@@ -107,6 +107,7 @@ class Advertisement extends CI_Controller
 
     public function input_form_creator()
     {
+       
         $output = '';
         $ad_type = $_POST['ad_type'];
 //        $employee = $this->Payroll_model->get_employee_data(); 
@@ -122,7 +123,7 @@ class Advertisement extends CI_Controller
                <div class="col-md-4">
                   <div id="response" class="form-group">
                      <label class="control-label"><strong>Advertisement Title : </strong></label>
-                     <input class="form-control" type="hidden" name="adv_category" id="adv_category" value="ONLINE">
+                     <input class="form-control" type="hidden" name="adv_category" id="adv_category" value="GENERALENQUIRY">
                      <input class="form-control" type="text" name="adv_name" id="adv_name" required="true">
                   </div>
                </div>
@@ -732,6 +733,39 @@ class Advertisement extends CI_Controller
             </div>
         </form></div></div>';
         }
+
+
+        if ($ad_type == 'generalEnquiry')
+        {
+            $output .= '<div class="panel-heading">
+         <h4 class="panel-title">General Enquiry</h4>
+      </div>
+      <div class="panel-body panel-form">
+         <div class="card-body" ><form id="generalEnq_ad_form" class="form-horizontal" onsubmit="return insert_advertisement(this)" method="post" enctype="multipart/form-data">
+            <div class="row">
+             <div class="col-md-4">
+                  <div id="response" class="form-group">
+                     <label class="control-label"><strong>General Enquiry :</strong></label>
+                     <input class="form-control" type="hidden" name="adv_category" id="adv_category" value="GENERALENQUIRY">
+                     <input class="form-control" type="text" name="general_enq" id="general_enq" required="true">
+                  </div>
+               </div>
+               
+                
+                <div class="col-md-4">
+                  <div id="response" class="form-group">
+                     <label class="control-label"><strong>Through Email ID:</strong></label>
+                     <input type="email" class="form-control" id="gen_email" name="gen_email" value="info@amichand.com"  required="true">
+                  </div>
+               </div>
+              
+                
+               <div class="col-md-4 mt-5">
+                     <button type="submit" class="btn btn-warning col-3">Save</button>
+               </div>
+            </div>
+        </form></div></div>';
+        }
         $output .= '<script>
 	    $("#manage_depart").change(function () {
 	        var depart_id = $("#manage_depart").val();
@@ -784,9 +818,9 @@ class Advertisement extends CI_Controller
     function insert_advertisement()
     {
       // echo"<pre>";
-      // print_r($_POST);
+      // print_r($_POST); 
       // print_r($_FILES);
-      // exit();
+      
     	$postData = $this->input->post();
       if(!empty($postData['adv_link']))
       {
@@ -823,6 +857,9 @@ class Advertisement extends CI_Controller
             // 	echo $this->upload->display_errors();
             // }
         }
+
+        
+        
           $insert_data = $this->Advertisement->insert_data($postData);
             if($insert_data)
 			 			{
@@ -889,13 +926,14 @@ class Advertisement extends CI_Controller
         $adv_category = $this->input->post('adv_category');
         
         $data = $this->Advertisement->get_all_adv_by_status($adv_status, $adv_category);
+
         
       if(($this->input->post('adv_category')=='AGENTBROKER') || ($this->input->post('adv_category')=='SALESMARKETING')){
 
               $output .= '<div class="panel-body">
                          <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
-                             <th class="text-nowrap">S No</th>
+                          <th class="text-nowrap">S No</th>
                           <th class="text-nowrap">Name</th>
                           <th class="text-nowrap">Mobile</th>
                           <th class="text-nowrap">Email</th>';
@@ -977,21 +1015,109 @@ class Advertisement extends CI_Controller
           }
           $output .= '</tbody></table></div>';
       }
+
+      else if(($this->input->post('adv_category')=='GENERALENQUIRY')){
+
+         $output .= '<div class="panel-body">
+                         <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
+                            <thead>
+                          <th class="text-nowrap">S No</th>
+                          <th class="text-nowrap">General Enquiry</th>
+                          <th class="text-nowrap">Email</th>';
+                        if($adv_status=='PENDING' || $adv_status=='RUNNING' || $adv_status=='PAUSE' || $adv_status=='CANCELED'){
+                          $output .= '<th class="text-nowrap">Status</th><th class="text-nowrap">Action</th>';
+                          }
+                          if( $adv_status=='RUNNING' || $adv_status=='PAUSE' || $adv_status=='CANCELED' || $adv_status=='COMPLETED'){
+                          $output .= '<th class="text-nowrap">Follow up</th>';
+                            }
+                           $output .= '</tr></thead><tbody>
+                          ';
+                  $cnt = 1;
+                  foreach ($data as $row)
+                  {
+                   $leadno = $this->Leadmanage->get_lead_count($row['adv_id']);
+                 $output .= '
+                  <tr>
+                   <td>'.$cnt.'</td>
+                   <td>'.$row['general_enq'].'</td>
+                   <td>'.$row['gen_email'].'</td>';
+                   if($row['adv_status']=='PENDING'){           
+                   $output .= '
+                   <td>
+                      <select class="form-control" name="adv_status" data-adv_id="'.$row['adv_id'].'" onchange="update_adv_sts(this)">
+                         <option value="" selected="" disabled="">Pending</option>
+                         <option value="RUNNING">Running</option>
+                         <option value="CANCELED">Cancel</option>
+                      </select>
+                   </td>
+                   <td><a href="'.base_url().'admin/advertisement/advertisment_view?t='.$row['adv_category'].'&i='.$row['adv_id'].'" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>          
+                      <button type="button" class="btn btn-sm btn-danger" onclick="deleteAdv('.$row['adv_id'].');"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                   </td>';
+             }if($row['adv_status']=='RUNNING'){           
+             $output .= '
+             <td>
+                <select class="form-control" name="adv_status" data-adv_id="'.$row['adv_id'].'" onchange="update_adv_sts(this)">
+                   <option value="" selected="" disabled="">Running</option>
+                   <option value="COMPLETED">Completed</option>
+                   <option value="PAUSE">Pause</option>
+                   <option value="CANCELED">Cancel</option>
+                </select>
+             </td>
+             <td>          
+                <button type="button" class="btn btn-sm btn-danger" onclick="deleteAdv('.$row['adv_id'].');"><i class="fa fa-trash" aria-hidden="true"></i></button>
+             </td>
+             <td><a href="'.base_url().'admin/leadmanage/manage_lead?i='.$row['adv_id'].'" type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye" aria-hidden="true" style="font-size:14px;"></i> &nbsp;<span class="label label-default">'.$leadno.'</span></a>
+                <a href="'.base_url().'admin/leadmanage/add_lead?i='.$row['adv_id'].'" class="btn btn-sm btn-inverse" Title="Add More Leads.."><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+             </td>
+             ';
+             }if($row['adv_status']=='PAUSE'){           
+             $output .= '<td>
+                <select class="form-control" name="adv_status" data-adv_id="'.$row['adv_id'].'" onchange="update_adv_sts(this)">
+                   <option value="" selected="" disabled="">Pause</option>
+                   <option value="RUNNING">Running</option>
+                </select>
+             </td>
+             <td><a href="'.base_url().'admin/advertisement/advertisment_view?t='.$row['adv_category'].'&i='.$row['adv_id'].'" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>          
+             </td>
+             <td><a href="'.base_url().'admin/leadmanage/manage_lead" type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye" aria-hidden="true" style="font-size:14px;"></i> &nbsp;<span class="label label-default">'.$leadno.'</span></a></td>
+             ';
+             }if($row['adv_status']=='CANCELED'){           
+             $output .= '<td>
+                <select class="form-control" name="adv_status" data-adv_id="'.$row['adv_id'].'" onchange="update_adv_sts(this)">
+                   <option value="" selected="" disabled="">Cancel</option>
+                   <option value="PENDING" >Pending</option>
+                   <option value="RUNNING" >Running</option>
+                </select>
+             </td>
+             <td><a href="'.base_url().'admin/advertisement/advertisment_view?t='.$row['adv_category'].'&i='.$row['adv_id'].'" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+             <td><a href="'.base_url().'admin/leadmanage/manage_lead" type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye" aria-hidden="true" style="font-size:14px;"></i> &nbsp;<span class="label label-default">'.$leadno.'</span></a></td>';
+             }
+             if($row['adv_status']=='COMPLETED'){           
+             $output .= '
+             <td><a href="'.base_url().'admin/leadmanage/manage_lead" type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye" aria-hidden="true" style="font-size:14px;"></i> &nbsp;<span class="label label-default">'.$leadno.'</span></a></td>';
+             }
+             $output .= '</tr>';
+             $cnt++;
+          }
+          $output .= '</tbody></table></div>';
+      }
+      
+
       else{
 
               $output .= '<div class="panel-body">
                          <table id="data-table-buttons" class="table table-striped table-bordered table-td-valign-middle">
                             <thead>
-                             <th class="text-nowrap">S No</th>
+                           <th class="text-nowrap">SNo</th>
                           <th class="text-nowrap">Title</th>
                           <th class="text-nowrap">Type</th>
-                          <th class="text-nowrap">Start Date</th>
+                          <th class="text-nowrap">Date</th>
                           <th class="text-nowrap">End Date</th>
                           <th class="text-nowrap">Budget</th>';
                         if($adv_status=='PENDING' || $adv_status=='RUNNING' || $adv_status=='PAUSE' || $adv_status=='CANCELED'){
                           $output .= '<th class="text-nowrap">Status</th><th class="text-nowrap">Action</th>';
-                          }
-                          if( $adv_status=='RUNNING' || $adv_status=='PAUSE' || $adv_status=='CANCELED' || $adv_status=='COMPLETED'){
+                          } 
+                          if( $adv_status=='0' || $adv_status=='PAUSE' || $adv_status=='CANCELED' || $adv_status=='COMPLETED'){
                           $output .= '<th class="text-nowrap">Follow up</th>';
                             }
                            $output .= '</tr></thead><tbody>

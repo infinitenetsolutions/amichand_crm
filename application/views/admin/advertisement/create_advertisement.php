@@ -38,6 +38,7 @@
                      <option value="exhibition" title="Product Exhibition">Exhibition</option>
                      <option value="agentBroker" title="Agent And Broker">Agent And Broker</option>
                      <option value="salesMarketing" title="Sales And Marketing Companies">Sales And Marketing Companies</option>
+                     <option value="generalEnquiry" title="General Enquiry">General Enquiry</option>
                   </select>
                </div>
             </div>
@@ -84,6 +85,7 @@ function insert_advertisement(form) {
                         processData: false,
                         success: function (data) {
                            var response = JSON.parse(data);
+                           console.log(response); exit;
                            if(response.status == true){
                               $.gritter.add({
                               title: 'Hurray!!',
