@@ -85,7 +85,6 @@ function insert_advertisement(form) {
                         processData: false,
                         success: function (data) {
                            var response = JSON.parse(data);
-                           console.log(response); exit;
                            if(response.status == true){
                               $.gritter.add({
                               title: 'Hurray!!',
