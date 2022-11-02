@@ -15,6 +15,13 @@ class Leadmanage_model extends CI_Model
 		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();
 	}
+
+	public function insert_change_data($data)
+	{
+		$this->db->insert('lead_change_log', $data);
+		return true;
+	}
+	
 	public function update_data($data, $lead_id)
 	{
 		$this->db->where($this->primary_key, $lead_id);
@@ -107,6 +114,18 @@ class Leadmanage_model extends CI_Model
 		//$this->db->where('l_status','PENDING');
 		$countNum = $this->db->get()->num_rows();
 		return $countNum;
+	}
+
+
+	
+
+	public function get_lead_change_data($lead_id)
+	{
+		$this->db->select('*');
+		$this->db->from('lead_change_log');
+		$this->db->where('lead_id', $lead_id);
+		$q = $this->db->get();
+		return $q->result_array();
 	}
 
 	public function get_single_lead_data($lead_id)

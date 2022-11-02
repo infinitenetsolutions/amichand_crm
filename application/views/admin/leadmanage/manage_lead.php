@@ -234,6 +234,22 @@ $(document).ready(function () {
             }
     });
   }
+
+  
+
+  function viewLeadTransfer(lead_id) {
+    $.ajax({
+      type: "POST",
+      url: "<?php echo base_url();?>admin/leadmanage/viewLeadTransfer",      
+      data:{"lead_id":lead_id},
+      success: function(data){
+        $('#form-data2').html(data);
+           // $(".startDateTime").datetimepicker({
+           //    format: "YYYY-MM-DD HH:mm:ss"                                
+             // });
+            }
+    });
+  }
   
   
   
@@ -310,6 +326,37 @@ $(document).ready(function () {
   </div>
 </div>
 
+<div class="modal fade" id="viewLeadTransfer" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Lead change Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal lead_insert_form"  method="post" enctype="multipart/form-data" >
+          <div class="row">
+            <div class="col-xl-12" id="form-data2">
+           
+            </div>
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+       
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 
 
 <script type="text/javascript">
@@ -328,6 +375,21 @@ function showDateinput(select){
     $('#date_followup').hide();
   }
 }
+
+$('#allot_sales_persn').click(function(){
+    $.ajax({
+     url:"<?php echo base_url(); ?>admin/Leadmanage/fetch_statusdata",
+     method:"POST",
+     data:{},
+     success:function(data)
+     {
+         console.log(data);
+        $('#l_status').html(data);
+     }
+    });
+   
+  });
+
 
 
 
@@ -363,8 +425,9 @@ function update_lead_data(form) {
     type: "POST",
     data: formData,
     success: function (data) {
-      $('#change_lead').prop( "disabled", false );
-      var response = JSON.parse(data);
+      //console.log(data);
+     $('#change_lead').prop( "disabled", false );
+     var response = JSON.parse(data);
       if (response.status == true) {
         $.gritter.add({
               title: 'Hurray!!',

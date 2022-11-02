@@ -147,6 +147,17 @@
                         <div class="panel-body panel-form">
                             <div class="card-body">
                                 <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="empGender"><strong>Department Type:</strong></label>
+                                       <select name="dep_type" class="form-control" data-style="btn-default btn-outline" data-menu-style="dropdown-blue">
+                                       <option value="" selected="" disabled="">Select</option>
+
+										<option value="Sales Employee" <?php if(!empty($employee_item) && $employee_item['dep_type']=='Sales Employee'){echo 'selected';} ?>>Sales Employee</option>
+										<option value ="Technical Employee" <?php if(!empty($employee_item) && $employee_item['dep_type']=='Technical Employee'){echo 'selected';} ?>>Technical Employee</option>
+										</select>
+                                    </div>
+                                </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="department"><strong>Department: </strong></label>

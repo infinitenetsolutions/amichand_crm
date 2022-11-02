@@ -128,6 +128,17 @@
                         <div class="panel-body panel-form">
                             <div class="card-body">
                                 <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="empGender"><strong>Department Type:</strong></label>
+                                        <select class="form-control" name="dep_type" id="" >
+                                            <option value="" selected="" disabled="">Select</option>
+                                            <option value="Sales Employee">Sales Employee</option>
+                                            <option value="Technical Employee">Technical Employee</option>
+                                        </select>
+                                    </div>
+                                </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="department"><strong>Department:</strong></label>
@@ -162,6 +173,18 @@
                                            </select>
                                         </div>
                                     </div>
+
+
+                                    <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="empGender"><strong>Department Type:</strong></label>
+                                        <select class="form-control" name="gender" id="gender" style="">
+                                            <option value="" selected="" disabled="">Select</option>
+                                            <option value="Sales Employee">Sales Employee</option>
+                                            <option value="Technical Employee">Technical Employee</option>
+                                        </select>
+                                    </div>
+                                </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label"><strong>Date of Joining:</strong></label>

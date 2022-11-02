@@ -35,7 +35,7 @@ class Leadmanage extends CI_Controller
     $this->load->model('Status_model', 'status');
     $this->load->model('Company_model','company');
 
-    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/application/views/';
+    $this->data['view_path'] = $_SERVER['DOCUMENT_ROOT'] . '/crm/application/views/';
   }
 
 
@@ -47,7 +47,8 @@ class Leadmanage extends CI_Controller
     $this->data['advertisement'] = $this->Advertisement->get_all_adv_tbl_data();
     $this->data['Product'] = $this->pm->getAllProductsData();
     $this->data['Status'] = $this->status->getAllStatusData();
-    $this->data['employee'] = $this->emp->get_all_employee('table_employee');
+    $this->data['sale_emp'] = $this->emp->get_all_saleemployee('table_employee');
+    $this->data['technical_emp'] = $this->emp->get_all_techemployee('table_employee');
     $this->data['company'] = $this->company->getAllData();
 
 
@@ -168,7 +169,8 @@ class Leadmanage extends CI_Controller
   function insert_lead()
   {
    
-    
+    // echo "<pre>";
+    // print_r($_POST); exit;
      //$dataIns['l_advid'] = $_POST['l_advid'];
     // echo "<pre>";
     // print_r($_POST['packets']); exit;
@@ -217,6 +219,7 @@ class Leadmanage extends CI_Controller
       {    
       $validMobile=preg_match('/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/', $_POST['l_mno'][$i]);
       if($validMobile=='0'){
+
           $data['status']=false;
           $data['msg']='Please enter a valid mobile number';
               
@@ -264,10 +267,47 @@ class Leadmanage extends CI_Controller
               } else {
                 $dataIns['techl_status'] = '';
               }
+
+
+              
         
           if(($this->Leadmanage->is_data_exist('l_mno',$dataIns['l_mno'])==0))
           {
+            
            $add = $this->Leadmanage->insert_data($dataIns);
+          //  echo $add; 
+           if (!empty($add)) {
+
+
+            if (isset($_POST['allot_sales_person'])) {
+              $change_log_data['allot_sales_person'] = $_POST['allot_sales_person'][$i];
+            } else {
+              $change_log_data['allot_sales_person'] = '';
+            }
+
+            if (isset($_POST['allot_technical_person'])) {
+              $change_log_data['allot_technical_person'] = $_POST['allot_technical_person'][$i];
+            } else {
+              $change_log_data['allot_technical_person'] = '';
+            }
+
+            if (isset($_POST['techl_status'])) {
+              $dataIns['tlead_status'] = $_POST['techl_status'][$i];
+            } else {
+              $dataIns['tlead_status'] = '';
+            }
+
+
+            if (isset($_POST['l_status'])) {
+              $dataIns['slead_status'] = $_POST['l_status'][$i];
+            } else {
+              $dataIns['slead_status'] = '';
+            }
+             $change_log_data['lead_id'] = $add;
+
+            $this->Leadmanage->insert_change_data($change_log_data);
+          }  
+           
           }
         }
       if ($add) {
@@ -310,6 +350,8 @@ class Leadmanage extends CI_Controller
   function update_leadtransfer()
   {
     $l_id = $this->input->post('l_id');
+    $sale_id = $this->input->post('allot_sales_person');
+    $tech_id = $this->input->post('allot_technical_person');
 
     $data = $this->input->post();
     // echo "<pre>";
@@ -320,7 +362,17 @@ class Leadmanage extends CI_Controller
     // $data['l_followup'] = NULL;
     //}
     $update = $this->Leadmanage->update_data($data, $l_id);
-    if ($update) {
+     if ($update) {
+
+       $change_log_data['lead_id'] = $l_id;
+       $change_log_data['allot_sales_person'] = $sale_id;
+       $change_log_data['allot_technical_person'] = $tech_id;
+       $update = $this->Leadmanage->insert_change_data($change_log_data);
+
+       // }
+
+    // } 
+
       $data['status'] = true;
       $data['msg'] = 'leads transfer to another user successfully!';
     } else {
@@ -438,10 +490,11 @@ class Leadmanage extends CI_Controller
         }
 
         if ($l_status == 'TODAY' || $l_status == 'FAILED') {
-          $output .= '<td><button type="button" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData(' . $row["l_id"] . ',' . $row["allot_sales_person"] . ',' . $row["allot_technical_person"] . ') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          $output .= '<td><button type="button" title="Edit" class="btn btn-sm btn-warning btn-editleads" onclick=editLeadData(' . $row["l_id"] . ',' . $row["allot_sales_person"] . ',' . $row["allot_technical_person"] . ') data-toggle="modal" data-target="#editLeadData"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     </button>
-                    
-                   <button type="button" class="btn btn-sm btn-success" onclick=editLeadTransfer(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
+                    <button type="button" title="View Leads Transfer information" class="btn btn-sm btn-danger btn-editleads" onclick=viewLeadTransfer(' . $row["l_id"] . ') data-toggle="modal" data-target="#viewLeadTransfer"><i class="fa fa-eye" aria-hidden="true"></i>
+                    </button> 
+                   <button type="button" title="Lead Transfer" class="btn btn-sm btn-success" onclick=editLeadTransfer(' . $row["l_id"] . ') data-toggle="modal" data-target="#editLeadTransfer">Lead Transfer
                     </button>
                     </td>';
         }
@@ -477,6 +530,60 @@ class Leadmanage extends CI_Controller
     echo json_encode($data);
   }
 
+  public function viewLeadTransfer()
+  {
+
+    $lead_id = $this->input->post('lead_id');
+    $leadmanage = $this->Leadmanage->get_lead_change_data($lead_id);
+     //$usr = $this->session->userdata('username');
+    // echo "<pre>";
+    // print_r($leadmanage); 
+
+    $output = "";
+
+
+
+    $output .= "<div class='panel-body'>
+               <table id='data-table-buttons' class='table table-striped table-bordered table-td-valign-middle'>
+               <thead><tr> <th class='text-nowrap'>SNo</th>
+               <th class='text-nowrap'>Date & <br>Time</th>
+               <th class='text-nowrap'>Transfer To</th>
+               <th class='text-nowrap'>Person<br> Modified By</th>
+               <th class='text-nowrap'>State</th>
+              
+                </tr>
+             </thead>
+       <tbody>";
+
+    //Checking If Data Is Available
+    $cnt = 1;
+    if(!empty($leadmanage)):
+        foreach($leadmanage as $row):
+          $output .= "<tr>
+          <td>". $cnt++ . "</td>
+          <td>". $row['doc'] . "</td>
+          <td>". $row['allot_sales_person'] . "</td>
+          <td>Admin</td>
+          <td>". $row['slead_status'] . "</td>
+
+
+
+          </tr>";
+         endforeach;
+         endif;
+        //  else:
+            
+        //   $output .= " <tr><td colspan="6"><center><strong>NO RECORD FOUND</strong></center></td></tr>
+        $output .= "</tbody>
+          </table></div>";
+                   
+    echo $output;
+  }
+
+
+
+  
+
 
   public function editLeadTransfer()
   {
@@ -490,11 +597,11 @@ class Leadmanage extends CI_Controller
 
 
 
-    $output .= "<label for=''><strong>Employee:</strong></label>
+    $output .= "<label for=''><strong>Sales Employee:</strong></label>
                   <input type='hidden' name='l_id' value='" . $_POST['lead_id'] . "'>
-                <select class='form-control mr-3' name='allot_sales_person'  required=''>
-                    <option value=''>Select Employee</option>";
-    $emp = $this->emp->get_all_employee('table_employee');
+                <select class='form-control mr-3' name='allot_sales_person' id='allot_sales_persn'>
+                    <option value=''>Select Sales Employee</option>";
+    $emp = $this->emp->get_all_saleemployee('table_employee');
 
     //Checking If Data Is Available
     if ($emp != 0) :
@@ -504,6 +611,22 @@ class Leadmanage extends CI_Controller
       endforeach;
     endif;
     $output .= "</select><br>
+
+   
+
+    <label for=''><strong>Technical Employee:</strong></label>
+    <select class='form-control mr-3' name='allot_technical_person' >
+    <option value=''>Select Technical Employee</option>";
+$emp = $this->emp->get_all_techemployee('table_employee');
+
+//Checking If Data Is Available
+if ($emp != 0) :
+foreach ($emp as $rows) :
+
+$output .= "<option " . ($leadmanage['allot_technical_person'] == $rows['id'] ? 'selected' : '') . " value=" . $rows['id'] . " >" . $rows['first_name'] . " " . $rows['last_name'] . "</option>";
+endforeach;
+endif;
+$output .= "</select><br>
                    <button type='submit' id='change_lead' class='btn btn-primary'>Save changes</button>";
 
     echo $output;

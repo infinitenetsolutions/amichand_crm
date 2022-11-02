@@ -114,7 +114,7 @@
                         <select class="form-control form-control-sm" id="allot_sales_persn" name="allot_sales_person[]">
                           <option value="" selected="" disabled="">Select</option>
                           <?php
-                          foreach ($employee as $row) {
+                          foreach ($sale_emp as $row) {
                             echo "<option value=" . $row['id'] . ">" . $row['first_name'] . "</option>";
                           }  ?>
                         </select>
@@ -137,7 +137,7 @@
                         <select class="form-control form-control-sm" id="allot_technical_person" name="allot_technical_person[]">
                           <option value="" selected="" disabled="">Select</option>
                           <?php
-                          foreach ($employee as $row) {
+                          foreach ($technical_emp as $row) {
                             echo "<option value=" . $row['id'] . ">" . $row['first_name'] . "</option>";
                           }  ?>
                         </select>
@@ -253,7 +253,7 @@ $('#allot_technical_person').change(function(){
         data:{},
         success:function(data)
         {
-            console.log(data);
+            //console.log(data);
            $('#l_status').html(data);
         }
        });

@@ -46,7 +46,26 @@ class Employee_model extends CI_Model {
          }
 	  
 	  
-	 function get_all_employee($tbl)
+	 function get_all_saleemployee($tbl)
+	    {  
+
+	    	return $this->db->select('*')->from($tbl)->where('id!=',1)->where('dep_type','Sales Employee')->get()->result_array();
+		
+	    }
+
+		function get_all_techemployee($tbl)
+	    {  
+
+	    	return $this->db->select('*')->from($tbl)->where('id!=',1)->where('dep_type','Technical Employee')->get()->result_array();
+		
+	    }
+
+
+
+
+
+
+		function get_all_employee($tbl)
 	    {  
 
 	    	return $this->db->select('*')->from($tbl)->where('id!=',1)->get()->result_array();

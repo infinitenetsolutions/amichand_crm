@@ -18,7 +18,7 @@ class Advertisement extends CI_Controller
 
         $this->load->library('form_validation');
         $this->load->library('session');
-        $this->data['view_path']  = $_SERVER['DOCUMENT_ROOT'] .'/application/views/';
+        $this->data['view_path']  = $_SERVER['DOCUMENT_ROOT'] .'/crm/application/views/';
         $this->data['settingData'] = $this->Setting->getsettingdata(1);
 //        $this->load->model('Department_model','dm');
         $this->load->model('Leadmanage_model','Leadmanage');
@@ -817,8 +817,8 @@ class Advertisement extends CI_Controller
 
     function insert_advertisement()
     {
-      // echo"<pre>";
-      // print_r($_POST); 
+      echo"<pre>";
+      print_r($_POST); 
       // print_r($_FILES);
       
     	$postData = $this->input->post();
@@ -858,7 +858,8 @@ class Advertisement extends CI_Controller
             // }
         }
 
-        
+      //   echo "<pre>";
+      //   print_r($postData); exit;
         
           $insert_data = $this->Advertisement->insert_data($postData);
             if($insert_data)

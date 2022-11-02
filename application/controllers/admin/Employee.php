@@ -80,6 +80,7 @@ class Employee extends CI_Controller
 				'gender' => $this->input->post('gender'),
 				'username' => $this->input->post('username'),
 				'password' => md5($this->input->post('password')),
+				'dep_type' => $this->input->post('dep_type'),
 				'department' => $this->input->post('department'),
 				'designation' => $this->input->post('designation'),
 				'reporting_to' => $this->input->post('reporting_to'),
@@ -178,6 +179,7 @@ class Employee extends CI_Controller
 			$data['gender'] = $this->input->post('gender');
 			$data['username'] = $this->input->post('username');
 			$data['password'] = $this->input->post('password');
+			$data['dep_type'] = $this->input->post('dep_type');
 			$data['department'] = $this->input->post('department');
 			$data['designation'] = $this->input->post('designation');
 			$data['reporting_to'] = $this->input->post('reporting_to');
@@ -613,6 +615,7 @@ class Employee extends CI_Controller
 					<th class="text-nowrap">S NO</th>
 					<th class="text-nowrap">Full Name</th>
 					<th class="text-nowrap">Employee ID</th>
+					<th class="text-nowrap">Department Type</th>
 					<th class="text-nowrap">Department</th>
 					<th class="text-nowrap">Designation</th>
 					<th class="text-nowrap">Product Name</th>
@@ -640,6 +643,7 @@ class Employee extends CI_Controller
 							<td><?php echo $sno++; ?></td>
 							<td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
 							<td><?php echo $row['employee_id']; ?></td>
+							<td><?php echo $row['dep_type']; ?></td>
 							<td><?php echo $department['department_name']; ?></td>
                                <?php 
 							if ($desgid != '') {
